@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1044796502478",
+    "firebase_url": "https://elo-gadget-review-app.firebaseio.com",
+    "project_id": "elo-gadget-review-app",
+    "storage_bucket": "elo-gadget-review-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1044796502478:android:0228c5ea74346b74",
+        "android_client_info": {
+          "package_name": "group.hashtag.projectelo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1044796502478-uq7eo3ahqv47kkscvhthrq67r7v10mon.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhiXLtQSqcbSlrDpBl1pgc_7wnFhfN7kg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
