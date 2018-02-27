@@ -39,6 +39,11 @@
             android:theme="@style/MyMaterialTheme">
 
         </activity>
+
+        <activity android:name=".Activities.FeaturedArticle"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
     </application>
 
 </manifest>
