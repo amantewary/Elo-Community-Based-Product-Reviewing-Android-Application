@@ -21,7 +21,7 @@ import group.hashtag.projectelo.Handlers.UserHandler;
 import group.hashtag.projectelo.R;
 
 /**
- * Created by nikhilkamath on 10/02/18.
+ * Created by amant on 10/02/18.
  */
 
 public class UserProfile extends AppCompatActivity {
