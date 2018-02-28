@@ -44,6 +44,17 @@
             android:theme="@style/MyMaterialTheme">
 
         </activity>
+
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+        <activity android:name=".Activities.OpenSourceActivity"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
     </application>
 
 </manifest>
