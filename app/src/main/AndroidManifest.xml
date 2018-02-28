@@ -55,6 +55,10 @@
             android:theme="@style/MyMaterialTheme">
 
         </activity>
+        <activity android:name=".Activities.Register_Activity"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
     </application>
 
 </manifest>
