@@ -15,6 +15,15 @@
             android:name=".Activities.HomeActivity"
             android:theme="@style/MyMaterialTheme">
 
+
+        </activity>
+
+        <activity android:name=".Activities.Splashscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".SettingsActivity"
@@ -27,6 +36,22 @@
             android:name=".Activities.UserProfile"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+
+        <activity android:name=".Activities.FeaturedArticle"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+        <activity android:name=".Activities.OpenSourceActivity"
             android:theme="@style/MyMaterialTheme">
 
         </activity>
