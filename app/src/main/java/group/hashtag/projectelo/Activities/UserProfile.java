@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,12 +29,17 @@ public class UserProfile extends AppCompatActivity {
     TextView title, usernameText;
     private DatabaseReference mDatabase;
 
+    private ImageButton messages;
+    private ImageButton reviews;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Todo: May have to figure out a better way of storing the name coz it is updating with a long delay
 
+        messages = findViewById(R.id.imageButton);
+        reviews= findViewById(R.id.imageButton2);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
@@ -48,7 +54,7 @@ public class UserProfile extends AppCompatActivity {
 
                 UserHandler user = dataSnapshot.getValue(UserHandler.class);
                 usernameText.setText(user.getName());
-                Log.e(UserProfile.class.getCanonicalName(), "User name: " + user.getName() + ", email " + user.getEmail());
+                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.getName() + ", email " + user.getEmail());
             }
 
             @Override
@@ -62,7 +68,7 @@ public class UserProfile extends AppCompatActivity {
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
         setSupportActionBar(toolbar);

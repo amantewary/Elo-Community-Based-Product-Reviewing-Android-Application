@@ -53,6 +53,15 @@
         <item>-1</item>
     </string-array>
 
+    <string-array name="device_categories">
+        <item>Select a category</item>
+        <item>Mobile</item>
+        <item>Headphone</item>
+        <item>Laptop</item>
+        <item>Gaming console</item>
+        <item>Tablet</item>
+    </string-array>
+
     <string name="pref_title_system_sync_settings">System sync settings</string>
 
     <!-- Example settings for Notifications -->
