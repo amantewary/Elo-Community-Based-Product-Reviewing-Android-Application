@@ -6,18 +6,37 @@
     android:layout_height="match_parent"
     tools:context="group.hashtag.projectelo.Activities.HomeActivity">
 
+
+
+    <include layout="@layout/activity_main" />
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <include layout="@layout/toolbar">
+        <FrameLayout android:id="@+id/toolbar_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            xmlns:android="http://schemas.android.com/apk/res/android">
 
-        </include>
+            <include layout="@layout/toolbar">
+
+            </include>
+            <com.miguelcatalan.materialsearchview.MaterialSearchView
+                android:id="@+id/search_catogories"
+                android:layout_width="match_parent"
+                android:textColor="@color/colorAccent"
+                android:textColorHint="@color/cardview_shadow_start_color"
+                android:hint="@string/search_hint"
+                android:visibility="gone"
+                android:layout_height="wrap_content" />
+        </FrameLayout>
+
+
+
 
     </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/activity_main" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
@@ -26,5 +45,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add_black_24dp" />
+
 
 </android.support.design.widget.CoordinatorLayout>
