@@ -4,12 +4,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -31,55 +33,57 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import group.hashtag.projectelo.R;
 import group.hashtag.projectelo.SettingsActivity;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
     ListView listView;
     TextView title;
     ArrayAdapter<String> arrayAdapter;
     private FirebaseAuth auth;
     GoogleSignInClient mGoogleSignInClient;
-    GoogleSignInAccount account;
     Button readmore;
+    MaterialSearchView categories;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homescreen);
 
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_reviews);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
-
+        categories = findViewById(R.id.search_catogories);
         readmore = findViewById(R.id.read_more);
         title = findViewById(R.id.title_toolbar);
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
 
         listView = findViewById(R.id.list_item);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
 
 
         auth = FirebaseAuth.getInstance();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        account = GoogleSignIn.getLastSignedInAccount(this);
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//        account = GoogleSignIn.getLastSignedInAccount(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
             }
         });
 
@@ -120,7 +124,24 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(new Intent(getApplicationContext(), FeaturedArticle.class));
             }
         });
+        categories.setSuggestions(getResources().getStringArray(R.array.device_categories));
 
+        categories.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                //Do some magic
+                categories.setVisibility(View.VISIBLE);
+                toolbar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                //Do some magic
+                categories.setVisibility(View.GONE);
+                toolbar.setVisibility(View.VISIBLE);
+
+            }
+        });
     }
 
     @Override
@@ -137,6 +158,8 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        categories.setMenuItem(item);
         return true;
     }
 
@@ -211,13 +234,11 @@ public class HomeActivity extends AppCompatActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (account != null) {
-                            signOut();
-                        } else {
+
                             auth.signOut();
                             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             finish();
-                        }
+
                     }
                 });
 
@@ -234,4 +255,17 @@ public class HomeActivity extends AppCompatActivity
         // display dialog
         dialog.show();
     }
+
+    @Override
+    public void onRefresh() {
+        //Todo: add a code to actually refresh reviews
+        Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
+    }
 }
+

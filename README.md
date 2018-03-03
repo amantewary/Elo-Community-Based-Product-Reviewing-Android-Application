@@ -1,7 +1,7 @@
 # Elo - Community based product reviewing application
 
 
-Elo, is an Android application which allows people to share and contribute their experiences of using gadgets they own. This application allows people who intend to make purchases to get personal reviews and gain the buying power from different people’s experience. Elo provides a platform for the user to come together to discover the most relevant product based on user comparative analysis of their reviews.
+Elo is an Android application which allows people to share and contribute their experiences of using gadgets they own. This application allows people who intend to make purchases to get personal reviews and gain the buying power from different people’s experience. Elo provides a platform for the user to come together to discover the most relevant product based on user comparative analysis of their reviews.
 
 ## Libraries
 
@@ -30,7 +30,7 @@ Elo, is an Android application which allows people to share and contribute their
 
 ## Code Examples
 
-Currently, the user credentials and activities are not being stored and tracked in the database when the user opts for the gmail login due to time constraints. These changes are will be incorporated in the future.
+Currently, the user credentials and activities are not being stored and tracked in the database when the user opts for the  Gmail login due to time constraints. These changes are will be incorporated in the future.
 
 **Problem 1: Method for handling the user signin**
 
@@ -95,7 +95,7 @@ The Minimum functionalities of the project have been completed and tested and we
 - The app allows the user to edit their information on their profile page. (Completed)
 - The app allows the user to choose their profile picture from existing list of profile avatar,  the photo gallery or camera. (In Progress)
 - The app allows the user to search the device they are looking for. (In Progress)
-- The app allows the user to view profile of another user. (In Progress)
+- The app allows the user to view the profile of another user. (In Progress)
 - The app allows the user to write a review about a product they have on their profile. (In Progress)
 - The app allows the user to add a picture of the product they are reviewing. (In Progress)
 - The app displays user’s contribution points on their profile page based on the ratings they received on their review. (In Progress)
