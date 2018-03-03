@@ -1,5 +1,6 @@
 package group.hashtag.projectelo.Activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -96,6 +98,7 @@ public class LoginActivity extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(getApplicationContext(),ForgotPassword.class));
             }
         });
 
@@ -109,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(final View v) {
                 String email = inputEmail.getText().toString();
                 final String password = inputPassword.getText().toString();
 
@@ -146,6 +149,7 @@ public class LoginActivity extends AppCompatActivity {
                                 } else {
                                     passwordInput.setError(null);
                                     emailInput.setError(null);
+                                    hideKeyboard(v);
                                     Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                     startActivity(intent);
                                     finish();
@@ -185,5 +189,11 @@ public class LoginActivity extends AppCompatActivity {
             Log.e(LoginActivity.class.getCanonicalName(), "signInResult:failed code=" + e.getStatusCode());
 //            updateUI(null);
         }
+    }
+
+    // https://stackoverflow.com/a/19828165/3966666
+    public void hideKeyboard(View view) {
+        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 }

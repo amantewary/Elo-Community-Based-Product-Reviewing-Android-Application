@@ -30,6 +30,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import group.hashtag.projectelo.R;
 import group.hashtag.projectelo.SettingsActivity;
@@ -44,6 +45,7 @@ public class HomeActivity extends AppCompatActivity
     GoogleSignInClient mGoogleSignInClient;
     GoogleSignInAccount account;
     Button readmore;
+    MaterialSearchView categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +54,13 @@ public class HomeActivity extends AppCompatActivity
 
 
 
+        categories = findViewById(R.id.search_catogories);
         readmore = findViewById(R.id.read_more);
         title = findViewById(R.id.title_toolbar);
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
 
@@ -77,8 +80,9 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
             }
         });
 
@@ -112,7 +116,24 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(new Intent(getApplicationContext(), FeaturedArticle.class));
             }
         });
+        categories.setSuggestions(getResources().getStringArray(R.array.device_categories));
 
+        categories.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+                //Do some magic
+                categories.setVisibility(View.VISIBLE);
+                toolbar.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                //Do some magic
+                categories.setVisibility(View.GONE);
+                toolbar.setVisibility(View.VISIBLE);
+
+            }
+        });
     }
 
     @Override
@@ -129,6 +150,8 @@ public class HomeActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.home, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        categories.setMenuItem(item);
         return true;
     }
 
