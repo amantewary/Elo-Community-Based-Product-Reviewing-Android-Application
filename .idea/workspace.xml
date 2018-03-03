@@ -2070,7 +2070,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094579638" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094621941" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2118,7 +2118,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094579638" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094621941" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2301,7 +2301,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094579641" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094621943" />
       </method>
     </configuration>
     <list size="1">
@@ -2358,7 +2358,14 @@
       <option name="project" value="LOCAL" />
       <updated>1520094567614</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Add Forgot_password,new_review">
+      <created>1520094616513</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1520094616513</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -2472,7 +2479,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Merge Commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Merge Commit" />
+    <MESSAGE value="Add Forgot_password,new_review" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add Forgot_password,new_review" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
