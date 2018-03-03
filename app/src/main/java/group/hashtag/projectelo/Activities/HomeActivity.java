@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -36,7 +37,7 @@ import group.hashtag.projectelo.R;
 import group.hashtag.projectelo.SettingsActivity;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener{
 
     ListView listView;
     TextView title;
@@ -109,6 +110,13 @@ public class HomeActivity extends AppCompatActivity
         listView.canScrollVertically(0);
 
         listView.setAdapter(arrayAdapter);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(view.getContext(), ProductReview.class);
+                startActivity(intent);
+            }
+        });
 
         readmore.setOnClickListener(new View.OnClickListener() {
             @Override
