@@ -4,12 +4,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -37,23 +39,24 @@ import group.hashtag.projectelo.R;
 import group.hashtag.projectelo.SettingsActivity;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener{
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
     ListView listView;
     TextView title;
     ArrayAdapter<String> arrayAdapter;
     private FirebaseAuth auth;
     GoogleSignInClient mGoogleSignInClient;
-    GoogleSignInAccount account;
     Button readmore;
     MaterialSearchView categories;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homescreen);
 
-
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_reviews);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
 
         categories = findViewById(R.id.search_catogories);
         readmore = findViewById(R.id.read_more);
@@ -68,14 +71,11 @@ public class HomeActivity extends AppCompatActivity
         listView = findViewById(R.id.list_item);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build();
 
 
         auth = FirebaseAuth.getInstance();
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        account = GoogleSignIn.getLastSignedInAccount(this);
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//        account = GoogleSignIn.getLastSignedInAccount(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -234,13 +234,11 @@ public class HomeActivity extends AppCompatActivity
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (account != null) {
-                            signOut();
-                        } else {
+
                             auth.signOut();
                             startActivity(new Intent(getApplicationContext(), LoginActivity.class));
                             finish();
-                        }
+
                     }
                 });
 
@@ -257,4 +255,17 @@ public class HomeActivity extends AppCompatActivity
         // display dialog
         dialog.show();
     }
+
+    @Override
+    public void onRefresh() {
+        //Todo: add a code to actually refresh reviews
+        Toast.makeText(this, "Refresh", Toast.LENGTH_SHORT).show();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mSwipeRefreshLayout.setRefreshing(false);
+            }
+        }, 2000);
+    }
 }
+

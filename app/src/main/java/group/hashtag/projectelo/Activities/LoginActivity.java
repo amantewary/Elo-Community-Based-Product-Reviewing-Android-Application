@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -24,8 +25,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import group.hashtag.projectelo.R;
 
@@ -49,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
@@ -62,11 +70,13 @@ public class LoginActivity extends AppCompatActivity {
             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
         }
-        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-        if (account != null) {
-            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-            finish();
-        }
+
+
+//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+//        if (account != null) {
+//            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+//            finish();
+//        }
 
         // set the view now
         setContentView(R.layout.login_activity);
@@ -126,6 +136,10 @@ public class LoginActivity extends AppCompatActivity {
                     emailInput.setError(null);
                     passwordInput.setError("Enter correct Password");
                     return;
+                } if(!isEmailValid(email)){
+                    passwordInput.setError(null);
+                    emailInput.setError("Enter a valid email address");
+                    return;
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
@@ -172,6 +186,7 @@ public class LoginActivity extends AppCompatActivity {
             // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+            //Todo: fix Google sign in by adding Google data to firebase
         }
     }
 
@@ -180,9 +195,8 @@ public class LoginActivity extends AppCompatActivity {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
 
             // Signed in successfully, show authenticated UI.
-            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-            startActivity(intent);
-            finish();
+            firebaseAuthWithGoogle(account);
+
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
@@ -195,5 +209,36 @@ public class LoginActivity extends AppCompatActivity {
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+
+        Log.e("Here","Here");
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.e(LoginActivity.class.getCanonicalName(), "signInWithCredential:success");
+                            //FirebaseUser user = auth.getCurrentUser();
+
+                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                            startActivity(intent);
+                            finish();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.e(LoginActivity.class.getCanonicalName(), "signInWithCredential:failure", task.getException());
+                        }
+                    }
+                });
+    }
+    // Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

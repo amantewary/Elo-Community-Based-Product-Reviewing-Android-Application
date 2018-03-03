@@ -68,6 +68,10 @@
             android:theme="@style/MyMaterialTheme">
 
         </activity>
+        <activity android:name=".Activities.ProductReview"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
     </application>
 
 </manifest>
