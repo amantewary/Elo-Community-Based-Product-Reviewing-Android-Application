@@ -39,40 +39,39 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="HomeActivity.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/group/hashtag/projectelo/Activities/HomeActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="286">
-              <caret line="163" column="0" lean-forward="false" selection-start-line="163" selection-start-column="0" selection-end-line="163" selection-end-column="0" />
+            <state relative-caret-position="1782">
+              <caret line="171" column="0" lean-forward="false" selection-start-line="171" selection-start-column="0" selection-end-line="171" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#7870#7871#0" expanded="false" />
-                <marker date="1520094529082" expanded="true" signature="5938:5967" ph="{...}" />
-                <marker date="1520094529082" expanded="true" signature="6039:6525" ph="{...}" />
-                <marker date="1520094529082" expanded="true" signature="6049:6245" ph="//..." />
-                <marker date="1520094529082" expanded="true" signature="6531:6574" ph="@{...}" />
-                <marker date="1520094529082" expanded="true" signature="6531:6588" ph="@{...}" />
-                <marker date="1520094529082" expanded="true" signature="6648:7362" ph="{...}" />
-                <marker date="1520094529082" expanded="false" signature="7414:7547" ph="(firebaseAuth) → {" />
-                <marker date="1520094529082" expanded="true" signature="7659:7744" ph="//..." />
-                <marker date="1520094529082" expanded="true" signature="7917:8314" ph="{...}" />
-                <marker date="1520094529082" expanded="false" signature="8002:8135" ph="(task) → {" />
-                <marker date="1520094529082" expanded="false" signature="8283:8306" ph="}" />
-                <marker date="1520094529082" expanded="true" signature="8347:9637" ph="{...}" />
-                <marker date="1520094529082" expanded="false" signature="8659:8805" ph="(dialog, which) → {" />
-                <marker date="1520094529082" expanded="false" signature="9150:9173" ph="}" />
-                <marker date="1520094529082" expanded="false" signature="9303:9474" ph="(dialog, which) → { " />
-                <marker date="1520094529082" expanded="false" signature="9492:9532" ph=" }" />
+                <element signature="e#3028#3393#0" expanded="true" />
+                <element signature="e#3392#3393#0" expanded="true" />
+                <element signature="e#3581#3612#0" expanded="true" />
+                <element signature="e#3614#3646#0" expanded="true" />
+                <element signature="e#4517#4820#0" expanded="true" />
+                <element signature="e#4819#4820#0" expanded="true" />
+                <element signature="e#4860#5070#0" expanded="true" />
+                <element signature="e#5069#5070#0" expanded="true" />
+                <marker date="1520094891012" expanded="false" signature="7794:7927" ph="(firebaseAuth) → {" />
+                <marker date="1520094891012" expanded="false" signature="8256:8267" ph="}" />
+                <marker date="1520094891012" expanded="false" signature="8382:8515" ph="(task) → {" />
+                <marker date="1520094891012" expanded="false" signature="8663:8686" ph="}" />
+                <marker date="1520094891012" expanded="false" signature="9039:9185" ph="(dialog, which) → {" />
+                <marker date="1520094891012" expanded="false" signature="9530:9553" ph="}" />
+                <marker date="1520094891012" expanded="false" signature="9683:9854" ph="(dialog, which) → { " />
+                <marker date="1520094891012" expanded="false" signature="9872:9912" ph=" }" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="true">
+      <file leaf-file-name="strings.xml" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="455">
-              <caret line="49" column="23" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+            <state relative-caret-position="515">
+              <caret line="53" column="19" lean-forward="true" selection-start-line="53" selection-start-column="19" selection-end-line="53" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -1920,6 +1919,20 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidSourceTypeNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Project_Elo" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="app" />
+              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="java" />
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidSourceTypeNode" />
             </PATH_ELEMENT>
@@ -2070,7 +2083,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094855166" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094998996" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2118,7 +2131,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094855166" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094998997" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2301,7 +2314,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094855169" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1520094998999" />
       </method>
     </configuration>
     <list size="1">
@@ -2372,11 +2385,19 @@
       <option name="project" value="LOCAL" />
       <updated>1520094628137</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Add Forgot_password,new_review">
+      <created>1520094863321</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1520094863321</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="42" y="22" width="1398" height="878" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -2395,7 +2416,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18685377" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18685377" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
@@ -2889,33 +2910,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/group/hashtag/projectelo/Activities/HomeActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="286">
-          <caret line="163" column="0" lean-forward="false" selection-start-line="163" selection-start-column="0" selection-end-line="163" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#7870#7871#0" expanded="false" />
-            <marker date="1520094529082" expanded="true" signature="5938:5967" ph="{...}" />
-            <marker date="1520094529082" expanded="true" signature="6039:6525" ph="{...}" />
-            <marker date="1520094529082" expanded="true" signature="6049:6245" ph="//..." />
-            <marker date="1520094529082" expanded="true" signature="6531:6574" ph="@{...}" />
-            <marker date="1520094529082" expanded="true" signature="6531:6588" ph="@{...}" />
-            <marker date="1520094529082" expanded="true" signature="6648:7362" ph="{...}" />
-            <marker date="1520094529082" expanded="false" signature="7414:7547" ph="(firebaseAuth) → {" />
-            <marker date="1520094529082" expanded="true" signature="7659:7744" ph="//..." />
-            <marker date="1520094529082" expanded="true" signature="7917:8314" ph="{...}" />
-            <marker date="1520094529082" expanded="false" signature="8002:8135" ph="(task) → {" />
-            <marker date="1520094529082" expanded="false" signature="8283:8306" ph="}" />
-            <marker date="1520094529082" expanded="true" signature="8347:9637" ph="{...}" />
-            <marker date="1520094529082" expanded="false" signature="8659:8805" ph="(dialog, which) → {" />
-            <marker date="1520094529082" expanded="false" signature="9150:9173" ph="}" />
-            <marker date="1520094529082" expanded="false" signature="9303:9474" ph="(dialog, which) → { " />
-            <marker date="1520094529082" expanded="false" signature="9492:9532" ph=" }" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/menu/post_review_menu.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
@@ -2972,9 +2966,35 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="455">
-          <caret line="49" column="23" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="115" selection-end-column="0" />
+        <state relative-caret-position="515">
+          <caret line="53" column="19" lean-forward="true" selection-start-line="53" selection-start-column="19" selection-end-line="53" selection-end-column="19" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/group/hashtag/projectelo/Activities/HomeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1782">
+          <caret line="171" column="0" lean-forward="false" selection-start-line="171" selection-start-column="0" selection-end-line="171" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3028#3393#0" expanded="true" />
+            <element signature="e#3392#3393#0" expanded="true" />
+            <element signature="e#3581#3612#0" expanded="true" />
+            <element signature="e#3614#3646#0" expanded="true" />
+            <element signature="e#4517#4820#0" expanded="true" />
+            <element signature="e#4819#4820#0" expanded="true" />
+            <element signature="e#4860#5070#0" expanded="true" />
+            <element signature="e#5069#5070#0" expanded="true" />
+            <marker date="1520094891012" expanded="false" signature="7794:7927" ph="(firebaseAuth) → {" />
+            <marker date="1520094891012" expanded="false" signature="8256:8267" ph="}" />
+            <marker date="1520094891012" expanded="false" signature="8382:8515" ph="(task) → {" />
+            <marker date="1520094891012" expanded="false" signature="8663:8686" ph="}" />
+            <marker date="1520094891012" expanded="false" signature="9039:9185" ph="(dialog, which) → {" />
+            <marker date="1520094891012" expanded="false" signature="9530:9553" ph="}" />
+            <marker date="1520094891012" expanded="false" signature="9683:9854" ph="(dialog, which) → { " />
+            <marker date="1520094891012" expanded="false" signature="9872:9912" ph=" }" />
+          </folding>
         </state>
       </provider>
     </entry>
