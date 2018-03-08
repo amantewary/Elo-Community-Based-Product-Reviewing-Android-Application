@@ -21,14 +21,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -46,7 +44,6 @@ public class HomeActivity extends AppCompatActivity
     ArrayAdapter<String> arrayAdapter;
     private FirebaseAuth auth;
     GoogleSignInClient mGoogleSignInClient;
-    Button readmore;
     MaterialSearchView categories;
     private SwipeRefreshLayout mSwipeRefreshLayout;
 
@@ -55,11 +52,11 @@ public class HomeActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homescreen);
 
+        LinearLayout linearLayout = findViewById(R.id.linear_layout_featured);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_reviews);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         categories = findViewById(R.id.search_catogories);
-        readmore = findViewById(R.id.read_more);
         title = findViewById(R.id.title_toolbar);
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
@@ -84,6 +81,13 @@ public class HomeActivity extends AppCompatActivity
 //                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //                        .setAction("Action", null).show();
                 startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
+            }
+        });
+
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(), FeaturedArticle.class));
             }
         });
 
@@ -118,12 +122,7 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-        readmore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), FeaturedArticle.class));
-            }
-        });
+
         categories.setSuggestions(getResources().getStringArray(R.array.device_categories));
 
         categories.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
@@ -149,9 +148,13 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else {
+        } else if (categories.isSearchOpen()) {
+            categories.closeSearch();
+        }
+        else {
             super.onBackPressed();
         }
+
     }
 
     @Override
@@ -235,9 +238,9 @@ public class HomeActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                            auth.signOut();
-                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                            finish();
+                        auth.signOut();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        finish();
 
                     }
                 });
@@ -267,5 +270,7 @@ public class HomeActivity extends AppCompatActivity
             }
         }, 2000);
     }
+
+
 }
 
