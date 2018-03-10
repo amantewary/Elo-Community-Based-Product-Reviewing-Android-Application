@@ -8,15 +8,70 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_elo_rounded_round"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_elo_rounded_round"
+        android:roundIcon="@mipmap/ic_launcher_elo_rounded"
         android:supportsRtl="true"
         android:theme="@style/MyMaterialTheme">
         <activity
             android:name=".Activities.HomeActivity"
             android:theme="@style/MyMaterialTheme">
 
+
         </activity>
 
+        <activity android:name=".Activities.Splashscreen">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Settings"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+
+        <activity android:name=".Activities.ForgotPassword"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+        <activity
+            android:name=".Activities.UserProfile"
+            android:label="@string/app_name"
+            android:parentActivityName=".Activities.HomeActivity"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+
+        <activity android:name=".Activities.FeaturedArticle"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+
+        <activity
+            android:name=".Activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+        <activity android:name=".Activities.OpenSourceActivity"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+        <activity android:name=".Activities.Register_Activity"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+        <activity android:name=".Activities.NewReviewActivity"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
+        <activity android:name=".Activities.ProductReview"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
     </application>
 
 </manifest>
