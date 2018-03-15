@@ -15,6 +15,7 @@
             android:layout_width="50dp"
             android:layout_margin="@dimen/activity_horizontal_margin"
             android:layout_height="50dp"
+            android:id="@+id/new_review_image"
             android:src="@mipmap/flat_white" />
 
         <TextView

@@ -56,13 +56,29 @@ public class NewReviewActivity extends AppCompatActivity {
 
 
         category.setAdapter(categories);
-
+        device.setAdapter(categories);
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {// Do nothing
                 } else {
                     Log.e(NewReviewActivity.class.getCanonicalName(), "Position: "+ i);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        device.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if( i == 0){
+                    // Do nothing
+                } else {
+                    Log.e(NewReviewActivity.class.getCanonicalName(), "Position" + i);
                 }
             }
 

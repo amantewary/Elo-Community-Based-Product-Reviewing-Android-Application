@@ -47,10 +47,12 @@
                         <ImageView
                             android:layout_width="50dp"
                             android:layout_margin="@dimen/activity_horizontal_margin"
+                            android:id="@+id/featured_imageView_image"
                             android:layout_height="50dp"
                             android:src="@drawable/profile" />
 
                         <TextView
+                            android:id="@+id/featured_textView_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/activity_horizontal_margin"
