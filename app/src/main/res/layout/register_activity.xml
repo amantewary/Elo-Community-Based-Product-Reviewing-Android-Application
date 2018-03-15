@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             style="@style/Base.TextAppearance.AppCompat.Large"
-            android:text="SIGN IN WITH"
+            android:text="REGISTER WITH"
             android:textColor="@color/colorPrimary" />
 
         <ImageView
