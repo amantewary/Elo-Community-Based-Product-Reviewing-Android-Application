@@ -13,22 +13,20 @@ public class ReviewHandler {
     public String ReviewTitle;
     public String UserId;
     public String Device;
-    public String Dislike;
-
+    public String LikeNumber;
 
 
     public ReviewHandler() {
     }
 
-    private ReviewHandler(String Comment, String Device_Category, String Like, String RevID, String ReviewTitle, String UserId, String Device, String Dislike) {
-        this.Comment = Comment;
-        this.Device_Category = Device_Category;
-        this.Like = Like;
-        this.RevID = RevID;
-        this.ReviewTitle = ReviewTitle;
-        this.UserId = UserId;
-        this.Device = Device;
-        this.Dislike = Dislike;
+    public ReviewHandler(String comment, String device_Category, String like, String revID, String reviewTitle, String userId, String device, String likeNumber) {
+        Comment = comment;
+        Device_Category = device_Category;
+        Like = like;
+        RevID = revID;
+        ReviewTitle = reviewTitle;
+        UserId = userId;
+        Device = device;
+        LikeNumber = likeNumber;
     }
-
 }

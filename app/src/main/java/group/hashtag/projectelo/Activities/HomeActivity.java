@@ -44,6 +44,7 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import group.hashtag.projectelo.Handlers.FeaturedContentHandler;
 import group.hashtag.projectelo.Handlers.ReviewHandler;
@@ -87,7 +88,7 @@ public class HomeActivity extends AppCompatActivity
 
         categories = findViewById(R.id.search_catogories);
         title = findViewById(R.id.title_toolbar);
-        Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
+        final Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
         featuredTitle = findViewById(R.id.featured_textView_title);
         imageViewTitle = findViewById(R.id.featured_imageView_image);
         reviewHandlerList = new ArrayList<ReviewHandler>();
@@ -182,9 +183,9 @@ public class HomeActivity extends AppCompatActivity
                 reviewHandlerList.clear();
                 for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
 
-                    ReviewHandler reviewHandler = dsnp.getValue(ReviewHandler.class);
-
-//                    Log.e("Here", "" + dsnp);
+                    Map<String, Object> map = (Map<String, Object>) dsnp.getValue();
+                    reviewHandler = new ReviewHandler(map.get("Comment").toString(),map.get("Device_Category").toString(),map.get("LikeNumber").toString(),map.get("RevID").toString(),map.get("ReviewTitle").toString(),map.get("UserId").toString(),map.get("Device").toString(),map.get("Comment").toString());
+//                    Log.e("Here", "" + map);
                     reviewHandlerList.add(reviewHandler);
                 }
                 arrayAdapter.notifyDataSetChanged();
