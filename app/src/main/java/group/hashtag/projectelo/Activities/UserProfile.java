@@ -1,5 +1,6 @@
 package group.hashtag.projectelo.Activities;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,6 +36,8 @@ public class UserProfile extends AppCompatActivity {
     private ImageButton messages;
     private ImageButton reviews;
 
+    private LinearLayout btnWishlist;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +54,8 @@ public class UserProfile extends AppCompatActivity {
 
         title = findViewById(R.id.title_toolbar);
         usernameText = findViewById(R.id.usernameTextView);
+        btnWishlist = findViewById(R.id.btn_wish);
+
         mDatabase.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -66,6 +72,13 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        btnWishlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent wishlist = new Intent(UserProfile.this, Wishlist.class);
+                startActivity(wishlist);
+            }
+        });
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
