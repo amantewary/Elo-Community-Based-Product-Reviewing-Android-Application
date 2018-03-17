@@ -14,7 +14,11 @@ import group.hashtag.projectelo.R;
 
 public class ProductReview extends AppCompatActivity {
     TextView title;
+    TextView content;
+    TextView reviewtitle;
 
+    String stringTitle;
+    String stringContent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +40,18 @@ public class ProductReview extends AppCompatActivity {
             }
         });
 
+
+        reviewtitle = findViewById(R.id.textView5);
+        content = findViewById(R.id.textView4);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            stringTitle = bundle.getString("reviewTitle");
+            stringContent = bundle.getString("reviewContent");
+        }
+
+        reviewtitle.setText(stringTitle);
+        content.setText(stringContent);
 
     }
     public void onIconOnClick(View view){

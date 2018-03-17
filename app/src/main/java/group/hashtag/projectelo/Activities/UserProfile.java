@@ -21,7 +21,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.Handlers.UserHandler;
 import group.hashtag.projectelo.R;
 
@@ -38,22 +40,25 @@ public class UserProfile extends AppCompatActivity {
 
     private ImageButton messages;
     private ImageButton reviews;
-
     private LinearLayout btnWishlist;
-
+    private CircleImageView displayImageView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //Todo: May have to figure out a better way of storing the name coz it is updating with a long delay
 
-        messages = findViewById(R.id.imageButton);
-        reviews= findViewById(R.id.imageButton2);
 
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         setContentView(R.layout.user_profile);
+
         mDatabase2 = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
+
+        messages = findViewById(R.id.imageButton);
+        reviews= findViewById(R.id.imageButton2);
+        displayImageView = (CircleImageView) findViewById(R.id.userDisplayPic);
+
 
         title = findViewById(R.id.title_toolbar);
         usernameText = findViewById(R.id.usernameTextView);
@@ -66,7 +71,8 @@ public class UserProfile extends AppCompatActivity {
 
                 UserHandler user = dataSnapshot.getValue(UserHandler.class);
                 usernameText.setText(user.getName());
-                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.getName() + ", email " + user.getEmail());
+                loadDisplayPics(user.getDisplayPicss());
+                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.getDisplayPicss() + ", email " + user.getEmail());
             }
 
             @Override
@@ -123,5 +129,10 @@ public class UserProfile extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
+    }
+
+    public void loadDisplayPics(String url){
+        Picasso.get().load(url).fit().error(R.drawable.cover).placeholder(R.drawable.male).into(displayImageView);
+
     }
 }
