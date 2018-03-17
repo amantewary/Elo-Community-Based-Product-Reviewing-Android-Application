@@ -51,11 +51,10 @@ public class Wishlist extends AppCompatActivity {
         wlListView = findViewById(R.id.wlListView);
         wishlist = new ArrayList<>();
         addDevice = findViewById(R.id.wlfab);
+
         toolbar = findViewById(R.id.wlToolbar);
         title = findViewById(R.id.title_toolbar);
-
         title.setTypeface(ReemKufi_Regular);
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp));

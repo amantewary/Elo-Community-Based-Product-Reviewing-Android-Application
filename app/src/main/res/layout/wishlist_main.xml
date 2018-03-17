@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context="group.hashtag.projectelo.Activities.Wishlist">
 
-    <include layout="@layout/toolbar" />
     <include layout="@layout/wishlist_layout" />
 
     <android.support.design.widget.FloatingActionButton

@@ -30,7 +30,9 @@ import group.hashtag.projectelo.R;
  */
 
 public class UserProfile extends AppCompatActivity {
-    TextView title, usernameText;
+    TextView title;
+    TextView usernameText;
+    TextView wishlistCounter;
     private DatabaseReference mDatabase;
 
     private ImageButton messages;
@@ -54,6 +56,7 @@ public class UserProfile extends AppCompatActivity {
 
         title = findViewById(R.id.title_toolbar);
         usernameText = findViewById(R.id.usernameTextView);
+        wishlistCounter = findViewById(R.id.wishlistCounter);
         btnWishlist = findViewById(R.id.btn_wish);
 
         mDatabase.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
