@@ -40,12 +40,13 @@
             app:layout_constraintTop_toBottomOf="@+id/wlItemName" />
 
         <ImageButton
-            android:id="@+id/imageButton3"
+            android:id="@+id/wlItemDelete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
+            android:onClick="deleteWishlistDevice"
             android:background="@color/cardview_light_background"
             android:tint="@color/colorAccent"
             app:layout_constraintBottom_toBottomOf="parent"
