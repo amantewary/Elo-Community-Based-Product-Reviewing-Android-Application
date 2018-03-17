@@ -34,6 +34,7 @@ public class UserProfile extends AppCompatActivity {
     TextView usernameText;
     TextView wishlistCounter;
     private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase2;
 
     private ImageButton messages;
     private ImageButton reviews;
@@ -52,7 +53,7 @@ public class UserProfile extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         setContentView(R.layout.user_profile);
-
+        mDatabase2 = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
 
         title = findViewById(R.id.title_toolbar);
         usernameText = findViewById(R.id.usernameTextView);
@@ -72,6 +73,19 @@ public class UserProfile extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.e(UserProfile.class.getCanonicalName(), "Failed to read value.", error.toException());
+            }
+        });
+
+        mDatabase2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long wlCounter = dataSnapshot.getChildrenCount();
+                wishlistCounter.setText(Long.toString(wlCounter));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
             }
         });
 
