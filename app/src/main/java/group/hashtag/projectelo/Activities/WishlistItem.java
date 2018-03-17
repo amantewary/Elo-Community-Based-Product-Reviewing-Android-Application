@@ -5,29 +5,29 @@ package group.hashtag.projectelo.Activities;
  */
 
 public class WishlistItem {
-    private String DeviceId;
-    private String DeviceName;
-    private String DeviceCategory;
+    private String deviceId;
+    private String deviceName;
+    private String deviceCategory;
 
     public WishlistItem() {
 
     }
 
     public WishlistItem(String DeviceId, String DeviceName, String DeviceCategory) {
-        this.DeviceId = DeviceId;
-        this.DeviceName = DeviceName;
-        this.DeviceCategory = DeviceCategory;
+        this.deviceId = DeviceId;
+        this.deviceName = DeviceName;
+        this.deviceCategory = DeviceCategory;
     }
 
     public String getDeviceId() {
-        return DeviceId;
+        return deviceId;
     }
 
     public String getDeviceName() {
-        return DeviceName;
+        return deviceName;
     }
 
     public String getDeviceCategory() {
-        return DeviceCategory;
+        return deviceCategory;
     }
 }

@@ -1,7 +1,6 @@
 package group.hashtag.projectelo.Activities;
 
 import android.graphics.Typeface;
-import android.os.UserHandle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import group.hashtag.projectelo.Handlers.UserHandler;
+
 import group.hashtag.projectelo.R;
 
 /**
@@ -48,22 +47,19 @@ public class WishlistAddItem extends AppCompatActivity {
     List<Map<String, Object>> listMapCategories;
     ArrayAdapter<String> categories;
 
-    DatabaseReference userRef;
-    DatabaseReference categoriesRef;
-    DatabaseReference wishlistRef;
+    DatabaseReference wlCategoriesRef;
+    DatabaseReference wlRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
-
-        userRef = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         setContentView(R.layout.wishlist_add_item);
 
-        categoriesRef = FirebaseDatabase.getInstance().getReference("Device_Category");
-        wishlistRef = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
+        wlCategoriesRef = FirebaseDatabase.getInstance().getReference("Device_Category");
+        wlRef = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
@@ -76,7 +72,7 @@ public class WishlistAddItem extends AppCompatActivity {
         listCategories = new ArrayList<>();
         listMapCategories = new ArrayList<>();
 
-        fetchCategories(categoriesRef);
+        fetchCategories(wlCategoriesRef);
         title.setTypeface(ReemKufi_Regular);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -148,9 +144,9 @@ public class WishlistAddItem extends AppCompatActivity {
         String categoryName = wlCatSpinner.getSelectedItem().toString();
 
         if (!TextUtils.isEmpty(deviceName)){
-            String id = wishlistRef.push().getKey();
+            String id = wlRef.push().getKey();
             WishlistItem item = new WishlistItem(id, deviceName, categoryName);
-            wishlistRef.child(id).setValue(item);
+            wlRef.child(id).setValue(item);
             Toast.makeText(this,"Device Added",Toast.LENGTH_SHORT).show();
             finish();
         }else{
