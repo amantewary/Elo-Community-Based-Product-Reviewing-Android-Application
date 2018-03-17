@@ -1,11 +1,13 @@
 package group.hashtag.projectelo.Activities;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,26 +17,37 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import group.hashtag.projectelo.Handlers.FeaturedContentHandler;
+import group.hashtag.projectelo.Handlers.ReviewHandler;
 import group.hashtag.projectelo.R;
 import group.hashtag.projectelo.SettingsActivity;
 
@@ -43,26 +56,42 @@ public class HomeActivity extends AppCompatActivity
 
     ListView listView;
     TextView title;
-    ArrayAdapter<String> arrayAdapter;
+    CustomAdapter arrayAdapter;
     private FirebaseAuth auth;
     GoogleSignInClient mGoogleSignInClient;
-    Button readmore;
     MaterialSearchView categories;
     private SwipeRefreshLayout mSwipeRefreshLayout;
+    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase2;
+    ReviewHandler reviewHandler;
 
+    List<ReviewHandler> reviewHandlerList;
+
+    TextView featuredTitle;
+    FeaturedContentHandler featuredContentHandler;
+    ImageView imageViewTitle;
+
+    String FeaturedTitleString;
+    String FeaturedContentString;
+    String FeaturedWriter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homescreen);
 
+        LinearLayout linearLayout = findViewById(R.id.linear_layout_featured);
         mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_reviews);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
-        categories = findViewById(R.id.search_catogories);
-        readmore = findViewById(R.id.read_more);
-        title = findViewById(R.id.title_toolbar);
-        Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
+        reviewHandler = new ReviewHandler();
+        featuredContentHandler = new FeaturedContentHandler();
 
+        categories = findViewById(R.id.search_catogories);
+        title = findViewById(R.id.title_toolbar);
+        final Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
+        featuredTitle = findViewById(R.id.featured_textView_title);
+        imageViewTitle = findViewById(R.id.featured_imageView_image);
+        reviewHandlerList = new ArrayList<ReviewHandler>();
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
@@ -74,6 +103,11 @@ public class HomeActivity extends AppCompatActivity
 
 
         auth = FirebaseAuth.getInstance();
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mDatabase = database.getReference("Review");
+        mDatabase2 = database.getReference("Feature_article");
+        fetchFeaturedData(featuredTitle, imageViewTitle, mDatabase2);
+
 //        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 //        account = GoogleSignIn.getLastSignedInAccount(this);
 
@@ -81,9 +115,20 @@ public class HomeActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
                 startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
+            }
+        });
+
+        linearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),FeaturedArticle.class);
+                Bundle b = new Bundle();
+                b.putString("FeaturedTitle", FeaturedTitleString);
+                b.putString("FeaturedContent", FeaturedContentString);
+                b.putString("FeaturedWriter", FeaturedWriter);
+                intent.putExtras(b);
+                startActivity(intent);
             }
         });
 
@@ -96,34 +141,23 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_view_items, R.id.text_headline);
-        arrayAdapter.add("Review Title");
-        arrayAdapter.add("Review Title");
-        arrayAdapter.add("Review Title");
-        arrayAdapter.add("Review Title");
-        arrayAdapter.add("Review Title");
-        arrayAdapter.add("Review Title");
-        arrayAdapter.add("Review Title");
-        arrayAdapter.add("Review Title");
-        arrayAdapter.add("Review Title");
-        arrayAdapter.add("Review Title");
+        arrayAdapter = new CustomAdapter(this, reviewHandlerList);
+
         listView.canScrollVertically(0);
 
         listView.setAdapter(arrayAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(view.getContext(), ProductReview.class);
-                startActivity(intent);
-            }
-        });
 
-        readmore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), FeaturedArticle.class));
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+////                Intent intent = new Intent(view.getContext(), ProductReview.class);
+////
+////                startActivity(intent);
+//
+//            }
+//        });
+
+
         categories.setSuggestions(getResources().getStringArray(R.array.device_categories));
 
         categories.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
@@ -142,6 +176,28 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                reviewHandlerList.clear();
+                for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
+
+                    Map<String, Object> map = (Map<String, Object>) dsnp.getValue();
+                    reviewHandler = new ReviewHandler(map.get("Comment").toString(),map.get("Device_Category").toString(),map.get("LikeNumber").toString(),map.get("RevID").toString(),map.get("ReviewTitle").toString(),map.get("UserId").toString(),map.get("Device").toString(),map.get("Comment").toString());
+//                    Log.e("Here", "" + map);
+                    reviewHandlerList.add(reviewHandler);
+                }
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
+            }
+        });
+
+
     }
 
     @Override
@@ -149,9 +205,12 @@ public class HomeActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (categories.isSearchOpen()) {
+            categories.closeSearch();
         } else {
             super.onBackPressed();
         }
+
     }
 
     @Override
@@ -235,9 +294,9 @@ public class HomeActivity extends AppCompatActivity
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
 
-                            auth.signOut();
-                            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
-                            finish();
+                        auth.signOut();
+                        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+                        finish();
 
                     }
                 });
@@ -266,6 +325,61 @@ public class HomeActivity extends AppCompatActivity
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         }, 2000);
+    }
+
+    public class CustomAdapter extends ArrayAdapter<ReviewHandler> {
+
+        List<ReviewHandler> reviewHandlerList;
+
+        public CustomAdapter(@NonNull Context context, List<ReviewHandler> reviewHandlerList) {
+            super(context, 0, reviewHandlerList);
+            this.reviewHandlerList = reviewHandlerList;
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+            View reviewtitles = convertView;
+            if (reviewtitles == null) {
+                reviewtitles = LayoutInflater.from(HomeActivity.this).inflate(R.layout.list_view_items, parent, false);
+            }
+            final ReviewHandler reviewHandler = reviewHandlerList.get(position);
+            reviewtitles.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(),ProductReview.class);
+                    Bundle b = new Bundle();
+                    b.putString("reviewTitle", reviewHandler.ReviewTitle);
+                    b.putString("reviewContent", reviewHandler.Comment);
+                    intent.putExtras(b);
+                    startActivity(intent);
+
+                }
+            });
+
+            TextView reviewTitle = reviewtitles.findViewById(R.id.text_headline);
+            reviewTitle.setText(reviewHandler.ReviewTitle);
+            return reviewtitles;
+        }
+    }
+
+    public void fetchFeaturedData(final TextView textTitle, ImageView imageFeaturedPic, DatabaseReference mDatabase2){
+        mDatabase2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                FeaturedContentHandler featuredContentHandler = dataSnapshot.getValue(FeaturedContentHandler.class);
+                FeaturedTitleString = featuredContentHandler.getArticle_titless();
+                FeaturedContentString = featuredContentHandler.getArticle_contentss();
+                FeaturedWriter = featuredContentHandler.getExternal_Userss();
+                textTitle.setText(featuredContentHandler.getArticle_titless());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
+            }
+        });
+
     }
 }
 

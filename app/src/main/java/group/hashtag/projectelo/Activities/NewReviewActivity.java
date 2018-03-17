@@ -15,6 +15,17 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import group.hashtag.projectelo.R;
 
 /**
@@ -25,6 +36,17 @@ public class NewReviewActivity extends AppCompatActivity {
     Toolbar toolbar;
     Spinner category, device;
     TextView title;
+    private DatabaseReference mDatabase2;
+    private DatabaseReference mDatabase1;
+
+    Map<String, Object> mapCategories;
+    Map<String, Object> mapDevice;
+    List<String> listCategories;
+    List<String> listDevices;
+    List<Map<String, Object>> listMapCategories;
+    List<Map<String, Object>> listMapDevices;
+    ArrayAdapter<String> categories;
+    ArrayAdapter<String> devices;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,9 +57,20 @@ public class NewReviewActivity extends AppCompatActivity {
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
 
+        listCategories = new ArrayList<>();
+        listMapCategories = new ArrayList<>();
+
+        listDevices = new ArrayList<>();
+        listMapDevices = new ArrayList<>();
+
+        final FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mDatabase2 = database.getReference("Device_Category");
+        mDatabase1 = database.getReference("Device");
+
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
+        fetchCategories(mDatabase2);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp));
@@ -52,17 +85,42 @@ public class NewReviewActivity extends AppCompatActivity {
         category = findViewById(R.id.spinner_device_category);
         device = findViewById(R.id.spinner_product_name);
 
-        ArrayAdapter<String> categories = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.device_categories));
+//        listDevices = new ArrayList<String>(mapDevice.keySet());
+
+        categories = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, listCategories);
+
+        devices = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, listCategories);
 
 
         category.setAdapter(categories);
-
+        device.setAdapter(categories);
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {// Do nothing
                 } else {
-                    Log.e(NewReviewActivity.class.getCanonicalName(), "Position: "+ i);
+                    String categoryId = searchDeviceId(adapterView.getItemAtPosition(i).toString());
+                    Log.e("Here", categoryId);
+//                    String categoryId = mapCategories.containsKey(adapterView.getItemIdAtPosition(i));
+                    Query query = mDatabase1.orderByChild("Dev_C_Id").equalTo(categoryId);
+                    fetchDevice(query);
+
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        device.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    // Do nothing
+                } else {
+                    Log.e(NewReviewActivity.class.getCanonicalName(), "Position" + i);
                 }
             }
 
@@ -94,5 +152,59 @@ public class NewReviewActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void fetchCategories(DatabaseReference mDatabase2) {
+        mDatabase2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                listCategories.add(0, "Select Category");
+                for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
+                    mapCategories = (Map<String, Object>) dsnp.getValue();
+                    String value = mapCategories.get("CatName").toString();
+                    listCategories.add(value);
+                    listMapCategories.add(mapCategories);
+                }
+                Log.e("Here", "" + listMapCategories);
+                categories.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
+            }
+        });
+    }
+
+    public void fetchDevice(Query query) {
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
+                    mapDevice = (Map<String, Object>) dsnp.getValue();
+                    Log.e("Here", "" + mapDevice);
+                    String value = mapCategories.get("CatName").toString();
+                    listDevices.add(value);
+                    listMapCategories.add(mapCategories);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
+            }
+        });
+    }
+
+    public String searchDeviceId(String categoryName) {
+        String categoryId = "";
+        for (Map<String, Object> map : listMapCategories) {
+            if (categoryName.equals(map.get("CatName"))) {
+                categoryId = map.get("Dev_C_Id").toString();
+                break;
+            }
+
+        }
+        return categoryId;
     }
 }
