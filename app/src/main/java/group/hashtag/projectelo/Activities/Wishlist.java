@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -34,13 +35,12 @@ public class Wishlist extends AppCompatActivity {
 
     Toolbar toolbar;
     FloatingActionButton addDevice;
-    ImageButton deleteDevice;
     TextView title;
     ListView wlListView;
     List<WishlistItem> wishlist;
 
     DatabaseReference wlItemRef;
-    DatabaseReference wlItemDelRef;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,14 +48,11 @@ public class Wishlist extends AppCompatActivity {
         setContentView(R.layout.wishlist_main);
 
         wlItemRef = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
-        wlItemDelRef = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
-
 
         wlListView = findViewById(R.id.wlListView);
         wishlist = new ArrayList<>();
         addDevice = findViewById(R.id.wlfab);
-        deleteDevice = (ImageButton) findViewById(R.id.wlItemDelete);
 
         toolbar = findViewById(R.id.wlToolbar);
         title = findViewById(R.id.title_toolbar);
@@ -77,13 +74,6 @@ public class Wishlist extends AppCompatActivity {
                 startActivity(addItem);
             }
         });
-        //TODO: This is giving NullPointerException. However, XML on click works perfectly.
-//        deleteDevice.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                deleteWishlistDevice();
-//            }
-//        });
     }
 
     @Override
@@ -107,9 +97,5 @@ public class Wishlist extends AppCompatActivity {
             }
         });
     }
-    //This is function is getting called by ImageButton by onClick() method.
-    public void deleteWishlistDevice(View view){
-        wlItemDelRef.removeValue();
-        Toast.makeText(this,"Device Deleted",Toast.LENGTH_SHORT).show();
-    }
+
 }
