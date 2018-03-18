@@ -7,7 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import android.widget.ImageButton;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -21,6 +28,7 @@ public class WishlistAdapter extends ArrayAdapter<WishlistItem>{
 
     private Activity context;
     private List<WishlistItem> wishlist;
+    DatabaseReference wlItemRef;
 
 
     public WishlistAdapter(Activity context, List<WishlistItem> wishlist) {
@@ -38,13 +46,25 @@ public class WishlistAdapter extends ArrayAdapter<WishlistItem>{
 
         TextView wlDeviceName = wishlistItem.findViewById(R.id.wlItemName);
         TextView wlCategoryName = wishlistItem.findViewById(R.id.wlItemCat);
+        ImageButton btnDelDevice = wishlistItem.findViewById(R.id.wlItemDelete);
 
-        WishlistItem wlItem = wishlist.get(position);
-
+        final WishlistItem wlItem = wishlist.get(position);
         wlDeviceName.setText(wlItem.getDeviceName());
         wlCategoryName.setText(wlItem.getDeviceCategory());
 
-        return wishlistItem;
+        btnDelDevice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String id = wlItem.getDeviceId();
+                deleteWishlistDevice(id);
+            }
+        });
 
+        return wishlistItem;
+    }
+    public void deleteWishlistDevice(String id){
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        wlItemRef = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
+        wlItemRef.child(id).removeValue();
     }
 }
