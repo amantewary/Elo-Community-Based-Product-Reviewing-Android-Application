@@ -104,7 +104,7 @@ public class HomeActivity extends AppCompatActivity
 
         auth = FirebaseAuth.getInstance();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        mDatabase = database.getReference("Review");
+        mDatabase = database.getReference("newReview");
         mDatabase2 = database.getReference("Feature_article");
         fetchFeaturedData(featuredTitle, imageViewTitle, mDatabase2);
 
@@ -184,7 +184,7 @@ public class HomeActivity extends AppCompatActivity
                 for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
 
                     Map<String, Object> map = (Map<String, Object>) dsnp.getValue();
-                    reviewHandler = new ReviewHandler(map.get("Comment").toString(),map.get("Device_Category").toString(),map.get("LikeNumber").toString(),map.get("RevID").toString(),map.get("ReviewTitle").toString(),map.get("UserId").toString(),map.get("Device").toString(),map.get("Comment").toString());
+                    reviewHandler = new ReviewHandler(map.get("category").toString(),map.get("device").toString(),map.get("reviewDescription").toString(),map.get("reviewId").toString(),map.get("reviewTitle").toString(),map.get("userId").toString());
 //                    Log.e("Here", "" + map);
                     reviewHandlerList.add(reviewHandler);
                 }
@@ -349,8 +349,8 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(),ProductReview.class);
                     Bundle b = new Bundle();
-                    b.putString("reviewTitle", reviewHandler.ReviewTitle);
-                    b.putString("reviewContent", reviewHandler.Comment);
+                    b.putString("reviewTitle", reviewHandler.reviewTitle);
+                    b.putString("reviewContent", reviewHandler.reviewDescription);
                     intent.putExtras(b);
                     startActivity(intent);
 
@@ -358,7 +358,7 @@ public class HomeActivity extends AppCompatActivity
             });
 
             TextView reviewTitle = reviewtitles.findViewById(R.id.text_headline);
-            reviewTitle.setText(reviewHandler.ReviewTitle);
+            reviewTitle.setText(reviewHandler.reviewTitle);
             return reviewtitles;
         }
     }
