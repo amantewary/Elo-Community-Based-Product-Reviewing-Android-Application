@@ -6,27 +6,22 @@ package group.hashtag.projectelo.Handlers;
 
 public class ReviewHandler {
 
-    public String Comment;
-    public String Device_Category;
-    public String Like;
-    public String RevID;
-    public String ReviewTitle;
-    public String UserId;
-    public String Device;
-    public String LikeNumber;
-
+   public String category;
+   public String device;
+   public String reviewDescription;
+   public String reviewId;
+   public String reviewTitle;
+   public String userId;
 
     public ReviewHandler() {
     }
 
-    public ReviewHandler(String comment, String device_Category, String like, String revID, String reviewTitle, String userId, String device, String likeNumber) {
-        Comment = comment;
-        Device_Category = device_Category;
-        Like = like;
-        RevID = revID;
-        ReviewTitle = reviewTitle;
-        UserId = userId;
-        Device = device;
-        LikeNumber = likeNumber;
+    public ReviewHandler(String category, String device, String reviewDescription, String reviewId, String reviewTitle, String userId) {
+        this.category = category;
+        this.device = device;
+        this.reviewDescription = reviewDescription;
+        this.reviewId = reviewId;
+        this.reviewTitle = reviewTitle;
+        this.userId = userId;
     }
 }
