@@ -106,6 +106,82 @@
                             android:textStyle="italic" />
 
                     </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:layout_margin="@dimen/activity_horizontal_margin"
+                        android:background="@color/colorAccent" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:padding="16dp">
+
+
+                        <TextView
+                            android:id="@+id/description_3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:paddingBottom="5dp"
+                            android:text="MaterialSearchView"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/cardview_desc_3"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/description_3"
+                            android:layout_marginTop="14dp"
+                            android:autoLink="all"
+                            android:text="@string/my_link_3"
+                            android:textColor="#8b8b8b"
+                            android:textStyle="italic" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.1dp"
+                        android:layout_margin="@dimen/activity_horizontal_margin"
+                        android:background="@color/colorAccent" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#ffffff"
+                        android:padding="16dp">
+
+
+                        <TextView
+                            android:id="@+id/description_4"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentTop="true"
+                            android:paddingBottom="5dp"
+                            android:text="Picasso"
+                            android:textColor="@color/colorAccent"
+                            android:textSize="24sp" />
+
+                        <TextView
+                            android:id="@+id/cardview_desc_4"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_below="@+id/description_4"
+                            android:layout_marginTop="14dp"
+                            android:autoLink="all"
+                            android:text="@string/my_link_4"
+                            android:textColor="#8b8b8b"
+                            android:textStyle="italic" />
+
+                    </RelativeLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </ScrollView>
