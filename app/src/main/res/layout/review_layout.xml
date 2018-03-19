@@ -107,15 +107,15 @@
                         style="@style/Base.TextAppearance.AppCompat.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@+id/textView12"
-                        android:layout_alignBottom="@+id/textView12"
+                        android:layout_alignBaseline="@+id/reviewDeviceName"
+                        android:layout_alignBottom="@+id/reviewDeviceName"
                         android:layout_alignParentStart="true"
                         android:layout_marginStart="16dp"
-                        android:text="Product: "
+                        android:text="Category: "
                         android:textSize="16sp" />
 
                     <TextView
-                        android:id="@+id/textView12"
+                        android:id="@+id/reviewDeviceName"
                         style="@style/Base.TextAppearance.AppCompat.Body2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -132,7 +132,7 @@
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:layout_alignEnd="@+id/imageView"
-                        android:layout_alignTop="@+id/textView12"
+                        android:layout_alignTop="@+id/reviewDeviceName"
                         android:layout_marginEnd="12dp"
                         app:sparkbutton_activeImage="@drawable/ic_favorite_black_24dp"
                         app:sparkbutton_iconSize="25dp"

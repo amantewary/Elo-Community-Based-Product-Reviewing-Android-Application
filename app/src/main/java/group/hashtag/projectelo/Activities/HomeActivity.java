@@ -351,6 +351,7 @@ public class HomeActivity extends AppCompatActivity
                     Bundle b = new Bundle();
                     b.putString("reviewTitle", reviewHandler.reviewTitle);
                     b.putString("reviewContent", reviewHandler.reviewDescription);
+                    b.putString("category", reviewHandler.category);
                     intent.putExtras(b);
                     startActivity(intent);
 
