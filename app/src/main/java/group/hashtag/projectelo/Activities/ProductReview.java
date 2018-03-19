@@ -16,9 +16,11 @@ public class ProductReview extends AppCompatActivity {
     TextView title;
     TextView content;
     TextView reviewtitle;
+    TextView reviewDevice;
 
     String stringTitle;
     String stringContent;
+    String stringCategory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +45,18 @@ public class ProductReview extends AppCompatActivity {
 
         reviewtitle = findViewById(R.id.textView5);
         content = findViewById(R.id.textView4);
+        reviewDevice = findViewById(R.id.reviewDeviceName);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             stringTitle = bundle.getString("reviewTitle");
             stringContent = bundle.getString("reviewContent");
+            stringCategory = bundle.getString("category");
         }
 
         reviewtitle.setText(stringTitle);
         content.setText(stringContent);
+        reviewDevice.setText(stringCategory);
 
     }
     public void onIconOnClick(View view){
