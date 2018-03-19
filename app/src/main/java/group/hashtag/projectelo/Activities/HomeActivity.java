@@ -101,6 +101,11 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
+        arrayAdapter = new CustomAdapter(this, reviewHandlerList);
+
+        listView.canScrollVertically(0);
+
+        listView.setAdapter(arrayAdapter);
 
         auth = FirebaseAuth.getInstance();
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -110,6 +115,36 @@ public class HomeActivity extends AppCompatActivity
 
 //        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 //        account = GoogleSignIn.getLastSignedInAccount(this);
+
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                reviewHandlerList.clear();
+                for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
+
+                    Map<String, Object> map = (Map<String, Object>) dsnp.getValue();
+                    reviewHandler = new ReviewHandler(map.get("category").toString(),map.get("device").toString(),map.get("reviewDescription").toString(),map.get("reviewId").toString(),map.get("reviewTitle").toString(),map.get("userId").toString());
+//                    Log.e("Here", "" + map);
+                    reviewHandlerList.add(reviewHandler);
+                }
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
+            }
+        });
+
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+////                Intent intent = new Intent(view.getContext(), ProductReview.class);
+////
+////                startActivity(intent);
+//
+//            }
+//        });
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +166,6 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -140,23 +174,6 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-        arrayAdapter = new CustomAdapter(this, reviewHandlerList);
-
-        listView.canScrollVertically(0);
-
-        listView.setAdapter(arrayAdapter);
-
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////                Intent intent = new Intent(view.getContext(), ProductReview.class);
-////
-////                startActivity(intent);
-//
-//            }
-//        });
-
 
         categories.setSuggestions(getResources().getStringArray(R.array.device_categories));
 
@@ -177,25 +194,6 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                reviewHandlerList.clear();
-                for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
-
-                    Map<String, Object> map = (Map<String, Object>) dsnp.getValue();
-                    reviewHandler = new ReviewHandler(map.get("category").toString(),map.get("device").toString(),map.get("reviewDescription").toString(),map.get("reviewId").toString(),map.get("reviewTitle").toString(),map.get("userId").toString());
-//                    Log.e("Here", "" + map);
-                    reviewHandlerList.add(reviewHandler);
-                }
-                arrayAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("Here", "" + databaseError);
-            }
-        });
 
 
     }
