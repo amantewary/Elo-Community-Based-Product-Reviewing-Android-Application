@@ -6,15 +6,20 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import group.hashtag.projectelo.Handlers.NewReviewHandler;
 import group.hashtag.projectelo.R;
 
 /**
@@ -35,9 +41,12 @@ import group.hashtag.projectelo.R;
 public class NewReviewActivity extends AppCompatActivity {
     Toolbar toolbar;
     Spinner category, device;
+    EditText newReviewTitle;
+    EditText newReviewDescription;
     TextView title;
-    private DatabaseReference mDatabase2;
-    private DatabaseReference mDatabase1;
+    DatabaseReference mDatabase2;
+    DatabaseReference mDatabase1;
+    DatabaseReference reviewDatabase;
 
     Map<String, Object> mapCategories;
     Map<String, Object> mapDevice;
@@ -53,6 +62,7 @@ public class NewReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_review_layout);
 
+        reviewDatabase = FirebaseDatabase.getInstance().getReference("newReview");
         title = findViewById(R.id.title_toolbar);
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
@@ -84,6 +94,8 @@ public class NewReviewActivity extends AppCompatActivity {
 
         category = findViewById(R.id.spinner_device_category);
         device = findViewById(R.id.spinner_product_name);
+        newReviewTitle = findViewById(R.id.new_review_title);
+        newReviewDescription = findViewById(R.id.new_review_description);
 
 //        listDevices = new ArrayList<String>(mapDevice.keySet());
 
@@ -148,7 +160,8 @@ public class NewReviewActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_post) {
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            addReview();
+//            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -206,5 +219,31 @@ public class NewReviewActivity extends AppCompatActivity {
 
         }
         return categoryId;
+    }
+
+    public void addReview(){
+        FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+        String userId = auth.getUid();
+        String reviewTitle = newReviewTitle.getText().toString().trim();
+        String reviewDescription = newReviewDescription.getText().toString().trim();
+        String deviceCategory = category.getSelectedItem().toString();
+        String deviceName = device.getSelectedItem().toString();
+
+        if(!TextUtils.isEmpty(reviewTitle) && !TextUtils.isEmpty(reviewDescription)){
+            String id = reviewDatabase.push().getKey();
+            NewReviewHandler newReview = new NewReviewHandler(userId,id,reviewTitle,reviewDescription,deviceName,deviceCategory);
+            reviewDatabase.child(id).setValue(newReview);
+            Toast.makeText(this,"New Review Added",Toast.LENGTH_SHORT).show();
+            finish();
+        }else{
+            if(reviewTitle.matches("")){
+                newReviewTitle.setError("Title cannot be empty");
+                return;
+            }
+            if(reviewDescription.matches("")){
+                newReviewDescription.setError("Description cannot be empty");
+                return;
+            }
+        }
     }
 }
