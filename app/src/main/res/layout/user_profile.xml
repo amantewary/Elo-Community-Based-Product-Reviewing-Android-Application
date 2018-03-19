@@ -27,7 +27,7 @@
                 android:layout_height="180dp"
                 android:layout_marginBottom="8dp"
 
-                android:backgroundTint="#f50057"
+                android:backgroundTint="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="1.0"
 
@@ -41,11 +41,10 @@
                     android:layout_height="match_parent">
 
                     <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/imageView"
+                        android:id="@+id/userDisplayPic"
                         android:layout_width="0dp"
                         android:layout_height="108dp"
                         android:layout_marginBottom="68dp"
-                        android:src="@drawable/profile"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintDimensionRatio="w,1:1"
                         app:layout_constraintLeft_toLeftOf="parent"
@@ -59,7 +58,7 @@
                         android:layout_marginEnd="8dp"
                         android:autoLink="map"
                         android:text="Halifax, NS"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorPrimary"
                         android:textStyle="italic"
                         app:layout_constraintEnd_toEndOf="@+id/usernameTextView"
                         app:layout_constraintStart_toStartOf="@+id/usernameTextView"
@@ -70,11 +69,11 @@
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:layout_marginEnd="16dp"
-                        android:layout_marginRight="16dp"
                         android:layout_marginTop="52dp"
                         android:background="@android:color/transparent"
-                        app:layout_constraintEnd_toStartOf="@+id/imageView"
-                        app:layout_constraintTop_toTopOf="@+id/imageView"
+                        android:tint="@color/colorPrimary"
+                        app:layout_constraintEnd_toStartOf="@+id/userDisplayPic"
+                        app:layout_constraintTop_toTopOf="@+id/userDisplayPic"
                         app:srcCompat="@drawable/ic_comment"
                         tools:ignore="VectorDrawableCompat" />
 
@@ -84,7 +83,7 @@
                         android:layout_height="wrap_content"
                         android:text="Reviews"
                         android:textAlignment="center"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="10sp"
                         app:layout_constraintBottom_toBottomOf="@+id/imageButton"
                         app:layout_constraintEnd_toEndOf="@+id/imageButton"
@@ -97,7 +96,7 @@
                         android:layout_height="wrap_content"
                         android:text="Messages"
                         android:textAlignment="center"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorPrimary"
                         android:textSize="10sp"
                         app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
                         app:layout_constraintEnd_toEndOf="@+id/imageButton2"
@@ -114,22 +113,22 @@
                         android:layout_marginStart="8dp"
                         android:text="Aman Tewary"
                         android:textAlignment="center"
-                        android:textColor="@color/colorAccent"
+                        android:textColor="@color/colorPrimary"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="@+id/imageView"
-                        app:layout_constraintStart_toStartOf="@+id/imageView"
-                        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                        app:layout_constraintEnd_toEndOf="@+id/userDisplayPic"
+                        app:layout_constraintStart_toStartOf="@+id/userDisplayPic"
+                        app:layout_constraintTop_toBottomOf="@+id/userDisplayPic" />
 
                     <ImageButton
                         android:id="@+id/imageButton2"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:layout_marginLeft="16dp"
                         android:layout_marginStart="16dp"
                         android:layout_marginTop="52dp"
                         android:background="@android:color/transparent"
-                        app:layout_constraintStart_toEndOf="@+id/imageView"
-                        app:layout_constraintTop_toTopOf="@+id/imageView"
+                        android:tint="@color/colorPrimary"
+                        app:layout_constraintStart_toEndOf="@+id/userDisplayPic"
+                        app:layout_constraintTop_toTopOf="@+id/userDisplayPic"
                         app:srcCompat="@drawable/ic_question_answer"
                         tools:ignore="VectorDrawableCompat" />
                 </android.support.constraint.ConstraintLayout>
@@ -182,10 +181,13 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/btn_wish"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
+                            android:clickable="true"
+                            android:focusable="true"
                             android:orientation="vertical">
 
                             <TextView
@@ -196,6 +198,7 @@
                                 android:textSize="20sp" />
 
                             <TextView
+                                android:id="@+id/wishlistCounter"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="10dp"

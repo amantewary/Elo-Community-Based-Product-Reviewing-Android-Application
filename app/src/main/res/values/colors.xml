@@ -5,4 +5,6 @@
     <color name="colorAccent">#000000</color>
     <color name="colorTrendingBackground">#4db6ac</color>
     <color name="colorCardViewBackground">#eeeeee</color>
+    <color name="colorYellow">#ffd600</color>
+    <color name="colorRed">#d50000</color>
 </resources>

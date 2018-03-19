@@ -13,10 +13,11 @@
         android:theme="@style/MyMaterialTheme">
         <activity
             android:name=".Activities.HomeActivity"
-            android:theme="@style/MyMaterialTheme">
+
+            android:theme="@style/MyMaterialTheme" />
 
 
-        </activity>
+
 
         <activity android:name=".Activities.Splashscreen">
             <intent-filter>
@@ -28,50 +29,39 @@
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"
-            android:theme="@style/MyMaterialTheme">
-
+            android:theme="@style/Theme.AppCompat.Light">
         </activity>
 
         <activity android:name=".Activities.ForgotPassword"
-            android:screenOrientation="portrait"
-            android:theme="@style/MyMaterialTheme">
 
-        </activity>
+            android:screenOrientation="portrait"
+            android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.UserProfile"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
-            android:theme="@style/MyMaterialTheme">
-
-        </activity>
-
-        <activity android:name=".Activities.FeaturedArticle"
-            android:theme="@style/MyMaterialTheme">
-
-        </activity>
-
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".Activities.FeaturedArticle"
+            android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/MyMaterialTheme">
-
-        </activity>
-        <activity android:name=".Activities.OpenSourceActivity"
-            android:theme="@style/MyMaterialTheme">
-
-        </activity>
-        <activity android:name=".Activities.Register_Activity"
-            android:theme="@style/MyMaterialTheme">
-
-        </activity>
-        <activity android:name=".Activities.NewReviewActivity"
-            android:theme="@style/MyMaterialTheme">
-
-        </activity>
-        <activity android:name=".Activities.ProductReview"
-            android:theme="@style/MyMaterialTheme">
-
-        </activity>
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".Activities.OpenSourceActivity"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".Activities.Register_Activity"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".Activities.NewReviewActivity"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".Activities.ProductReview"
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".Activities.Wishlist" />
+        <activity android:name=".Activities.WishlistAddItem"></activity>
     </application>
 
 </manifest>
