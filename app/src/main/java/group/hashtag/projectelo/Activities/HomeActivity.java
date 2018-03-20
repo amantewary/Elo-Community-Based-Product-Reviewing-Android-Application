@@ -347,6 +347,7 @@ public class HomeActivity extends AppCompatActivity
                 public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(),ProductReview.class);
                     Bundle b = new Bundle();
+                    b.putString("reviewAuthor",reviewHandler.userId);
                     b.putString("reviewTitle", reviewHandler.reviewTitle);
                     b.putString("reviewContent", reviewHandler.reviewDescription);
                     b.putString("category", reviewHandler.category);
