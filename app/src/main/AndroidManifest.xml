@@ -13,12 +13,7 @@
         android:theme="@style/MyMaterialTheme">
         <activity
             android:name=".Activities.HomeActivity"
-
             android:theme="@style/MyMaterialTheme" />
-
-
-
-
         <activity android:name=".Activities.Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,11 +24,9 @@
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"
-            android:theme="@style/Theme.AppCompat.Light">
-        </activity>
-
-        <activity android:name=".Activities.ForgotPassword"
-
+            android:theme="@style/Theme.AppCompat.Light"></activity>
+        <activity
+            android:name=".Activities.ForgotPassword"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme" />
         <activity
@@ -61,7 +54,8 @@
             android:name=".Activities.ProductReview"
             android:theme="@style/MyMaterialTheme" />
         <activity android:name=".Activities.Wishlist" />
-        <activity android:name=".Activities.WishlistAddItem"></activity>
+        <activity android:name=".Activities.WishlistAddItem" />
+        <activity android:name=".Activities.ViewUserProfile"></activity>
     </application>
 
 </manifest>
