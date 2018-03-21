@@ -93,6 +93,7 @@ public class ProductReview extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", ""+databaseError);
 
             }
         });
@@ -100,8 +101,9 @@ public class ProductReview extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String userId = auth.getUid();
+                Log.e(stringReviewAuthor,userId);
                 //TODO: This condition is not working. Else statement is executed everytime.
-                if (stringReviewAuthor == userId){
+                if (stringReviewAuthor.equals(userId)){
                     Intent userProfile = new Intent(ProductReview.this, UserProfile.class);
                     startActivity(userProfile);
                 }else {

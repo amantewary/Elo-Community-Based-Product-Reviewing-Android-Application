@@ -1,3 +1,5 @@
+package group.hashtag.projectelo.Activities;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
