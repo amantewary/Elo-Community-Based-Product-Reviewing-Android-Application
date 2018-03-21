@@ -118,6 +118,7 @@ public class UserProfile extends AppCompatActivity {
                 finish();
             }
         });
+
     }
     //TODO: Need to work on settings page which will double as profile edit page.
     @Override
