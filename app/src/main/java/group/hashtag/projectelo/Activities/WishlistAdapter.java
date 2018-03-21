@@ -45,6 +45,7 @@ public class WishlistAdapter extends ArrayAdapter<WishlistItem>{
         LayoutInflater inflater = context.getLayoutInflater();
         View wishlistItem = inflater.inflate(R.layout.wishlist_item, null, true);
 
+
         TextView wlDeviceName = wishlistItem.findViewById(R.id.wlItemName);
         TextView wlCategoryName = wishlistItem.findViewById(R.id.wlItemCat);
         ImageButton btnDelDevice = wishlistItem.findViewById(R.id.wlItemDelete);
