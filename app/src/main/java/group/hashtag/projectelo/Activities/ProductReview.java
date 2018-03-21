@@ -41,6 +41,7 @@ public class ProductReview extends AppCompatActivity {
     CircleImageView userAuthorImage;
     Map<String, Object> mapUser;
     String userName;
+    String userId;
     DatabaseReference userRef;
     FirebaseUser auth;
     @Override
@@ -89,6 +90,7 @@ public class ProductReview extends AppCompatActivity {
                 mapUser = (Map<String, Object>) dataSnapshot.getValue();
                 Log.e("Here", "" + mapUser);
                 userName = mapUser.get("name").toString();
+                userId = mapUser.get("UserId").toString();
             }
 
             @Override
@@ -100,14 +102,14 @@ public class ProductReview extends AppCompatActivity {
         userAuthorImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String userId = auth.getUid();
-                Log.e(stringReviewAuthor,userId);
-                //TODO: This condition is not working. Else statement is executed everytime.
-                if (stringReviewAuthor.equals(userId)){
+                String Id = auth.getUid();
+                Log.e(stringReviewAuthor,Id);
+                if (stringReviewAuthor.equals(Id)){
                     Intent userProfile = new Intent(ProductReview.this, UserProfile.class);
                     startActivity(userProfile);
                 }else {
                     Intent intent = new Intent(ProductReview.this, ViewUserProfile.class);
+                    intent.putExtra("reviewUserId", userId);
                     intent.putExtra("reviewUser", userName);
                     startActivity(intent);
                 }
