@@ -178,7 +178,7 @@ public class Register_Activity extends AppCompatActivity {
                                         UserHandler userHandler = new UserHandler();
                                         userHandler.setName(name);
                                         Log.e(Register_Activity.class.getCanonicalName(),email);
-                                        UserHandler userhandler = new UserHandler(name, email, userId);
+                                        UserHandler userhandler = new UserHandler(name, userId, email);
                                         hideKeyboard(v);
 
                                         mDatabase.child(userId).setValue(userhandler);

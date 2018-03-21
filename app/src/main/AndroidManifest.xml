@@ -64,6 +64,8 @@
             android:theme="@style/MyMaterialTheme"/>
         <activity android:name=".Activities.WishlistAddItem"
             android:theme="@style/MyMaterialTheme"/>
+        <activity android:name=".Activities.ViewUserProfile"
+            android:theme="@style/MyMaterialTheme"/>
     </application>
 
 </manifest>
