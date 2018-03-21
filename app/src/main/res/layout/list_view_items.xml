@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    app:cardCornerRadius="@dimen/cardview_default_radius"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:layout_height="50dp"
+            android:id="@+id/new_review_image"
+            android:src="@mipmap/flat_white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Base.TextAppearance.AppCompat.Body1"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:id="@+id/text_headline"
+            android:text="Review Title" />
+    </LinearLayout>
+</android.support.v7.widget.CardView>

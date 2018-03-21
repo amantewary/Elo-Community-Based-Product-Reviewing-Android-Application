@@ -15,7 +15,15 @@ public class UserHandler {
 
     public String name;
     public String UserId;
+    public String DisplayPic;
 
+    public String getDisplayPicss() {
+        return DisplayPic;
+    }
+
+    public void setDisplayPicss(String displayPic) {
+        DisplayPic = displayPic;
+    }
 
     public String getEmail() {
         return email;
@@ -32,10 +40,17 @@ public class UserHandler {
     public UserHandler() {
     }
 
-    public UserHandler(String name, String email, String UserId) {
+    public UserHandler(String name, String userId, String email) {
+        this.name = name;
+        UserId = userId;
+        this.email = email;
+    }
+
+    public UserHandler(String name, String email, String UserId, String DisplayPic) {
         this.name = name;
         this.email = email;
         this.UserId = UserId;
+        this.DisplayPic = DisplayPic;
     }
 
 }
