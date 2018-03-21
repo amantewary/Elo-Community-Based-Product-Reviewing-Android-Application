@@ -199,13 +199,8 @@ public class Register_Activity extends AppCompatActivity {
                                         String userId = user.getUid();
                                         UserHandler userHandler = new UserHandler();
                                         userHandler.setName(name);
-<<<<<<< Updated upstream
                                         Log.e(Register_Activity.class.getCanonicalName(),email);
                                         UserHandler userhandler = new UserHandler(name, userId, email);
-=======
-                                        Log.e(Register_Activity.class.getCanonicalName(), email);
-                                        UserHandler userhandler = new UserHandler(name, email, userId);
->>>>>>> Stashed changes
                                         hideKeyboard(v);
 
                                         mDatabase.child(userId).setValue(userhandler);
