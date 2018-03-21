@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.R;
 
 public class ProductReview extends AppCompatActivity {
@@ -21,6 +22,9 @@ public class ProductReview extends AppCompatActivity {
     String stringTitle;
     String stringContent;
     String stringCategory;
+    String stringReviewAuthor;
+
+    CircleImageView userAuthorImage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,22 +46,30 @@ public class ProductReview extends AppCompatActivity {
             }
         });
 
-
+        userAuthorImage = findViewById(R.id.reviewAuthor);
         reviewtitle = findViewById(R.id.textView5);
         content = findViewById(R.id.textView4);
         reviewDevice = findViewById(R.id.reviewDeviceName);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
+            stringReviewAuthor = bundle.getString("reviewAuthor");
             stringTitle = bundle.getString("reviewTitle");
             stringContent = bundle.getString("reviewContent");
             stringCategory = bundle.getString("category");
         }
 
+
         reviewtitle.setText(stringTitle);
         content.setText(stringContent);
         reviewDevice.setText(stringCategory);
 
+        userAuthorImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
     public void onIconOnClick(View view){
         Intent intent = new Intent(ProductReview.this, UserProfile.class);
