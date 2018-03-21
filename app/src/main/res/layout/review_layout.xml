@@ -66,7 +66,6 @@
                         android:layout_alignParentTop="true"
                         android:layout_marginEnd="15dp"
                         android:layout_marginTop="16dp"
-                        android:onClick="onIconOnClick"
                         android:clickable="true"
                         android:focusable="true"
                         android:foreground="?attr/selectableItemBackground"

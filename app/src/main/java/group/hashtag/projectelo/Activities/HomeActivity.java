@@ -54,6 +54,7 @@ import group.hashtag.projectelo.SettingsActivity;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
+
     ListView listView;
     TextView title;
     CustomAdapter arrayAdapter;
