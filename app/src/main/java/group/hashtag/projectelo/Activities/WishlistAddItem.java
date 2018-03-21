@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 
+import group.hashtag.projectelo.Handlers.WishlistItem;
 import group.hashtag.projectelo.R;
 
 /**

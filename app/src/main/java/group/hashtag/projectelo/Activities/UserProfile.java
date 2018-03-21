@@ -72,7 +72,7 @@ public class UserProfile extends AppCompatActivity {
                 UserHandler user = dataSnapshot.getValue(UserHandler.class);
                 usernameText.setText(user.getName());
                 loadDisplayPics(user.getDisplayPicss());
-                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.getDisplayPicss() + ", email " + user.getEmail());
+                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.getName() + ", email " + user.getEmail());
             }
 
             @Override

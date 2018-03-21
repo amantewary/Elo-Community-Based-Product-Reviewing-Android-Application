@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
+import group.hashtag.projectelo.Handlers.WishlistItem;
 import group.hashtag.projectelo.R;
 
 /**
