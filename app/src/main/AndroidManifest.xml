@@ -13,18 +13,22 @@
         android:theme="@style/MyMaterialTheme">
         <activity
             android:name=".Activities.HomeActivity"
-            android:theme="@style/MyMaterialTheme" />
+            android:theme="@style/MyMaterialTheme"></activity>
         <activity android:name=".Activities.Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"
-            android:theme="@style/Theme.AppCompat.Light"></activity>
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".Activities.ForgotPassword"
             android:screenOrientation="portrait"
@@ -62,7 +66,11 @@
         <activity
             android:name=".Activities.ViewUserProfile"
             android:theme="@style/MyMaterialTheme" />
-        <activity android:name=".Activities.FollowerList"></activity>
+        <activity android:name=".Activities.FollowerList" />
+        <activity
+            android:name=".Activities.UserDeviceActivity"
+            android:label="@string/title_activity_user_device"
+            android:theme="@style/MyMaterialTheme"></activity>
     </application>
 
 </manifest>

@@ -100,7 +100,12 @@ public class HomeActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
+        auth = FirebaseAuth.getInstance();
 
+        if (auth.getCurrentUser() == null) {
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            finish();
+        }
         listView = findViewById(R.id.list_item);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -111,7 +116,7 @@ public class HomeActivity extends AppCompatActivity
 
         listView.setAdapter(arrayAdapter);
 
-        auth = FirebaseAuth.getInstance();
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference("newReview");
         mDatabase2 = database.getReference("Feature_article");

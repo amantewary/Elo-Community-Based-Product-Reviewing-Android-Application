@@ -56,6 +56,7 @@ public class NewReviewActivity extends AppCompatActivity {
     ArrayAdapter<String> categories;
     ArrayAdapter<String> devices;
 
+    //Todo: validate spinner before adding new review
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

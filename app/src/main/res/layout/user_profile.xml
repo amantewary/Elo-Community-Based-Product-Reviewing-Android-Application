@@ -156,6 +156,7 @@
                         android:weightSum="3">
 
                         <LinearLayout
+                            android:id="@+id/devices_user_profile"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -170,6 +171,7 @@
                                 android:textSize="20sp" />
 
                             <TextView
+                                android:id="@+id/devices_user_counter"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="10dp"
@@ -210,6 +212,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:id="@+id/followers_user_profile"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -228,6 +231,7 @@
                                 android:layout_height="wrap_content"
                                 android:paddingTop="10dp"
                                 android:text="10"
+                                android:id="@+id/user_profile_follower_count"
                                 android:textColor="@android:color/black"
                                 android:textSize="20sp"
                                 android:textStyle="bold" />
