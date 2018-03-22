@@ -56,6 +56,7 @@
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.ProductReview"
+            android:windowSoftInputMode="stateHidden"
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.Wishlist"

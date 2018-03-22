@@ -5,10 +5,14 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -18,10 +22,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import group.hashtag.projectelo.Handlers.CommentHandler;
+import group.hashtag.projectelo.Handlers.WishlistItem;
 import group.hashtag.projectelo.R;
 
 public class ProductReview extends AppCompatActivity {
@@ -32,22 +41,36 @@ public class ProductReview extends AppCompatActivity {
     TextView reviewtitle;
     TextView reviewDevice;
 
+    EditText commentText;
+    ImageButton commentPost;
+
+    ListView commentListView;
+    List<CommentHandler> commentHandlerList;
+
     String stringTitle;
     String stringContent;
     String stringCategory;
     String stringReviewAuthor;
+    String stringReviewId;
 
     CircleImageView userAuthorImage;
     Map<String, Object> mapUser;
+    Map<String, Object> mapCommentAuthor;
     String userName;
     String userId;
+    String commentAuthorId;
+    String commentAuthorName;
+    String commentContent;
+    SlidingUpPanelLayout commentLayout;
     DatabaseReference userRef;
+    DatabaseReference commentRef;
     FirebaseUser auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance().getCurrentUser();
         setContentView(R.layout.review_layout);
+        commentLayout = findViewById(R.id.sliding_review_layout);
         title = findViewById(R.id.title_toolbar);
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
@@ -65,10 +88,14 @@ public class ProductReview extends AppCompatActivity {
             }
         });
 
+        commentListView = findViewById(R.id.commentList);
+        commentHandlerList = new ArrayList<>();
         userAuthorImage = findViewById(R.id.reviewAuthor);
         reviewtitle = findViewById(R.id.textView5);
         content = findViewById(R.id.textView4);
         reviewDevice = findViewById(R.id.reviewDeviceName);
+        commentText= findViewById(R.id.comment);
+        commentPost = findViewById(R.id.postComment);
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -76,6 +103,7 @@ public class ProductReview extends AppCompatActivity {
             stringTitle = bundle.getString("reviewTitle");
             stringContent = bundle.getString("reviewContent");
             stringCategory = bundle.getString("category");
+            stringReviewId = bundle.getString("reviewId");
         }
 
 
@@ -114,6 +142,36 @@ public class ProductReview extends AppCompatActivity {
                 }
             }
         });
+        commentRef = FirebaseDatabase.getInstance().getReference("newComment");
+        commentPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addComment();
+            }
+        });
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        commentRef.child(stringReviewId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                commentHandlerList.clear();
+                for(DataSnapshot commentSnapshot : dataSnapshot.getChildren()){
+                    CommentHandler item = commentSnapshot.getValue(CommentHandler.class);
+                    commentHandlerList.add(item);
+                }
+                CommentAdapter adapter= new CommentAdapter(ProductReview.this,commentHandlerList);
+                commentListView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -126,4 +184,35 @@ public class ProductReview extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         return super.onOptionsItemSelected(item);
     }
+
+    public void addComment(){
+
+        commentContent = commentText.getText().toString().trim();
+        commentAuthorId = auth.getUid();
+
+        if(!TextUtils.isEmpty(commentContent)){
+            userRef.child(commentAuthorId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mapCommentAuthor = (Map<String, Object>) dataSnapshot.getValue();
+                    commentAuthorName = mapCommentAuthor.get("name").toString();
+                    Log.e("Here", "1" + commentAuthorName);
+                    String id = commentRef.push().getKey();
+                    CommentHandler newComment = new CommentHandler(id, commentContent, commentAuthorId, commentAuthorName);
+                    commentRef.child(stringReviewId).child(id).setValue(newComment);
+                    commentText.setText("");
+                    commentLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }else{
+            commentText.setError("Comment cannot be empty");
+        }
+
+    }
+
 }
