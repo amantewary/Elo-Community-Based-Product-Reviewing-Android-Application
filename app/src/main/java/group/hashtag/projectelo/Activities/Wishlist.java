@@ -45,7 +45,7 @@ public class Wishlist extends AppCompatActivity {
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         setContentView(R.layout.wishlist_main);
 
-        wlItemRef = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
+        wlItemRef = FirebaseDatabase.getInstance().getReference("User_device").child("Wishlist").child(auth.getUid());
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
         wlListView = findViewById(R.id.wlListView);

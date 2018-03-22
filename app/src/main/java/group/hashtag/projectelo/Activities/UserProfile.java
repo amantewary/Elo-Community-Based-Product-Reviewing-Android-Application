@@ -53,7 +53,7 @@ public class UserProfile extends AppCompatActivity {
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         setContentView(R.layout.user_profile);
 
-        mDatabase2 = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
+        mDatabase2 = FirebaseDatabase.getInstance().getReference("User_device").child("Wishlist").child(auth.getUid());
 
         messages = findViewById(R.id.imageButton);
         reviews= findViewById(R.id.imageButton2);

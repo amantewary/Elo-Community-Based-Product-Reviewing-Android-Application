@@ -66,7 +66,7 @@ public class WishlistAdapter extends ArrayAdapter<WishlistItem>{
     }
     public void deleteWishlistDevice(String id){
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
-        wlItemRef = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
+        wlItemRef = FirebaseDatabase.getInstance().getReference("User_device").child("Wishlist").child(auth.getUid());
         wlItemRef.child(id).removeValue();
     }
 }
