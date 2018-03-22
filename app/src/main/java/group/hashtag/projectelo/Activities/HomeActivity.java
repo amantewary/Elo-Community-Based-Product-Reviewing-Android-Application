@@ -352,6 +352,7 @@ public class HomeActivity extends AppCompatActivity
                     b.putString("reviewTitle", reviewHandler.reviewTitle);
                     b.putString("reviewContent", reviewHandler.reviewDescription);
                     b.putString("category", reviewHandler.category);
+                    b.putString("reviewId",reviewHandler.reviewId);
                     intent.putExtras(b);
                     startActivity(intent);
 
