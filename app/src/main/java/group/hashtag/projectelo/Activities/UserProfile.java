@@ -57,13 +57,11 @@ public class UserProfile extends AppCompatActivity {
         setContentView(R.layout.user_profile);
 
         mDatabase2 = FirebaseDatabase.getInstance().getReference("User_device").child("Wishlist").child(auth.getUid());
-<<<<<<< HEAD
         mDatabase3 = FirebaseDatabase.getInstance().getReference("follow").child(auth.getUid());
         mDatabase4 = FirebaseDatabase.getInstance().getReference("User_device").child("Owner").child(auth.getUid());
-=======
->>>>>>> master
 
         btnUserFollowers = findViewById(R.id.followers_user_profile);
+        btnUserDevices = findViewById(R.id.devices_user_profile);
         messages = findViewById(R.id.imageButton);
         reviews= findViewById(R.id.imageButton2);
         displayImageView = (CircleImageView) findViewById(R.id.userDisplayPic);
