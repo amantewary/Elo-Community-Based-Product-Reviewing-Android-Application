@@ -24,4 +24,16 @@ public class ReviewHandler {
         this.reviewTitle = reviewTitle;
         this.userId = userId;
     }
+
+    public String getDevices() {
+        return device;
+    }
+
+    public void setDevices(String device) {
+        this.device = device;
+    }
+
+    public String getCategorys() {
+        return category;
+    }
 }
