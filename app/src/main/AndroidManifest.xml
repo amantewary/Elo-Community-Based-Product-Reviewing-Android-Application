@@ -20,11 +20,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"
-            android:theme="@style/Theme.AppCompat.Light"></activity>
+            android:theme="@style/Theme.AppCompat.Light" />
         <activity
             android:name=".Activities.ForgotPassword"
             android:screenOrientation="portrait"
@@ -33,7 +37,10 @@
             android:name=".Activities.UserProfile"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
-            android:theme="@style/MyMaterialTheme" />
+            android:theme="@style/MyMaterialTheme" >
+
+
+        </activity>
         <activity
             android:name=".Activities.FeaturedArticle"
             android:theme="@style/MyMaterialTheme" />
@@ -52,8 +59,8 @@
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.ProductReview"
-            android:windowSoftInputMode="stateHidden"
-            android:theme="@style/MyMaterialTheme" />
+            android:theme="@style/MyMaterialTheme"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".Activities.Wishlist"
             android:theme="@style/MyMaterialTheme" />
@@ -63,7 +70,15 @@
         <activity
             android:name=".Activities.ViewUserProfile"
             android:theme="@style/MyMaterialTheme" />
-        <activity android:name=".Activities.FollowerList"></activity>
+        <activity android:name=".Activities.FollowerList" />
+        <activity
+            android:name=".Activities.UserDeviceActivity"
+            android:label="@string/title_activity_user_device"
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".Activities.UserAddDevices"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
     </application>
 
 </manifest>

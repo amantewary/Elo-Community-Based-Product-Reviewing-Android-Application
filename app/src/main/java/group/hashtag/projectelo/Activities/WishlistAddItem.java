@@ -1,8 +1,8 @@
 package group.hashtag.projectelo.Activities;
 
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 import group.hashtag.projectelo.Handlers.WishlistItem;
 import group.hashtag.projectelo.R;
