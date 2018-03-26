@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -18,6 +17,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
+import group.hashtag.projectelo.Handlers.WishlistItem;
 import group.hashtag.projectelo.R;
 
 /**
@@ -44,6 +44,7 @@ public class WishlistAdapter extends ArrayAdapter<WishlistItem>{
         LayoutInflater inflater = context.getLayoutInflater();
         View wishlistItem = inflater.inflate(R.layout.wishlist_item, null, true);
 
+
         TextView wlDeviceName = wishlistItem.findViewById(R.id.wlItemName);
         TextView wlCategoryName = wishlistItem.findViewById(R.id.wlItemCat);
         ImageButton btnDelDevice = wishlistItem.findViewById(R.id.wlItemDelete);
@@ -64,7 +65,7 @@ public class WishlistAdapter extends ArrayAdapter<WishlistItem>{
     }
     public void deleteWishlistDevice(String id){
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
-        wlItemRef = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
+        wlItemRef = FirebaseDatabase.getInstance().getReference("User_device").child("Wishlist").child(auth.getUid());
         wlItemRef.child(id).removeValue();
     }
 }

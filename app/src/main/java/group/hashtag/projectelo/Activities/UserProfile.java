@@ -35,12 +35,15 @@ public class UserProfile extends AppCompatActivity {
     TextView title;
     TextView usernameText;
     TextView wishlistCounter;
+    TextView followerCounter;
+    TextView deviceCounter;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
-
+    private DatabaseReference mDatabase3;
+    private DatabaseReference mDatabase4;
     private ImageButton messages;
     private ImageButton reviews;
-    private LinearLayout btnWishlist;
+    private LinearLayout btnWishlist, btnUserDevices, btnUserFollowers;
     private CircleImageView displayImageView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,12 +56,17 @@ public class UserProfile extends AppCompatActivity {
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         setContentView(R.layout.user_profile);
 
-        mDatabase2 = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
+        mDatabase2 = FirebaseDatabase.getInstance().getReference("User_device").child("Wishlist").child(auth.getUid());
+        mDatabase3 = FirebaseDatabase.getInstance().getReference("follow").child(auth.getUid());
+        mDatabase4 = FirebaseDatabase.getInstance().getReference("User_device").child("Owner").child(auth.getUid());
 
+        btnUserFollowers = findViewById(R.id.followers_user_profile);
+        btnUserDevices = findViewById(R.id.devices_user_profile);
         messages = findViewById(R.id.imageButton);
         reviews= findViewById(R.id.imageButton2);
         displayImageView = (CircleImageView) findViewById(R.id.userDisplayPic);
-
+        followerCounter = findViewById(R.id.user_profile_follower_count);
+        deviceCounter = findViewById(R.id.devices_user_counter);
 
         title = findViewById(R.id.title_toolbar);
         usernameText = findViewById(R.id.usernameTextView);
@@ -95,6 +103,34 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        mDatabase3.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long flCounter = dataSnapshot.getChildrenCount();
+                followerCounter.setText(Long.toString(flCounter));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        mDatabase4.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long dvCounter = dataSnapshot.getChildrenCount();
+                deviceCounter.setText(Long.toString(dvCounter));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
         btnWishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +154,20 @@ public class UserProfile extends AppCompatActivity {
                 finish();
             }
         });
+
+        btnUserFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),FollowerList.class));
+            }
+        });
+        btnUserDevices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),UserDeviceActivity.class));
+            }
+        });
+
     }
     //TODO: Need to work on settings page which will double as profile edit page.
     @Override
