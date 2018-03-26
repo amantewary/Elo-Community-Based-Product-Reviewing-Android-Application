@@ -1,6 +1,5 @@
 package group.hashtag.projectelo.Activities;
 
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -57,6 +56,7 @@ public class NewReviewActivity extends AppCompatActivity {
     ArrayAdapter<String> categories;
     ArrayAdapter<String> devices;
 
+    //Todo: validate spinner before adding new review
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +71,11 @@ public class NewReviewActivity extends AppCompatActivity {
         listMapCategories = new ArrayList<>();
 
         listDevices = new ArrayList<>();
+
+
+        listDevices = new ArrayList<>();
         listMapDevices = new ArrayList<>();
+
 
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabase2 = database.getReference("Device_Category");
@@ -101,20 +105,22 @@ public class NewReviewActivity extends AppCompatActivity {
 
         categories = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, listCategories);
 
-        devices = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, listCategories);
+        devices = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, listDevices);
 
 
         category.setAdapter(categories);
-        device.setAdapter(categories);
+        device.setAdapter(devices);
         category.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {// Do nothing
                 } else {
+                    listDevices.clear();
+                    listMapDevices.clear();
                     String categoryId = searchDeviceId(adapterView.getItemAtPosition(i).toString());
                     Log.e("Here", categoryId);
 //                    String categoryId = mapCategories.containsKey(adapterView.getItemIdAtPosition(i));
-                    Query query = mDatabase1.orderByChild("Dev_C_Id").equalTo(categoryId);
+                    Query query = mDatabase1.orderByKey().equalTo(categoryId);
                     fetchDevice(query);
 
                 }
@@ -191,14 +197,25 @@ public class NewReviewActivity extends AppCompatActivity {
 
     public void fetchDevice(Query query) {
         query.addValueEventListener(new ValueEventListener() {
+
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                listDevices.add(0,"Select Device");
                 for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
-                    mapDevice = (Map<String, Object>) dsnp.getValue();
-                    Log.e("Here", "" + mapDevice);
-                    String value = mapCategories.get("CatName").toString();
-                    listDevices.add(value);
-                    listMapCategories.add(mapCategories);
+                    for (DataSnapshot dsnp2 : dsnp.getChildren()) {
+//                        Log.e("Here", "" + dsnp2);
+                        mapDevice = (Map<String, Object>) dsnp2.getValue();
+                        Log.e("Here", "" + mapDevice);
+
+                        String value = mapDevice.get("DeviceSeries").toString();
+                        listDevices.add(value);
+                        listMapDevices.add(mapDevice);
+                    }
+                    Log.e("Here", "" + listMapDevices);
+                    devices.notifyDataSetChanged();
+//                    String value = mapCategories.get("DeviceSeries").toString();
+//                    listDevices.add(value);
+//                    listMapCategories.add(mapCategories);
                 }
             }
 
@@ -213,7 +230,7 @@ public class NewReviewActivity extends AppCompatActivity {
         String categoryId = "";
         for (Map<String, Object> map : listMapCategories) {
             if (categoryName.equals(map.get("CatName"))) {
-                categoryId = map.get("Dev_C_Id").toString();
+                categoryId = map.get("CatId").toString();
                 break;
             }
 
@@ -221,7 +238,7 @@ public class NewReviewActivity extends AppCompatActivity {
         return categoryId;
     }
 
-    public void addReview(){
+    public void addReview() {
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         String userId = auth.getUid();
         String reviewTitle = newReviewTitle.getText().toString().trim();
@@ -229,18 +246,18 @@ public class NewReviewActivity extends AppCompatActivity {
         String deviceCategory = category.getSelectedItem().toString();
         String deviceName = device.getSelectedItem().toString();
 
-        if(!TextUtils.isEmpty(reviewTitle) && !TextUtils.isEmpty(reviewDescription)){
+        if (!TextUtils.isEmpty(reviewTitle) && !TextUtils.isEmpty(reviewDescription)) {
             String id = reviewDatabase.push().getKey();
-            NewReviewHandler newReview = new NewReviewHandler(userId,id,reviewTitle,reviewDescription,deviceName,deviceCategory);
+            NewReviewHandler newReview = new NewReviewHandler(userId, id, reviewTitle, reviewDescription, deviceName, deviceCategory);
             reviewDatabase.child(id).setValue(newReview);
-            Toast.makeText(this,"New Review Added",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "New Review Added", Toast.LENGTH_SHORT).show();
             finish();
-        }else{
-            if(reviewTitle.matches("")){
+        } else {
+            if (reviewTitle.matches("")) {
                 newReviewTitle.setError("Title cannot be empty");
                 return;
             }
-            if(reviewDescription.matches("")){
+            if (reviewDescription.matches("")) {
                 newReviewDescription.setError("Description cannot be empty");
                 return;
             }

@@ -8,7 +8,7 @@
 
     <string name="sign_in_here"><u>Already a user? Sign In</u>.</string>
     <string name="register_here"><u>Hey there.. are you new to Elo?</u>.</string>
-
+    <string name="compose_shortcut_short_label1">Search Devices</string>
     <!-- Example General settings -->
     <string name="pref_header_general">General</string>
 
@@ -144,4 +144,5 @@ limitations under the License.
 
 
     <string name="dummycontent"> The new $799 Mavic Air shares a lot of similarities with both the DJI Spark and the Mavic Pro and Pro Platinum. Like those models, it’s a compact drone with a 12-megapixel camera and a handful of different flying and shooting modes. It’s not targeted toward professionals, but rather hobbyists or enthusiasts who might be buying their first drone for aerial photography and videography and aren’t satisfied with the Spark’s limited creative options. The Air also has a couple of new tricks, like new obstacle avoidance technology. The new $799 Mavic Air shares a lot of similarities with both the DJI Spark and the Mavic Pro and Pro Platinum. Like those models, it’s a compact drone with a 12-megapixel camera and a handful of different flying and shooting modes. It’s not targeted toward professionals, but rather hobbyists or enthusiasts who might be buying their first drone for aerial photography and videography and aren’t satisfied with the Spark’s limited creative options. The Air also has a couple of new tricks, like new obstacle avoidance technology.</string>
+    <string name="title_activity_user_device">Elo</string>
 </resources>
