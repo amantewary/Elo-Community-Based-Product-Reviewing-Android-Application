@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -23,8 +24,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.varunest.sparkbutton.SparkButton;
+import com.varunest.sparkbutton.SparkEventListener;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -43,6 +48,7 @@ public class ProductReview extends AppCompatActivity {
 
     EditText commentText;
     ImageButton commentPost;
+    SparkButton likeButton;
 
     ListView commentListView;
     List<CommentHandler> commentHandlerList;
@@ -64,6 +70,7 @@ public class ProductReview extends AppCompatActivity {
     SlidingUpPanelLayout commentLayout;
     DatabaseReference userRef;
     DatabaseReference commentRef;
+    DatabaseReference likeRef;
     FirebaseUser auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +94,7 @@ public class ProductReview extends AppCompatActivity {
                 finish();
             }
         });
-
+        likeButton = findViewById(R.id.spark_button);
         commentListView = findViewById(R.id.commentList);
         commentHandlerList = new ArrayList<>();
         userAuthorImage = findViewById(R.id.reviewAuthor);
@@ -147,6 +154,47 @@ public class ProductReview extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addComment();
+            }
+        });
+        likeRef = FirebaseDatabase.getInstance().getReference("likes");
+        likeRef.child(stringReviewId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot likeSnapshot : dataSnapshot.getChildren()){
+                    String likeUid = likeSnapshot.getKey();
+                    if(likeUid.equals(auth.getUid())){
+                        likeButton.setChecked(true);
+                    }else{
+                        likeButton.setChecked(false);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        likeButton.setEventListener(new SparkEventListener() {
+            @Override
+            public void onEvent(ImageView button, boolean buttonState) {
+                if(buttonState){
+                    String date = DateFormat.getDateTimeInstance().format(new Date());
+                    String since = "Liked on "+date;
+                    likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
+                }else{
+                    likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
+                }
+            }
+
+            @Override
+            public void onEventAnimationEnd(ImageView button, boolean buttonState) {
+
+            }
+
+            @Override
+            public void onEventAnimationStart(ImageView button, boolean buttonState) {
+
             }
         });
 
