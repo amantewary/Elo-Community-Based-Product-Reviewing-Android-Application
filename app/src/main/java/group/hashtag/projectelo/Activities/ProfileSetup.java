@@ -27,7 +27,7 @@ import group.hashtag.projectelo.R;
 public class ProfileSetup extends AppCompatActivity {
 
     TextView username;
-    Spinner country, month, year;
+    Spinner country, month, year,gender;
     EditText webLink;
     Button next;
     DatabaseReference userRef;
@@ -46,6 +46,7 @@ public class ProfileSetup extends AppCompatActivity {
         country = findViewById(R.id.spinnercountry);
         month = findViewById(R.id.dob_month);
         year = findViewById(R.id.dob_year);
+        gender = findViewById(R.id.spinner_gender);
         webLink = findViewById(R.id.webLink);
         next = findViewById(R.id.btnNext);
         Bundle bundle = getIntent().getExtras();
@@ -69,10 +70,11 @@ public class ProfileSetup extends AppCompatActivity {
         String userCountry = country.getSelectedItem().toString();
         String userBirthMonth = month.getSelectedItem().toString();
         String userBirthYear = year.getSelectedItem().toString();
+        String userGender = gender.getSelectedItem().toString();
         String userWebLink = webLink.getText().toString();
 
         if(!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear)){
-            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail);
+            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender);
             userRef.child(stringUserId).setValue(item);
             startActivity(new Intent(getApplicationContext(),HomeActivity.class));
         }else{

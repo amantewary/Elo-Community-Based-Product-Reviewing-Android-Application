@@ -20,6 +20,7 @@ public class UserHandler {
     public String dob_month;
     public String dob_year;
     public String webLink;
+    public String gender;
 
     public String getCountry() {
         return country;
@@ -73,7 +74,7 @@ public class UserHandler {
         this.DisplayPic = DisplayPic;
     }
 
-    public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email) {
+    public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender) {
         this.name = name;
         UserId = userId;
         this.country = country;
@@ -81,5 +82,6 @@ public class UserHandler {
         this.dob_year = dob_year;
         this.webLink = webLink;
         this.email = email;
+        this.gender = gender;
     }
 }
