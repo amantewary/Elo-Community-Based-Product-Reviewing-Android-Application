@@ -13,34 +13,34 @@
         android:theme="@style/MyMaterialTheme">
         <activity
             android:name=".Activities.HomeActivity"
-
             android:theme="@style/MyMaterialTheme" />
-
-
-
-
         <activity android:name=".Activities.Splashscreen">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
         <activity
             android:name=".SettingsActivity"
             android:label="Settings"
-            android:theme="@style/Theme.AppCompat.Light">
-        </activity>
-
-        <activity android:name=".Activities.ForgotPassword"
-
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
+            android:name=".Activities.ForgotPassword"
             android:screenOrientation="portrait"
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.UserProfile"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
-            android:theme="@style/MyMaterialTheme" />
+            android:theme="@style/MyMaterialTheme" >
+
+
+        </activity>
         <activity
             android:name=".Activities.FeaturedArticle"
             android:theme="@style/MyMaterialTheme" />
@@ -59,11 +59,26 @@
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.ProductReview"
+            android:theme="@style/MyMaterialTheme"
+            android:windowSoftInputMode="stateHidden" />
+        <activity
+            android:name=".Activities.Wishlist"
             android:theme="@style/MyMaterialTheme" />
-        <activity android:name=".Activities.Wishlist"
-            android:theme="@style/MyMaterialTheme"/>
-        <activity android:name=".Activities.WishlistAddItem"
-            android:theme="@style/MyMaterialTheme"/>
+        <activity
+            android:name=".Activities.WishlistAddItem"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".Activities.ViewUserProfile"
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".Activities.FollowerList" />
+        <activity
+            android:name=".Activities.UserDeviceActivity"
+            android:label="@string/title_activity_user_device"
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".Activities.UserAddDevices"
+            android:theme="@style/MyMaterialTheme">
+
+        </activity>
     </application>
 
 </manifest>
