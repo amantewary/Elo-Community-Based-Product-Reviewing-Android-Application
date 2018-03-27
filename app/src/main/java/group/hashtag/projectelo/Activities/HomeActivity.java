@@ -24,6 +24,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -54,6 +56,7 @@ import group.hashtag.projectelo.SettingsActivity;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
 
+
     ListView listView;
     TextView title;
     CustomAdapter arrayAdapter;
@@ -74,6 +77,7 @@ public class HomeActivity extends AppCompatActivity
     String FeaturedTitleString;
     String FeaturedContentString;
     String FeaturedWriter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -96,7 +100,12 @@ public class HomeActivity extends AppCompatActivity
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
+        auth = FirebaseAuth.getInstance();
 
+        if (auth.getCurrentUser() == null) {
+            startActivity(new Intent(HomeActivity.this, LoginActivity.class));
+            finish();
+        }
         listView = findViewById(R.id.list_item);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -107,7 +116,7 @@ public class HomeActivity extends AppCompatActivity
 
         listView.setAdapter(arrayAdapter);
 
-        auth = FirebaseAuth.getInstance();
+
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
         mDatabase = database.getReference("newReview");
         mDatabase2 = database.getReference("Feature_article");
@@ -123,7 +132,7 @@ public class HomeActivity extends AppCompatActivity
                 for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
 
                     Map<String, Object> map = (Map<String, Object>) dsnp.getValue();
-                    reviewHandler = new ReviewHandler(map.get("category").toString(),map.get("device").toString(),map.get("reviewDescription").toString(),map.get("reviewId").toString(),map.get("reviewTitle").toString(),map.get("userId").toString());
+                    reviewHandler = new ReviewHandler(map.get("category").toString(), map.get("device").toString(), map.get("reviewDescription").toString(), map.get("reviewId").toString(), map.get("reviewTitle").toString(), map.get("userId").toString());
 //                    Log.e("Here", "" + map);
                     reviewHandlerList.add(reviewHandler);
                 }
@@ -157,7 +166,7 @@ public class HomeActivity extends AppCompatActivity
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(),FeaturedArticle.class);
+                Intent intent = new Intent(getApplicationContext(), FeaturedArticle.class);
                 Bundle b = new Bundle();
                 b.putString("FeaturedTitle", FeaturedTitleString);
                 b.putString("FeaturedContent", FeaturedContentString);
@@ -175,8 +184,22 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        categories.setSuggestions(getResources().getStringArray(R.array.device_categories));
 
+        //Todo: Populate suggestions from db remaining
+        categories.setSuggestions(getResources().getStringArray(R.array.device_categories));
+        categories.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                arrayAdapter.getFilter().filter(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                arrayAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
         categories.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
@@ -193,7 +216,6 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-
 
 
     }
@@ -325,13 +347,15 @@ public class HomeActivity extends AppCompatActivity
         }, 2000);
     }
 
-    public class CustomAdapter extends ArrayAdapter<ReviewHandler> {
+    public class CustomAdapter extends ArrayAdapter<ReviewHandler> implements Filterable {
 
         List<ReviewHandler> reviewHandlerList;
+        List<ReviewHandler> searchDevices;
 
         public CustomAdapter(@NonNull Context context, List<ReviewHandler> reviewHandlerList) {
             super(context, 0, reviewHandlerList);
             this.reviewHandlerList = reviewHandlerList;
+            this.searchDevices = reviewHandlerList;
         }
 
         @NonNull
@@ -341,16 +365,17 @@ public class HomeActivity extends AppCompatActivity
             if (reviewtitles == null) {
                 reviewtitles = LayoutInflater.from(HomeActivity.this).inflate(R.layout.list_view_items, parent, false);
             }
-            final ReviewHandler reviewHandler = reviewHandlerList.get(position);
+            final ReviewHandler reviewHandler = searchDevices.get(position);
             reviewtitles.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(),ProductReview.class);
+                    Intent intent = new Intent(getApplicationContext(), ProductReview.class);
                     Bundle b = new Bundle();
-                    b.putString("reviewAuthor",reviewHandler.userId);
+                    b.putString("reviewAuthor", reviewHandler.userId);
                     b.putString("reviewTitle", reviewHandler.reviewTitle);
                     b.putString("reviewContent", reviewHandler.reviewDescription);
                     b.putString("category", reviewHandler.category);
+                    b.putString("reviewId",reviewHandler.reviewId);
                     intent.putExtras(b);
                     startActivity(intent);
 
@@ -361,9 +386,59 @@ public class HomeActivity extends AppCompatActivity
             reviewTitle.setText(reviewHandler.reviewTitle);
             return reviewtitles;
         }
+
+        @NonNull
+        @Override
+        public Filter getFilter() {
+            return new Filter() {
+
+                @SuppressWarnings("unchecked")
+                @Override
+                protected void publishResults(CharSequence constraint, FilterResults results) {
+
+                    searchDevices = (List<ReviewHandler>) results.values;
+                    arrayAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                protected FilterResults performFiltering(CharSequence constraint) {
+
+                    String charString = constraint.toString();
+                    if (charString.isEmpty()) {
+                        searchDevices = reviewHandlerList;
+                    } else {
+                        List<ReviewHandler> filteredList = new ArrayList<ReviewHandler>();
+                        for (ReviewHandler reviewHandler : reviewHandlerList) {
+
+                            // name match condition. this might differ depending on your requirement
+                            // here we are looking for name or phone number match
+                            if (reviewHandler.getCategorys().toLowerCase().contains(charString.toLowerCase())) {
+                                filteredList.add(reviewHandler);
+                            }
+                        }
+
+                        searchDevices = filteredList;
+                    }
+
+                    FilterResults filterResults = new FilterResults();
+                    filterResults.values = searchDevices;
+                    return filterResults;
+                }
+            };
+        }
+
+        @Override
+        public int getCount() {
+            if (searchDevices == null) {
+                return 0;
+            } else {
+                return searchDevices.size();
+            }
+        }
     }
 
-    public void fetchFeaturedData(final TextView textTitle, ImageView imageFeaturedPic, DatabaseReference mDatabase2){
+
+    public void fetchFeaturedData(final TextView textTitle, ImageView imageFeaturedPic, DatabaseReference mDatabase2) {
         mDatabase2.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -382,4 +457,5 @@ public class HomeActivity extends AppCompatActivity
 
     }
 }
+
 

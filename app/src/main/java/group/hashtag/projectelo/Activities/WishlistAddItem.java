@@ -1,8 +1,8 @@
 package group.hashtag.projectelo.Activities;
 
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
@@ -27,7 +27,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 import group.hashtag.projectelo.Handlers.WishlistItem;
 import group.hashtag.projectelo.R;
@@ -60,7 +59,7 @@ public class WishlistAddItem extends AppCompatActivity {
         setContentView(R.layout.wishlist_add_item);
 
         wlCategoriesRef = FirebaseDatabase.getInstance().getReference("Device_Category");
-        wlRef = FirebaseDatabase.getInstance().getReference("User_device").child("Device_1").child("Wishlist").child(auth.getUid());
+        wlRef = FirebaseDatabase.getInstance().getReference("User_device").child("Wishlist").child(auth.getUid());
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
