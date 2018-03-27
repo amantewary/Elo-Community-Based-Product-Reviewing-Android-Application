@@ -206,7 +206,7 @@ public class Register_Activity extends AppCompatActivity {
                                         mDatabase.child(userId).setValue(userhandler);
 
 
-                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                        startActivity(new Intent(getApplicationContext(), ProfileSetup.class));
                                         finish();
                                     }
 
