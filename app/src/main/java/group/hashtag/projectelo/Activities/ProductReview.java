@@ -129,7 +129,7 @@ public class ProductReview extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("Here", ""+databaseError);
+                Log.e("Here", "Like"+databaseError);
 
             }
         });
@@ -163,16 +163,16 @@ public class ProductReview extends AppCompatActivity {
                 for(DataSnapshot likeSnapshot : dataSnapshot.getChildren()){
                     String likeUid = likeSnapshot.getKey();
                     if(likeUid.equals(auth.getUid())){
-                        likeButton.setChecked(true);
+                        //TODO: Not able to persist the state of likeButton
                     }else{
-                        likeButton.setChecked(false);
+
                     }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Log.e("HERE", "" + databaseError);
             }
         });
         likeButton.setEventListener(new SparkEventListener() {
@@ -182,8 +182,10 @@ public class ProductReview extends AppCompatActivity {
                     String date = DateFormat.getDateTimeInstance().format(new Date());
                     String since = "Liked on "+date;
                     likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
+                    Log.e("Here", "ButtonState_if"+buttonState);
                 }else{
                     likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
+                    Log.e("Here", "ButtonState_else"+buttonState);
                 }
             }
 
