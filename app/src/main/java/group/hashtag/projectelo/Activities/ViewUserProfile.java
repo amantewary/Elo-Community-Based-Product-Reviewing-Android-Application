@@ -48,7 +48,7 @@ public class ViewUserProfile extends AppCompatActivity {
         Intent intent = getIntent();
         stringReviewUserName = intent.getStringExtra("reviewUser");
         stringReviewUserId = intent.getStringExtra("reviewUserId");
-        //Log.e("ID",stringReviewUserId);
+        Log.e("ID",stringReviewUserId);
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
