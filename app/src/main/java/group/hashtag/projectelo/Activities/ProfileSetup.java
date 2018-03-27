@@ -1,9 +1,16 @@
 package group.hashtag.projectelo.Activities;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
@@ -20,8 +27,12 @@ import group.hashtag.projectelo.R;
 public class ProfileSetup extends AppCompatActivity {
 
     TextView username;
+    Spinner country, month, year;
+    EditText webLink;
+    Button next;
     DatabaseReference userRef;
     FirebaseUser auth;
+    String stringUserId, stringUserName, stringUserEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +43,41 @@ public class ProfileSetup extends AppCompatActivity {
         auth = FirebaseAuth.getInstance().getCurrentUser();
 
         username = findViewById(R.id.username_textview);
-        userRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                UserHandler user = dataSnapshot.getValue(UserHandler.class);
-                username.setText(user.getName());
-            }
+        country = findViewById(R.id.spinnercountry);
+        month = findViewById(R.id.dob_month);
+        year = findViewById(R.id.dob_year);
+        webLink = findViewById(R.id.webLink);
+        next = findViewById(R.id.btnNext);
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+            stringUserId = bundle.getString("userId");
+            stringUserName = bundle.getString("userName");
+            stringUserEmail = bundle.getString("userEmail");
+        }
+        username.setText(stringUserName);
 
+        next.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onClick(View view) {
+                addUserDetail();
             }
         });
+
+    }
+
+    public void addUserDetail(){
+        String userCountry = country.getSelectedItem().toString();
+        String userBirthMonth = month.getSelectedItem().toString();
+        String userBirthYear = year.getSelectedItem().toString();
+        String userWebLink = webLink.getText().toString();
+
+        if(!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear)){
+            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail);
+            userRef.child(stringUserId).setValue(item);
+            startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+        }else{
+            Toast.makeText(this, "Error",Toast.LENGTH_SHORT).show();
+        }
 
     }
 }

@@ -94,7 +94,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/btnNext"
 
                 style="?android:textAppearanceSmall"
                 android:layout_width="wrap_content"

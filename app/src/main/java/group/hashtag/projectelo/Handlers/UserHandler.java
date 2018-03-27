@@ -16,6 +16,26 @@ public class UserHandler {
     public String name;
     public String UserId;
     public String DisplayPic;
+    public String country;
+    public String dob_month;
+    public String dob_year;
+    public String webLink;
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getDob_month() {
+        return dob_month;
+    }
+
+    public String getDob_year() {
+        return dob_year;
+    }
+
+    public String getWebLink() {
+        return webLink;
+    }
 
     public String getDisplayPicss() {
         return DisplayPic;
@@ -53,4 +73,13 @@ public class UserHandler {
         this.DisplayPic = DisplayPic;
     }
 
+    public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email) {
+        this.name = name;
+        UserId = userId;
+        this.country = country;
+        this.dob_month = dob_month;
+        this.dob_year = dob_year;
+        this.webLink = webLink;
+        this.email = email;
+    }
 }
