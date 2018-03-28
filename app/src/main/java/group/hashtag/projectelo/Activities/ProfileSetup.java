@@ -27,7 +27,7 @@ import group.hashtag.projectelo.R;
 public class ProfileSetup extends AppCompatActivity {
 
     TextView username;
-    Spinner country, month, year,gender;
+    Spinner country, month, year,date,gender;
     EditText webLink;
     Button next;
     DatabaseReference userRef;
@@ -44,6 +44,7 @@ public class ProfileSetup extends AppCompatActivity {
 
         username = findViewById(R.id.username_textview);
         country = findViewById(R.id.spinnercountry);
+        date = findViewById(R.id.dob_date);
         month = findViewById(R.id.dob_month);
         year = findViewById(R.id.dob_year);
         gender = findViewById(R.id.spinner_gender);
@@ -68,13 +69,14 @@ public class ProfileSetup extends AppCompatActivity {
 
     public void addUserDetail(){
         String userCountry = country.getSelectedItem().toString();
+        String userBirthDate = date.getSelectedItem().toString();
         String userBirthMonth = month.getSelectedItem().toString();
         String userBirthYear = year.getSelectedItem().toString();
         String userGender = gender.getSelectedItem().toString();
         String userWebLink = webLink.getText().toString();
 
         if(!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear)){
-            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender);
+            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate);
             userRef.child(stringUserId).setValue(item);
             startActivity(new Intent(getApplicationContext(),HomeActivity.class));
         }else{
