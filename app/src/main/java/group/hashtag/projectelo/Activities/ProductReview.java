@@ -63,6 +63,13 @@ public class ProductReview extends AppCompatActivity {
     Map<String, Object> mapUser;
     Map<String, Object> mapCommentAuthor;
     String userName;
+    String userWebLink;
+    String userEmail;
+    String userCountry;
+    String userDobDate;
+    String userDobMonth;
+    String userDobYear;
+    String userGender;
     String userId;
     String commentAuthorId;
     String commentAuthorName;
@@ -125,6 +132,13 @@ public class ProductReview extends AppCompatActivity {
                 Log.e("Here", "" + mapUser);
                 userName = mapUser.get("name").toString();
                 userId = mapUser.get("UserId").toString();
+                userEmail = mapUser.get("email").toString();
+                userCountry = mapUser.get("country").toString();
+                userDobDate = mapUser.get("dob_date").toString();
+                userDobMonth = mapUser.get("dob_month").toString();
+                userDobYear = mapUser.get("dob_year").toString();
+                userGender = mapUser.get("gender").toString();
+                userWebLink = mapUser.get("webLink").toString();
             }
 
             @Override
@@ -145,6 +159,13 @@ public class ProductReview extends AppCompatActivity {
                     Intent intent = new Intent(ProductReview.this, ViewUserProfile.class);
                     intent.putExtra("reviewUserId", userId);
                     intent.putExtra("reviewUser", userName);
+                    intent.putExtra("reviewUserCountry", userCountry);
+                    intent.putExtra("reviewUserDate", userDobDate);
+                    intent.putExtra("reviewUserMonth", userDobMonth);
+                    intent.putExtra("reviewUserYear", userDobYear);
+                    intent.putExtra("reviewUserEmail", userEmail);
+                    intent.putExtra("reviewUserGender", userGender);
+                    intent.putExtra("reviewUserWebLink", userWebLink);
                     startActivity(intent);
                 }
             }

@@ -51,7 +51,7 @@
                         app:layout_constraintRight_toRightOf="parent" />
 
                     <TextView
-                        android:id="@+id/textView2"
+                        android:id="@+id/view_country_textview"
                         style="@style/Base.TextAppearance.AppCompat.Body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -259,7 +259,7 @@
                     app:srcCompat="@drawable/ic_person_black_24dp" />
 
                 <TextView
-                    android:id="@+id/textView6"
+                    android:id="@+id/view_email_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -281,10 +281,10 @@
                     android:tint="@color/colorAccent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                    app:srcCompat="@android:drawable/stat_sys_phone_call" />
+                    app:srcCompat="@drawable/ic_date" />
 
                 <TextView
-                    android:id="@+id/textView8"
+                    android:id="@+id/view_dob_date_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -294,7 +294,7 @@
                     android:text="+1 (902) 579-9605"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/imageView2"
-                    app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                    app:layout_constraintTop_toBottomOf="@+id/view_email_textview" />
 
 
                 <ImageView
@@ -305,10 +305,10 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView4"
-                    app:srcCompat="@drawable/ic_comment" />
+                    app:srcCompat="@drawable/ic_weblink" />
 
                 <TextView
-                    android:id="@+id/textView7"
+                    android:id="@+id/view_gender_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -318,7 +318,7 @@
                     android:text="25/09/1992"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/imageView4"
-                    app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                    app:layout_constraintTop_toBottomOf="@+id/view_dob_date_textview" />
 
                 <ImageView
                     android:id="@+id/imageView3"
@@ -332,6 +332,7 @@
                     app:srcCompat="@android:drawable/sym_action_email" />
 
                 <TextView
+                    android:id="@+id/view_weblink_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
@@ -341,7 +342,27 @@
                     android:text="Show all comments"
                     android:textStyle="bold"
                     app:layout_constraintStart_toEndOf="@+id/imageView5"
-                    app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                    app:layout_constraintTop_toBottomOf="@+id/view_gender_textview" />
+
+                <TextView
+                    android:id="@+id/view_dob_month_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="TextView"
+                    android:textStyle="bold"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/view_dob_date_textview"
+                    app:layout_constraintStart_toEndOf="@+id/view_dob_date_textview" />
+
+                <TextView
+                    android:id="@+id/view_dob_year_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_marginStart="8dp"
+                    android:text="TextView"
+                    android:textStyle="bold"
+                    app:layout_constraintBaseline_toBaselineOf="@+id/view_dob_month_textview"
+                    app:layout_constraintStart_toEndOf="@+id/view_dob_month_textview" />
 
             </android.support.constraint.ConstraintLayout>
 
