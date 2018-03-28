@@ -76,6 +76,8 @@
             android:label="@string/title_activity_user_device"
             android:theme="@style/MyMaterialTheme" />
         <activity android:name=".Activities.UserAddDevices"
+            android:theme="@style/MyMaterialTheme"/>
+        <activity android:name=".Activities.ProfileSetup"
             android:theme="@style/MyMaterialTheme">
 
         </activity>

@@ -30,11 +30,25 @@ public class ViewUserProfile extends AppCompatActivity {
     Toolbar toolbar;
 
     TextView viewUserName;
+    TextView viewUserCountryText;
+    TextView viewUserDateText;
+    TextView viewUserMonthText;
+    TextView viewUserYearText;
+    TextView viewUserEmailText;
+    TextView viewUserWeblinkText;
+    TextView viewUserGenderText;
     Button followButton;
     private CircleImageView userProfilePic;
     String stringReviewUserName;
     String stringReviewUserId;
     String follow_status;
+    String stringReviewUserEmail;
+    String stringReviewUserDobDate;
+    String stringReviewUserDobMonth;
+    String stringReviewUserDobYear;
+    String stringReviewUserGender;
+    String stringReviewUserWebLink;
+    String stringReviewUserCountry;
 
     DatabaseReference followRef;
     FirebaseUser auth;
@@ -48,13 +62,29 @@ public class ViewUserProfile extends AppCompatActivity {
         Intent intent = getIntent();
         stringReviewUserName = intent.getStringExtra("reviewUser");
         stringReviewUserId = intent.getStringExtra("reviewUserId");
-        Log.e("ID",stringReviewUserId);
+        stringReviewUserDobDate = intent.getStringExtra("reviewUserDate");
+        stringReviewUserDobMonth = intent.getStringExtra("reviewUserMonth");
+        stringReviewUserDobYear = intent.getStringExtra("reviewUserYear");
+        stringReviewUserCountry = intent.getStringExtra("reviewUserCountry");
+        stringReviewUserGender = intent.getStringExtra("reviewUserGender");
+        stringReviewUserWebLink = intent.getStringExtra("reviewUserWebLink");
+        stringReviewUserEmail = intent.getStringExtra("reviewUserEmail");
+
+        //Log.e("ID",stringReviewUserId);
+
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
         title = findViewById(R.id.title_toolbar);
         toolbar = findViewById(R.id.toolbar);
         viewUserName = findViewById(R.id.viewUserName);
+        viewUserCountryText = findViewById(R.id.view_country_textview);
+        viewUserDateText = findViewById(R.id.view_dob_date_textview);
+        viewUserMonthText = findViewById(R.id.view_dob_month_textview);
+        viewUserYearText = findViewById(R.id.view_dob_year_textview);
+        viewUserEmailText = findViewById(R.id.view_email_textview);
+        viewUserWeblinkText = findViewById(R.id.view_weblink_textview);
+        viewUserGenderText = findViewById(R.id.view_gender_textview);
         followButton = findViewById(R.id.btnFollow);
         userProfilePic = findViewById(R.id.viewUserDisplayPic);
         title.setTypeface(ReemKufi_Regular);
@@ -70,6 +100,13 @@ public class ViewUserProfile extends AppCompatActivity {
         });
         //TODO: Displaying name of the review author on profile page.
         viewUserName.setText(stringReviewUserName);
+        viewUserEmailText.setText(stringReviewUserEmail);
+        viewUserCountryText.setText(stringReviewUserCountry);
+        viewUserDateText.setText(stringReviewUserDobDate);
+        viewUserMonthText.setText(stringReviewUserDobMonth);
+        viewUserYearText.setText(stringReviewUserDobYear);
+        viewUserWeblinkText.setText(stringReviewUserWebLink);
+        viewUserGenderText.setText(stringReviewUserGender);
 
         followRef.child(stringReviewUserId).addValueEventListener(new ValueEventListener() {
             @Override
