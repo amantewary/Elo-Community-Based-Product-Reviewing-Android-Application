@@ -70,8 +70,8 @@ public class ViewUserProfile extends AppCompatActivity {
         stringReviewUserWebLink = intent.getStringExtra("reviewUserWebLink");
         stringReviewUserEmail = intent.getStringExtra("reviewUserEmail");
 
-
         //Log.e("ID",stringReviewUserId);
+
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
