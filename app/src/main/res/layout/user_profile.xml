@@ -285,7 +285,7 @@
                     android:tint="@color/colorAccent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                    app:srcCompat="@android:drawable/stat_sys_phone_call" />
+                    app:srcCompat="@drawable/ic_date" />
 
                 <TextView
                     android:id="@+id/dob_date_textview"
@@ -309,7 +309,7 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView4"
-                    app:srcCompat="@drawable/ic_comment" />
+                    app:srcCompat="@drawable/ic_weblink" />
 
                 <TextView
                     android:id="@+id/gender_textview"
@@ -353,6 +353,7 @@
                     android:layout_height="19dp"
                     android:layout_marginStart="8dp"
                     android:text="TextView"
+                    android:textStyle="bold"
                     app:layout_constraintBaseline_toBaselineOf="@+id/dob_date_textview"
                     app:layout_constraintStart_toEndOf="@+id/dob_date_textview" />
 
@@ -362,6 +363,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:text="TextView"
+                    android:textStyle="bold"
                     app:layout_constraintBaseline_toBaselineOf="@+id/dob_month_textview"
                     app:layout_constraintStart_toEndOf="@+id/dob_month_textview" />
 
