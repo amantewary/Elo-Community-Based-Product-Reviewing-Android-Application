@@ -37,10 +37,7 @@
             android:name=".Activities.UserProfile"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
-            android:theme="@style/MyMaterialTheme" >
-
-
-        </activity>
+            android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.FeaturedArticle"
             android:theme="@style/MyMaterialTheme" />
@@ -75,10 +72,13 @@
             android:name=".Activities.UserDeviceActivity"
             android:label="@string/title_activity_user_device"
             android:theme="@style/MyMaterialTheme" />
-        <activity android:name=".Activities.UserAddDevices"
-            android:theme="@style/MyMaterialTheme">
-
-        </activity>
+        <activity
+            android:name=".Activities.UserAddDevices"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".Activities.SelectPhotoActivity"
+            android:label="@string/title_activity_select_photo"
+            android:theme="@style/MyMaterialTheme"></activity>
     </application>
 
 </manifest>
