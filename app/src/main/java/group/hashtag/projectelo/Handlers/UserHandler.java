@@ -22,6 +22,11 @@ public class UserHandler {
     public String dob_year;
     public String webLink;
     public String gender;
+    public String likes;
+
+    public String getLikes() {
+        return likes;
+    }
 
     public String getCountry() {
         return country;
@@ -84,6 +89,18 @@ public class UserHandler {
         this.DisplayPic = DisplayPic;
     }
 
+    public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender, String dob_date, String likes) {
+        this.name = name;
+        UserId = userId;
+        this.country = country;
+        this.dob_date = dob_date;
+        this.dob_month = dob_month;
+        this.dob_year = dob_year;
+        this.webLink = webLink;
+        this.email = email;
+        this.gender = gender;
+        this.likes = likes;
+    }
     public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender, String dob_date) {
         this.name = name;
         UserId = userId;
@@ -95,4 +112,5 @@ public class UserHandler {
         this.email = email;
         this.gender = gender;
     }
+
 }
