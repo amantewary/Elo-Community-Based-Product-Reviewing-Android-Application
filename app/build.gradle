@@ -40,6 +40,7 @@ dependencies {
     compile 'com.google.firebase:firebase-storage:11.8.0'
     compile 'com.github.varunest:sparkbutton:1.0.5'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
+    compile 'in.championswimmer:SimpleFingerGestures_Android_Library:1.2'
     repositories {
         mavenCentral()
     }

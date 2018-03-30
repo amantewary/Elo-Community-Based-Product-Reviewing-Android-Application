@@ -34,8 +34,8 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import group.hashtag.projectelo.Activities.OtherUserActivities.ViewUserProfile;
 import group.hashtag.projectelo.Handlers.CommentHandler;
-import group.hashtag.projectelo.Handlers.WishlistItem;
 import group.hashtag.projectelo.R;
 
 public class ProductReview extends AppCompatActivity {

@@ -341,6 +341,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
+                    android:autoLink="web"
                     android:paddingLeft="20dp"
                     android:text="Show all comments"
                     android:textStyle="bold"
