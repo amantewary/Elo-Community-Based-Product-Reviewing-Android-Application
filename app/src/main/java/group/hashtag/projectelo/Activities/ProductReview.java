@@ -74,7 +74,6 @@ public class ProductReview extends AppCompatActivity {
     String commentAuthorId;
     String commentAuthorName;
     String commentContent;
-    Boolean clicked;
     SlidingUpPanelLayout commentLayout;
     DatabaseReference userRef;
     DatabaseReference commentRef;
@@ -111,7 +110,6 @@ public class ProductReview extends AppCompatActivity {
         reviewDevice = findViewById(R.id.reviewDeviceName);
         commentText= findViewById(R.id.comment);
         commentPost = findViewById(R.id.postComment);
-        clicked = false;
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             stringReviewAuthor = bundle.getString("reviewAuthor");
@@ -171,6 +169,7 @@ public class ProductReview extends AppCompatActivity {
                 }
             }
         });
+
         commentRef = FirebaseDatabase.getInstance().getReference("newComment");
         commentPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,15 +177,20 @@ public class ProductReview extends AppCompatActivity {
                 addComment();
             }
         });
+
         likeRef = FirebaseDatabase.getInstance().getReference("likes");
         likeRef.child(stringReviewId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot likeSnapshot : dataSnapshot.getChildren()){
                     String likeUid = likeSnapshot.getKey();
+                    Log.e("Here", "UID=>1 "+likeUid);
                     if(likeUid.equals(auth.getUid())){
+                        Log.e("Here", "UID=>True "+likeUid);
                         likeButton.setChecked(true);
+                        break;
                     }else{
+                        Log.e("Here", "UID=>False "+likeUid);
                         likeButton.setChecked(false);
                     }
                 }
