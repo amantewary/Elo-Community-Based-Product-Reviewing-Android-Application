@@ -4,10 +4,10 @@
     <item
         android:id="@+id/action_cam"
         android:icon="@drawable/ic_camera"
-        android:title="Camera" />
+        android:title="Take Photo" />
     <item
         android:id="@+id/action_gal"
         android:icon="@drawable/ic_gallery"
-        android:title="Gallery"/>
+        android:title="Choose Photo"/>
 
 </menu>
