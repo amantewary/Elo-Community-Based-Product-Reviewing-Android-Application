@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="group.hashtag.projectelo">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_elo_rounded_round"
@@ -65,7 +65,7 @@
             android:name=".Activities.WishlistAddItem"
             android:theme="@style/MyMaterialTheme" />
         <activity
-            android:name=".Activities.ViewUserProfile"
+            android:name=".Activities.OtherUserActivities.ViewUserProfile"
             android:theme="@style/MyMaterialTheme" />
         <activity android:name=".Activities.FollowerList" />
         <activity
@@ -75,6 +75,15 @@
         <activity
             android:name=".Activities.UserAddDevices"
             android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".Activities.ProfileSetup"
+            android:theme="@style/MyMaterialTheme"/>
+        <activity android:name=".Activities.EditUserProfile"
+            android:theme="@style/MyMaterialTheme"/>
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".Activities.OtherUserActivities.OtherUserWishlist" />
+        <activity android:name=".Activities.OtherUserActivities.OtherUserFollowers" />
+        <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity"></activity>
         <activity
             android:name=".Activities.SelectPhotoActivity"
             android:label="@string/title_activity_select_photo"
