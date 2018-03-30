@@ -199,7 +199,16 @@ public class UserProfile extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        if (id == R.id.action_setting) {
+            Intent intent = new Intent (UserProfile.this, EditUserProfile.class);
+            intent.putExtra("username",usernameText.getText().toString());
+            intent.putExtra("useremail",userEmailText.getText().toString());
+            intent.putExtra("usergender",userGenderText.getText().toString());
+            intent.putExtra("userweblink",userWeblinkText.getText().toString());
+            startActivity(intent);
+        }
+            return super.onOptionsItemSelected(item);
     }
 
     public void loadDisplayPics(String url){

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="group.hashtag.projectelo.Activities.ViewUserProfile">
+    tools:context="group.hashtag.projectelo.Activities.OtherUserActivities.ViewUserProfile">
 
     <include layout="@layout/toolbar">
 
@@ -156,6 +156,7 @@
                         android:weightSum="3">
 
                         <LinearLayout
+                            android:id="@+id/other_user_devices"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -170,6 +171,7 @@
                                 android:textSize="20sp" />
 
                             <TextView
+                                android:id="@+id/other_user_devices_count_text_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="10dp"
@@ -181,7 +183,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/btn_view_wish"
+                            android:id="@+id/other_user_wishlist"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -198,7 +200,7 @@
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:id="@+id/viewWishlistCounter"
+                                android:id="@+id/other_user_wishlist_count_text_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="10dp"
@@ -211,6 +213,7 @@
 
                         <LinearLayout
                             android:layout_width="0dp"
+                            android:id="@+id/other_user_followers"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -224,6 +227,7 @@
                                 android:textSize="20sp" />
 
                             <TextView
+                                android:id="@+id/other_user_followers_count_text_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="10dp"
@@ -338,6 +342,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
+                    android:autoLink="web"
                     android:paddingLeft="20dp"
                     android:text="Show all comments"
                     android:textStyle="bold"

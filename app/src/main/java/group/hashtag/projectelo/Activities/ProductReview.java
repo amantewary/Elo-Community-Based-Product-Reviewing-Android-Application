@@ -34,8 +34,11 @@ import java.util.List;
 import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import group.hashtag.projectelo.Activities.OtherUserActivities.ViewUserProfile;
 import group.hashtag.projectelo.Handlers.CommentHandler;
+import group.hashtag.projectelo.Handlers.UserHandler;
 import group.hashtag.projectelo.Handlers.WishlistItem;
+
 import group.hashtag.projectelo.R;
 
 public class ProductReview extends AppCompatActivity {
@@ -74,6 +77,7 @@ public class ProductReview extends AppCompatActivity {
     String commentAuthorId;
     String commentAuthorName;
     String commentContent;
+    Double likeNumber;
     SlidingUpPanelLayout commentLayout;
     DatabaseReference userRef;
     DatabaseReference commentRef;
@@ -110,7 +114,6 @@ public class ProductReview extends AppCompatActivity {
         reviewDevice = findViewById(R.id.reviewDeviceName);
         commentText= findViewById(R.id.comment);
         commentPost = findViewById(R.id.postComment);
-
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             stringReviewAuthor = bundle.getString("reviewAuthor");
@@ -143,7 +146,7 @@ public class ProductReview extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("Here", "Like"+databaseError);
+                Log.e("Here", ""+databaseError);
 
             }
         });
@@ -170,6 +173,7 @@ public class ProductReview extends AppCompatActivity {
                 }
             }
         });
+
         commentRef = FirebaseDatabase.getInstance().getReference("newComment");
         commentPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,16 +181,21 @@ public class ProductReview extends AppCompatActivity {
                 addComment();
             }
         });
+        likeNumber = 0.0;
         likeRef = FirebaseDatabase.getInstance().getReference("likes");
         likeRef.child(stringReviewId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot likeSnapshot : dataSnapshot.getChildren()){
                     String likeUid = likeSnapshot.getKey();
+                    Log.e("Here", "UID=>1 "+likeUid);
                     if(likeUid.equals(auth.getUid())){
-                        //TODO: Not able to persist the state of likeButton
+                        Log.e("Here", "UID=>True "+likeUid);
+                        likeButton.setChecked(true);
+                        break;
                     }else{
-
+                        Log.e("Here", "UID=>False "+likeUid);
+                        likeButton.setChecked(false);
                     }
                 }
             }
@@ -196,17 +205,24 @@ public class ProductReview extends AppCompatActivity {
                 Log.e("HERE", "" + databaseError);
             }
         });
+
         likeButton.setEventListener(new SparkEventListener() {
             @Override
-            public void onEvent(ImageView button, boolean buttonState) {
-                if(buttonState){
-                    String date = DateFormat.getDateTimeInstance().format(new Date());
-                    String since = "Liked on "+date;
-                    likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
-                    Log.e("Here", "ButtonState_if"+buttonState);
-                }else{
-                    likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
-                    Log.e("Here", "ButtonState_else"+buttonState);
+            public void onEvent(ImageView button, final boolean buttonState) {
+                    if(buttonState){
+                        String date = DateFormat.getDateTimeInstance().format(new Date());
+                        String since = "Liked on "+date;
+                        likeNumber += 1.0;
+                        UserHandler addLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString());
+                        userRef.child(userId).setValue(addLike);
+                        likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
+                        Log.e("Here", "ButtonState_if"+buttonState);
+                    }else{
+                        likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
+                        Log.e("Here", "ButtonState_else"+buttonState);
+                        likeNumber -= 1.0;
+                        UserHandler subLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString());
+                        userRef.child(stringReviewAuthor).setValue(subLike);
                 }
             }
 

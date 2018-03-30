@@ -277,7 +277,6 @@ public class Register_Activity extends AppCompatActivity {
                             Log.e(Register_Activity.class.getCanonicalName(), "signInWithCredential:failure", task.getException());
                         }
 
-                        // ...
                     }
                 });
     }
