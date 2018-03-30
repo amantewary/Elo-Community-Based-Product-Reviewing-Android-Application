@@ -74,6 +74,7 @@ public class ProductReview extends AppCompatActivity {
     String commentAuthorId;
     String commentAuthorName;
     String commentContent;
+    Boolean clicked;
     SlidingUpPanelLayout commentLayout;
     DatabaseReference userRef;
     DatabaseReference commentRef;
@@ -110,7 +111,7 @@ public class ProductReview extends AppCompatActivity {
         reviewDevice = findViewById(R.id.reviewDeviceName);
         commentText= findViewById(R.id.comment);
         commentPost = findViewById(R.id.postComment);
-
+        clicked = false;
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
             stringReviewAuthor = bundle.getString("reviewAuthor");
@@ -143,7 +144,7 @@ public class ProductReview extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("Here", "Like"+databaseError);
+                Log.e("Here", ""+databaseError);
 
             }
         });
@@ -178,37 +179,62 @@ public class ProductReview extends AppCompatActivity {
             }
         });
         likeRef = FirebaseDatabase.getInstance().getReference("likes");
-        likeRef.child(stringReviewId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot likeSnapshot : dataSnapshot.getChildren()){
-                    String likeUid = likeSnapshot.getKey();
-                    if(likeUid.equals(auth.getUid())){
-                        //TODO: Not able to persist the state of likeButton
-                    }else{
+//        likeRef.child(stringReviewId).addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for(DataSnapshot likeSnapshot : dataSnapshot.getChildren()){
+//                    String likeUid = likeSnapshot.getKey();
+//                    if(likeUid.equals(auth.getUid())){
+//                        //TODO: Not able to persist the state of likeButton
+//                    }else{
+//
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.e("HERE", "" + databaseError);
+//            }
+//        });
 
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("HERE", "" + databaseError);
-            }
-        });
         likeButton.setEventListener(new SparkEventListener() {
             @Override
-            public void onEvent(ImageView button, boolean buttonState) {
-                if(buttonState){
-                    String date = DateFormat.getDateTimeInstance().format(new Date());
-                    String since = "Liked on "+date;
-                    likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
-                    Log.e("Here", "ButtonState_if"+buttonState);
-                }else{
-                    likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
-                    Log.e("Here", "ButtonState_else"+buttonState);
-                }
-            }
+            public void onEvent(ImageView button, final boolean buttonState) {
+                    likeRef.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if(buttonState){
+                                    if(dataSnapshot.child(stringReviewId).hasChild(auth.getUid())){
+                                        likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
+                                        clicked = false;
+                                    }else{
+//                                        String date = DateFormat.getDateTimeInstance().format(new Date());
+//                                        String since = "Liked on "+date;
+                                        likeRef.child(stringReviewId).child(auth.getUid()).setValue("since");
+                                        clicked = false;
+
+                                     }
+                            }else{
+                                //Do Nothing
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            Log.e("Here", "Like"+databaseError);
+
+                        }
+                    });
+//                    String date = DateFormat.getDateTimeInstance().format(new Date());
+//                    String since = "Liked on "+date;
+//                    likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
+//                    Log.e("Here", "ButtonState_if"+buttonState);
+//                }else{
+////                    likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
+////                    Log.e("Here", "ButtonState_else"+buttonState);
+//        }
+        }
 
             @Override
             public void onEventAnimationEnd(ImageView button, boolean buttonState) {
