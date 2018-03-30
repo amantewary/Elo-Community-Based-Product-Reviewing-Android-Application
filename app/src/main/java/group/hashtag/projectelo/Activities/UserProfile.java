@@ -205,6 +205,7 @@ public class UserProfile extends AppCompatActivity {
             intent.putExtra("username",usernameText.getText().toString());
             intent.putExtra("useremail",userEmailText.getText().toString());
             intent.putExtra("usergender",userGenderText.getText().toString());
+            intent.putExtra("userweblink",userWeblinkText.getText().toString());
             startActivity(intent);
         }
             return super.onOptionsItemSelected(item);

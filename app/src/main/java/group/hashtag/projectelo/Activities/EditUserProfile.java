@@ -30,21 +30,23 @@ public class EditUserProfile extends AppCompatActivity {
     Spinner editCountry, editMonth, editYear, editDate;
     EditText editWebLink;
     Button save;
+    Button cancel;
     DatabaseReference userRef;
     FirebaseUser auth;
-    String stringUserGender, stringUserName, stringUserEmail;
+    String stringUserGender, stringUserName, stringUserEmail, stringWebLink;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_user_profile);
+
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
+        auth = FirebaseAuth.getInstance().getCurrentUser();
+        userRef = FirebaseDatabase.getInstance().getReference("users");
 
         toolbar = findViewById(R.id.toolbar);
         title = findViewById(R.id.title_toolbar);
-        auth = FirebaseAuth.getInstance().getCurrentUser();
-        userRef = FirebaseDatabase.getInstance().getReference("users");
         editUsername = findViewById(R.id.edit_username);
         editCountry = findViewById(R.id.edit_spinnercountry);
         editMonth = findViewById(R.id.edit_dob_month);
@@ -52,11 +54,13 @@ public class EditUserProfile extends AppCompatActivity {
         editDate = findViewById(R.id.edit_dob_date);
         editWebLink = findViewById(R.id.edit_webLink);
         save = findViewById(R.id.btnSave);
+        cancel = findViewById(R.id.editCancel);
+
         Intent intent = getIntent();
         stringUserName = intent.getStringExtra("username");
         stringUserEmail = intent.getStringExtra("useremail");
         stringUserGender = intent.getStringExtra("usergender");
-        editUsername.setText(stringUserName);
+        stringWebLink = intent.getStringExtra("userweblink");
 
         title.setTypeface(ReemKufi_Regular);
         setSupportActionBar(toolbar);
@@ -69,9 +73,12 @@ public class EditUserProfile extends AppCompatActivity {
             }
         });
 
+        editWebLink.setText(stringWebLink);
+        editUsername.setText(stringUserName);
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 String id = auth.getUid();
                 String newUsername = editUsername.getText().toString().trim();
                 String newCountry = editCountry.getSelectedItem().toString();
@@ -85,11 +92,20 @@ public class EditUserProfile extends AppCompatActivity {
                     UserHandler newDetails = new UserHandler(newUsername, id, newCountry, newMonth, newYear, newWebLink, stringUserEmail, stringUserGender, newDate);
                     userRef.child(id).setValue(newDetails);
                     finish();
+
                 }else{
+
                     editUsername.setError("Username cannot be empty.");
+
                 }
             }
         });
 
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 }
