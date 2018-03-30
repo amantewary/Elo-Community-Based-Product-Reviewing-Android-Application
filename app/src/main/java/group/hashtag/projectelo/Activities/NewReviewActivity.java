@@ -1,5 +1,6 @@
 package group.hashtag.projectelo.Activities;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -144,6 +145,15 @@ public class NewReviewActivity extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        findViewById(R.id.new_review_image).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent ReviewPic = new Intent(NewReviewActivity.this, ReviewPhotoSelection.class);
+                startActivity(ReviewPic);
 
             }
         });
