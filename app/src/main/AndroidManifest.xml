@@ -37,33 +37,7 @@
             android:name=".Activities.UserProfile"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
->>>>>>> master
-<<<<<<< Updated upstream
             android:theme="@style/MyMaterialTheme"></activity>
-=======
-            android:theme="@style/MyMaterialTheme" />
->>>>>>> Stashed changes
-<<<<<<< HEAD
-=======
-            android:theme="@style/MyMaterialTheme" />
->>>>>>> Stashed changes
-=======
-            android:theme="@style/MyMaterialTheme"></activity>
->>>>>>> parent of c601c25... Auto stash before merge of "master" and "origin/master"
-=======
->>>>>>> master
-=======
-<<<<<<< Updated upstream
-            android:theme="@style/MyMaterialTheme"></activity>
-=======
-            android:theme="@style/MyMaterialTheme" />
->>>>>>> Stashed changes
->>>>>>> master
         <activity
             android:name=".Activities.FeaturedArticle"
             android:theme="@style/MyMaterialTheme" />
@@ -103,47 +77,12 @@
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.ProfileSetup"
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
             android:theme="@style/MyMaterialTheme"/>
         <activity android:name=".Activities.EditUserProfile"
             android:theme="@style/MyMaterialTheme"/>
-=======
-=======
->>>>>>> Stashed changes
-            android:theme="@style/MyMaterialTheme" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserWishlist" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserFollowers" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity"></activity>
-<<<<<<< Updated upstream
->>>>>>> Stashed changes
-=======
->>>>>>> Stashed changes
-=======
-            android:theme="@style/MyMaterialTheme"/>
-        <activity android:name=".Activities.EditUserProfile"
-            android:theme="@style/MyMaterialTheme"/>
->>>>>>> parent of c601c25... Auto stash before merge of "master" and "origin/master"
-=======
-=======
->>>>>>> master
-<<<<<<< Updated upstream
-            android:theme="@style/MyMaterialTheme"/>
-        <activity android:name=".Activities.EditUserProfile"
-            android:theme="@style/MyMaterialTheme"/>
-=======
-            android:theme="@style/MyMaterialTheme" />
-        <activity android:name=".Activities.OtherUserActivities.OtherUserWishlist" />
-        <activity android:name=".Activities.OtherUserActivities.OtherUserFollowers" />
-        <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity"></activity>
->>>>>>> Stashed changes
-<<<<<<< HEAD
->>>>>>> master
-=======
->>>>>>> master
     </application>
 
 </manifest>
