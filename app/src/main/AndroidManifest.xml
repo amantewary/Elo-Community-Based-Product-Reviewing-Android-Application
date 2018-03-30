@@ -39,6 +39,7 @@
             android:parentActivityName=".Activities.HomeActivity"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 =======
 >>>>>>> master
@@ -55,6 +56,13 @@
             android:theme="@style/MyMaterialTheme"></activity>
 >>>>>>> parent of c601c25... Auto stash before merge of "master" and "origin/master"
 =======
+>>>>>>> master
+=======
+<<<<<<< Updated upstream
+            android:theme="@style/MyMaterialTheme"></activity>
+=======
+            android:theme="@style/MyMaterialTheme" />
+>>>>>>> Stashed changes
 >>>>>>> master
         <activity
             android:name=".Activities.FeaturedArticle"
@@ -97,6 +105,7 @@
             android:name=".Activities.ProfileSetup"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
             android:theme="@style/MyMaterialTheme"/>
@@ -119,6 +128,8 @@
             android:theme="@style/MyMaterialTheme"/>
 >>>>>>> parent of c601c25... Auto stash before merge of "master" and "origin/master"
 =======
+=======
+>>>>>>> master
 <<<<<<< Updated upstream
             android:theme="@style/MyMaterialTheme"/>
         <activity android:name=".Activities.EditUserProfile"
@@ -129,6 +140,9 @@
         <activity android:name=".Activities.OtherUserActivities.OtherUserFollowers" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity"></activity>
 >>>>>>> Stashed changes
+<<<<<<< HEAD
+>>>>>>> master
+=======
 >>>>>>> master
     </application>
 
