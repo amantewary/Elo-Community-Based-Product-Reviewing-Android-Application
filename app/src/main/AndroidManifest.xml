@@ -4,6 +4,7 @@
     package="group.hashtag.projectelo">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_elo_rounded_round"
@@ -37,7 +38,6 @@
             android:name=".Activities.UserProfile"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
-            android:theme="@style/MyMaterialTheme"></activity>
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.FeaturedArticle"
@@ -78,13 +78,19 @@
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.ProfileSetup"
-            android:theme="@style/MyMaterialTheme"/>
-        <activity android:name=".Activities.EditUserProfile"
-            android:theme="@style/MyMaterialTheme"/>
             android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".Activities.EditUserProfile"
+            android:theme="@style/MyMaterialTheme" />
+        android:theme="@style/MyMaterialTheme" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserWishlist" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserFollowers" />
-        <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity"></activity>
+        <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity" />
+        <activity
+            android:name=".Activities.SelectPhotoActivity"
+            android:label="@string/title_activity_select_photo"
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".Activities.ReviewPhotoSelection"></activity>
     </application>
 
 </manifest>
