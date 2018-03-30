@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="group.hashtag.projectelo">
 
     <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher_elo_rounded_round"
@@ -38,18 +38,24 @@
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<< Updated upstream
+=======
+>>>>>>> master
 <<<<<<< Updated upstream
             android:theme="@style/MyMaterialTheme"></activity>
 =======
             android:theme="@style/MyMaterialTheme" />
 >>>>>>> Stashed changes
+<<<<<<< HEAD
 =======
             android:theme="@style/MyMaterialTheme" />
 >>>>>>> Stashed changes
 =======
             android:theme="@style/MyMaterialTheme"></activity>
 >>>>>>> parent of c601c25... Auto stash before merge of "master" and "origin/master"
+=======
+>>>>>>> master
         <activity
             android:name=".Activities.FeaturedArticle"
             android:theme="@style/MyMaterialTheme" />
@@ -77,7 +83,7 @@
             android:name=".Activities.WishlistAddItem"
             android:theme="@style/MyMaterialTheme" />
         <activity
-            android:name=".Activities.ViewUserProfile"
+            android:name=".Activities.OtherUserActivities.ViewUserProfile"
             android:theme="@style/MyMaterialTheme" />
         <activity android:name=".Activities.FollowerList" />
         <activity
@@ -89,6 +95,7 @@
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.ProfileSetup"
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
@@ -111,6 +118,18 @@
         <activity android:name=".Activities.EditUserProfile"
             android:theme="@style/MyMaterialTheme"/>
 >>>>>>> parent of c601c25... Auto stash before merge of "master" and "origin/master"
+=======
+<<<<<<< Updated upstream
+            android:theme="@style/MyMaterialTheme"/>
+        <activity android:name=".Activities.EditUserProfile"
+            android:theme="@style/MyMaterialTheme"/>
+=======
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".Activities.OtherUserActivities.OtherUserWishlist" />
+        <activity android:name=".Activities.OtherUserActivities.OtherUserFollowers" />
+        <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity"></activity>
+>>>>>>> Stashed changes
+>>>>>>> master
     </application>
 
 </manifest>
