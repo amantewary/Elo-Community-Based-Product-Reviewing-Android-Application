@@ -12,6 +12,6 @@ public class ProfileSetupCont extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile_setup);
 
-
+        //Todo: useless
     }
 }
