@@ -77,8 +77,9 @@
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.ProfileSetup"
-            android:theme="@style/MyMaterialTheme"></activity>
-        <activity android:name=".Activities.EditUserProfile"></activity>
+            android:theme="@style/MyMaterialTheme"/>
+        <activity android:name=".Activities.EditUserProfile"
+            android:theme="@style/MyMaterialTheme"/>
     </application>
 
 </manifest>
