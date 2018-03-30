@@ -33,6 +33,7 @@ public class ProfileSetup extends AppCompatActivity {
     DatabaseReference userRef;
     FirebaseUser auth;
     String stringUserId, stringUserName, stringUserEmail;
+    Double likes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,6 @@ public class ProfileSetup extends AppCompatActivity {
         });
 
     }
-
     public void addUserDetail(){
         String userCountry = country.getSelectedItem().toString();
         String userBirthDate = date.getSelectedItem().toString();
@@ -74,9 +74,9 @@ public class ProfileSetup extends AppCompatActivity {
         String userBirthYear = year.getSelectedItem().toString();
         String userGender = gender.getSelectedItem().toString();
         String userWebLink = webLink.getText().toString();
-
+        likes = 0.0;
         if(!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear)){
-            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate);
+            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate, likes.toString());
             userRef.child(stringUserId).setValue(item);
             startActivity(new Intent(getApplicationContext(),HomeActivity.class));
         }else{
