@@ -160,9 +160,16 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        displayImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profilepic = new Intent(UserProfile.this, SelectPhotoActivity.class);
+                startActivity(profilepic);
+
+            }
+        });
+
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
