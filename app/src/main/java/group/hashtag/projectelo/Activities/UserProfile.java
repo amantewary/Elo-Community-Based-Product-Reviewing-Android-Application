@@ -37,6 +37,13 @@ public class UserProfile extends AppCompatActivity {
     TextView wishlistCounter;
     TextView followerCounter;
     TextView deviceCounter;
+    TextView userCountryText;
+    TextView userDateText;
+    TextView userMonthText;
+    TextView userYearText;
+    TextView userEmailText;
+    TextView userWeblinkText;
+    TextView userGenderText;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
     private DatabaseReference mDatabase3;
@@ -70,6 +77,13 @@ public class UserProfile extends AppCompatActivity {
 
         title = findViewById(R.id.title_toolbar);
         usernameText = findViewById(R.id.usernameTextView);
+        userCountryText = findViewById(R.id.country_textview);
+        userDateText = findViewById(R.id.dob_date_textview);
+        userMonthText = findViewById(R.id.dob_month_textview);
+        userYearText = findViewById(R.id.dob_year_textview);
+        userEmailText = findViewById(R.id.email_textview);
+        userWeblinkText = findViewById(R.id.weblink_textview);
+        userGenderText = findViewById(R.id.gender_textview);
         wishlistCounter = findViewById(R.id.wishlistCounter);
         btnWishlist = findViewById(R.id.btn_wish);
 
@@ -79,6 +93,13 @@ public class UserProfile extends AppCompatActivity {
 
                 UserHandler user = dataSnapshot.getValue(UserHandler.class);
                 usernameText.setText(user.getName());
+                userEmailText.setText(user.getEmail());
+                userCountryText.setText(user.getCountry());
+                userDateText.setText(user.getDob_date());
+                userMonthText.setText(user.getDob_month());
+                userYearText.setText(user.getDob_year());
+                userWeblinkText.setText(user.getWebLink());
+                userGenderText.setText(user.getGender());
                 loadDisplayPics(user.getDisplayPicss());
                 Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.getDisplayPicss() + ", email " + user.getEmail());
             }
@@ -139,9 +160,16 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        displayImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profilepic = new Intent(UserProfile.this, SelectPhotoActivity.class);
+                startActivity(profilepic);
+
+            }
+        });
+
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
@@ -178,7 +206,16 @@ public class UserProfile extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        if (id == R.id.action_setting) {
+            Intent intent = new Intent (UserProfile.this, EditUserProfile.class);
+            intent.putExtra("username",usernameText.getText().toString());
+            intent.putExtra("useremail",userEmailText.getText().toString());
+            intent.putExtra("usergender",userGenderText.getText().toString());
+            intent.putExtra("userweblink",userWeblinkText.getText().toString());
+            startActivity(intent);
+        }
+            return super.onOptionsItemSelected(item);
     }
 
     public void loadDisplayPics(String url){
