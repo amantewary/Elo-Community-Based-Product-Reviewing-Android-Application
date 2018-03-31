@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -44,8 +43,8 @@ import group.hashtag.projectelo.R;
 
 public class Register_Activity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword, inputUsername;
-    private TextInputLayout emailInput, passwordInput, usernameInput;
+    private EditText inputEmail, inputPassword, inputUsername, inputConfirmPassword;
+    private TextInputLayout emailInput, passwordInput, usernameInput, confirmPasswordInput;
     private Button btnSignIn, btnSignUp;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
@@ -93,9 +92,8 @@ public class Register_Activity extends AppCompatActivity {
         emailInput = findViewById(R.id.input_layout_email_register);
         passwordInput = findViewById(R.id.input_layout_password_register);
         usernameInput = findViewById(R.id.input_layout_username_register);
-
-
-
+        confirmPasswordInput = findViewById(R.id.input_layout_confirm_password_register);
+        inputConfirmPassword = findViewById(R.id.confirm_password);
 
 
         googleButton.setOnClickListener(new View.OnClickListener() {
@@ -122,15 +120,18 @@ public class Register_Activity extends AppCompatActivity {
 
                 final String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
-                if(TextUtils.isEmpty(name)){
+                final String confirmPassword = inputConfirmPassword.getText().toString().trim();
+                if (TextUtils.isEmpty(name)) {
                     usernameInput.setError("Enter a username");
                     emailInput.setError(null);
                     passwordInput.setError(null);
+                    confirmPasswordInput.setError(null);
                     return;
                 }
                 if (TextUtils.isEmpty(email)) {
                     passwordInput.setError(null);
                     usernameInput.setError(null);
+                    confirmPasswordInput.setError(null);
                     emailInput.setError("Enter email address!");
                     return;
                 }
@@ -138,20 +139,39 @@ public class Register_Activity extends AppCompatActivity {
                 if (TextUtils.isEmpty(password)) {
                     emailInput.setError(null);
                     usernameInput.setError(null);
+                    confirmPasswordInput.setError(null);
                     passwordInput.setError("Enter correct Password");
+                    return;
+                }
+                if (TextUtils.isEmpty(confirmPassword)) {
+                    emailInput.setError(null);
+                    usernameInput.setError(null);
+                    confirmPasswordInput.setError("Enter correct Password");
+                    passwordInput.setError(null);
                     return;
                 }
 
                 if (password.length() < 6) {
                     emailInput.setError(null);
                     usernameInput.setError(null);
+                    confirmPasswordInput.setError(null);
                     passwordInput.setError("Please keep your length less than 6");
                     return;
                 }
-                if(!isEmailValid(email)){
+                if (!isEmailValid(email)) {
                     passwordInput.setError(null);
                     usernameInput.setError(null);
+                    confirmPasswordInput.setError(null);
                     emailInput.setError("Enter a valid email address");
+                    return;
+                }
+                if (!password.equals(confirmPassword)) {
+                    passwordInput.setError("Re-enter the password");
+                    usernameInput.setError(null);
+                    inputConfirmPassword.setText("");
+                    inputConfirmPassword.setText("");
+                    confirmPasswordInput.setError("Re-enter the password");
+                    emailInput.setError(null);
                     return;
                 }
 
@@ -175,18 +195,25 @@ public class Register_Activity extends AppCompatActivity {
                                         emailInput.setError(null);
                                         passwordInput.setError(null);
                                         usernameInput.setError(null);
+                                        confirmPasswordInput.setError(null);
                                         String userId = user.getUid();
                                         UserHandler userHandler = new UserHandler();
                                         userHandler.setName(name);
                                         Log.e(Register_Activity.class.getCanonicalName(),email);
-                                        UserHandler userhandler = new UserHandler(name, email, userId);
+                                        UserHandler userhandler = new UserHandler(name, userId, email);
                                         hideKeyboard(v);
 
                                         mDatabase.child(userId).setValue(userhandler);
 
+                                        //TODO: NEED TO PASS DATA
 
-                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                        finish();
+                                        Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
+                                        Bundle b = new Bundle();
+                                        b.putString("userName", name);
+                                        b.putString("userEmail", email);
+                                        b.putString("userId", userId);;
+                                        intent.putExtras(b);
+                                        startActivity(intent);
                                     }
 
 
@@ -217,6 +244,7 @@ public class Register_Activity extends AppCompatActivity {
             }
         }
     }
+
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.e(Register_Activity.class.getCanonicalName(), "firebaseAuthWithGoogle:" + acct.getId());
 
@@ -233,13 +261,19 @@ public class Register_Activity extends AppCompatActivity {
                                 String userId = user.getUid();
                                 UserHandler userHandler = new UserHandler();
                                 userHandler.setName(user.getDisplayName());
-                                Log.e(Register_Activity.class.getCanonicalName(),user.getEmail());
-                                UserHandler userhandler = new UserHandler(user.getDisplayName(), user.getEmail(), userId);
+                                Log.e(Register_Activity.class.getCanonicalName(), user.getEmail());
+                                UserHandler userhandler = new UserHandler(user.getDisplayName(),  userId, user.getEmail());
 
                                 mDatabase.child(userId).setValue(userhandler);
 
 
-                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
+                                Bundle b = new Bundle();
+                                b.putString("userName", user.getDisplayName());
+                                b.putString("userEmail", user.getEmail());
+                                b.putString("userId", userId);
+                                intent.putExtras(b);
+                                startActivity(intent);
                                 finish();
                             }
 
@@ -249,7 +283,6 @@ public class Register_Activity extends AppCompatActivity {
                             Log.e(Register_Activity.class.getCanonicalName(), "signInWithCredential:failure", task.getException());
                         }
 
-                        // ...
                     }
                 });
     }
@@ -263,7 +296,7 @@ public class Register_Activity extends AppCompatActivity {
 
     // https://stackoverflow.com/a/19828165/3966666
     public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
