@@ -5,7 +5,6 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -32,7 +31,7 @@ public class ProfileSetup extends AppCompatActivity {
     DatabaseReference userRef;
     FirebaseUser auth;
     String stringUserId, stringUserName, stringUserEmail;
-    Double likes;
+    Integer likes;
     CircleImageView displayImage;
 
     @Override
@@ -93,11 +92,12 @@ public class ProfileSetup extends AppCompatActivity {
         String userBirthYear = year.getSelectedItem().toString();
         String userGender = gender.getSelectedItem().toString();
         String userWebLink = webLink.getText().toString();
-        likes = 0.0;
+        likes = 0;
         if (!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear)) {
             UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate, likes.toString());
             userRef.child(stringUserId).setValue(item);
             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            finish();
         } else {
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
