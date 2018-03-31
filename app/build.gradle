@@ -46,5 +46,7 @@ dependencies {
         mavenCentral()
     }
     compile 'com.sothree.slidinguppanel:library:3.4.0'
+    compile 'com.github.chyrta:AndroidOnboarder:0.7'
+
 }
 apply plugin: 'com.google.gms.google-services'
