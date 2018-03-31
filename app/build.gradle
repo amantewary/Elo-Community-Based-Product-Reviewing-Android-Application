@@ -49,6 +49,8 @@ dependencies {
 
     compile 'com.github.chyrta:AndroidOnboarder:0.7'
 
+    compile 'com.github.deano2390:MaterialShowcaseView:1.2.0@aar'
+
     implementation 'com.akexorcist:RoundCornerProgressBar:2.0.3'
 
 }
