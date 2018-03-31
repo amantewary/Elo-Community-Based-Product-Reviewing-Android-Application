@@ -54,6 +54,10 @@ import group.hashtag.projectelo.Handlers.FeaturedContentHandler;
 import group.hashtag.projectelo.Handlers.ReviewHandler;
 import group.hashtag.projectelo.R;
 import group.hashtag.projectelo.SettingsActivity;
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
+
+
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
@@ -75,7 +79,8 @@ public class HomeActivity extends AppCompatActivity
 
     TextView featuredTitle;
     TextView navUsername;
-    ContentLoadingProgressBar navProgress;
+    //ContentLoadingProgressBar navProgress;
+    IconRoundCornerProgressBar navProgress;
     Map<String, Object> mapUser;
     FeaturedContentHandler featuredContentHandler;
     ImageView imageViewTitle;
