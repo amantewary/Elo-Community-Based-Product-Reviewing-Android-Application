@@ -38,7 +38,7 @@
             android:name=".Activities.UserProfile"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
-            android:theme="@style/MyMaterialTheme"></activity>
+            android:theme="@style/MyMaterialTheme"/>
         <activity
             android:name=".Activities.FeaturedArticle"
             android:theme="@style/MyMaterialTheme" />
@@ -81,10 +81,6 @@
             android:theme="@style/MyMaterialTheme"/>
         <activity android:name=".Activities.EditUserProfile"
             android:theme="@style/MyMaterialTheme"/>
-            android:theme="@style/MyMaterialTheme" />
-        <activity
-            android:name=".Activities.EditUserProfile"
-            android:theme="@style/MyMaterialTheme" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserWishlist" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserFollowers" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity" />
