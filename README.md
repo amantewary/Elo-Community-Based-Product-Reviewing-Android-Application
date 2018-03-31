@@ -15,9 +15,9 @@ Elo is an Android application which allows people to share and contribute their 
     Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
     
   
- - **CircularReveal** : The MIT License (MIT) Copyright (c) 2016 Abdullaev Ozodrukh
+- **CircularReveal** : The MIT License (MIT) Copyright (c) 2016 Abdullaev Ozodrukh
 
-      Circular reveal creates animations in apps and guides the users and gives an understanding about the current state of the application without recall or recognition of the previous steps.
+    Circular reveal creates animations in apps and guides the users and gives an understanding about the current state of the application without recall or recognition of the previous steps.
       
 
     Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
@@ -25,6 +25,21 @@ Elo is an Android application which allows people to share and contribute their 
     The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
     
     " THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR THERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. "
+    
+   
+   Copyright 2015 Miguel Catalan Bañuls
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    
+    	http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
 
 
 
@@ -113,8 +128,22 @@ The Minimum functionalities of the project have been completed and tested and we
 
 [1] J. Nielsen and R. Molich, “Heuristic evaluation of user interfaces,” Proceedings of the SIGCHI conference on Human factors in computing systems Empowering people - CHI 90, 1990.
 
-[2] Material Design. (2018). Introduction - Material Design. [online] Available at: https://material.io/guidelines/material-design/introduction.html [Accessed 7 Feb. 2018].
+[2] "Introduction - Material Design", Material Design, 2018. [Online]. Available: https://material.io/guidelines/material-design/introduction.html. [Accessed: 31- Mar- 2018].
 
+[3] "hdodenhof/CircleImageView", GitHub, 2018. [Online]. Available: https://github.com/hdodenhof/CircleImageView. [Accessed: 31- Mar- 2018].
 
+[4] "MaterialSearchView - Miguel Catalan", Miguelcatalan.info, 2018. [Online]. Available: http://miguelcatalan.info/2015/09/23/MaterialSearchView/. [Accessed: 31- Mar- 2018].
 
+[5] "varunest/SparkButton", GitHub, 2018. [Online]. Available: https://github.com/varunest/SparkButton. [Accessed: 31- Mar- 2018].
 
+[6] "Recent Support Library Revisions | Android Developers", Developer.android.com, 2018. [Online]. Available: https://developer.android.com/topic/libraries/support-library/revisions.html. [Accessed: 31- Mar- 2018].
+
+[7] "square/picasso", GitHub, 2018. [Online]. Available: https://github.com/square/picasso. [Accessed: 31- Mar- 2018].
+
+[8] "whalemare/sheetmenu", GitHub, 2018. [Online]. Available: https://github.com/whalemare/sheetmenu. [Accessed: 31- Mar- 2018].
+
+[9] V. Bauer, "android-crop | Android-Arsenal.com", Android Arsenal, 2018. [Online]. Available: https://android-arsenal.com/details/1/205. [Accessed: 31- Mar- 2018].
+
+[10] "umano/AndroidSlidingUpPanel", GitHub, 2018. [Online]. Available: https://github.com/umano/AndroidSlidingUpPanel. [Accessed: 31- Mar- 2018].
+
+[11] "ozodrukh/CircularReveal", GitHub, 2018. [Online]. Available: https://github.com/ozodrukh/CircularReveal. [Accessed: 31- Mar- 2018].
