@@ -327,4 +327,10 @@ public class LoginActivity extends AppCompatActivity {
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
+    @Override
+    public void onBackPressed()
+    {
+//        super.onBackPressed();
+    }
 }
