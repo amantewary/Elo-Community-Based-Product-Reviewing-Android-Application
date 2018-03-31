@@ -62,6 +62,15 @@ public class OnboardingAvtivity extends OnboarderActivity
         onboarderPage2.setBackgroundColor(R.color.white);
         onboarderPages.add(onboarderPage2);
 
+        OnboarderPage onboarderPage3 = new OnboarderPage("What's next", "What are you waiting for? Go ahead and fill in your details and begin using Elo.",R.drawable.screen_3);
+        onboarderPage3.setTitleColor(R.color.black);
+        onboarderPage3.setTitleTextSize(25);
+        onboarderPage3.setDescriptionColor(R.color.black);
+        onboarderPage3.setDescriptionTextSize(15);
+        onboarderPage3.setBackgroundColor(R.color.white);
+        onboarderPages.add(onboarderPage3);
+
+
         setOnboardPagesReady(onboarderPages);
     }
 
