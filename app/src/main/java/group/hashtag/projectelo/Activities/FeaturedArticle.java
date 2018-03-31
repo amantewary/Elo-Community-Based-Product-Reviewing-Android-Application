@@ -4,11 +4,15 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import group.hashtag.projectelo.R;
+import in.championswimmer.sfg.lib.SimpleFingerGestures;
 
 /**
  * Created by Manish Erramelli on 27/02/18.
@@ -26,12 +30,12 @@ public class FeaturedArticle extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.featured_article_layout);
+        SimpleFingerGestures mySfg = new SimpleFingerGestures();
 
         title = findViewById(R.id.title_toolbar);
         FeaturedTitle = findViewById(R.id.featured_view_title);
         FeaturedContent = findViewById(R.id.featured_view_content);
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);

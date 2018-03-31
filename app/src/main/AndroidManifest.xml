@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="group.hashtag.projectelo">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -37,10 +38,7 @@
             android:name=".Activities.UserProfile"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
-            android:theme="@style/MyMaterialTheme" >
-
-
-        </activity>
+            android:theme="@style/MyMaterialTheme"/>
         <activity
             android:name=".Activities.FeaturedArticle"
             android:theme="@style/MyMaterialTheme" />
@@ -68,17 +66,29 @@
             android:name=".Activities.WishlistAddItem"
             android:theme="@style/MyMaterialTheme" />
         <activity
-            android:name=".Activities.ViewUserProfile"
+            android:name=".Activities.OtherUserActivities.ViewUserProfile"
             android:theme="@style/MyMaterialTheme" />
         <activity android:name=".Activities.FollowerList" />
         <activity
             android:name=".Activities.UserDeviceActivity"
             android:label="@string/title_activity_user_device"
             android:theme="@style/MyMaterialTheme" />
-        <activity android:name=".Activities.UserAddDevices"
-            android:theme="@style/MyMaterialTheme">
-
-        </activity>
+        <activity
+            android:name=".Activities.UserAddDevices"
+            android:theme="@style/MyMaterialTheme" />
+        <activity
+            android:name=".Activities.ProfileSetup"
+            android:theme="@style/MyMaterialTheme"/>
+        <activity android:name=".Activities.EditUserProfile"
+            android:theme="@style/MyMaterialTheme"/>
+        <activity android:name=".Activities.OtherUserActivities.OtherUserWishlist" />
+        <activity android:name=".Activities.OtherUserActivities.OtherUserFollowers" />
+        <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity" />
+        <activity
+            android:name=".Activities.SelectPhotoActivity"
+            android:label="@string/title_activity_select_photo"
+            android:theme="@style/MyMaterialTheme" />
+        <activity android:name=".Activities.ReviewPhotoSelection"></activity>
     </application>
 
 </manifest>
