@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1044796502478-nbir9guhgjc1ga903ujt7qv6dv4c65tl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "group.hashtag.projectelo",
+            "certificate_hash": "dd49cb05465bdac96c1d31d5d802bb8193a02f4a"
+          }
+        },
+        {
           "client_id": "1044796502478-phco6u3ko6t4irhcbc9su3a0v6990v67.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
