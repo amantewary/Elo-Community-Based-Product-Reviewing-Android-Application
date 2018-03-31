@@ -7,6 +7,7 @@ package group.hashtag.projectelo.Activities;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageButton;
 
 import com.chyrta.onboarder.OnboarderActivity;
@@ -30,10 +31,13 @@ public class OnboardingAvtivity extends OnboarderActivity
         onboarderPages = new ArrayList<OnboarderPage>();
 //        buttonSetTextColor(Color.BLACK);
 
-        ImageButton ibnext = findViewById(R.id.ib_next);
 
-//        ibnext.setImageResource(R.drawable.ic_navigate_next_black_24dp);
-//        ibnext.setBackgroundResource(R.drawable.ic_navigate_next_black_24dp);
+        buttonSetTextColor(Color.BLACK);
+
+        ImageButton ibnext = findViewById(R.id.ib_next);
+        ibnext.setImageResource(R.drawable.ic_navigate_next_black_24dp);
+        ibnext.setBackgroundResource(R.drawable.ic_navigate_next_black_24dp);
+
 
         setActiveIndicatorColor(android.R.color.black);
         setInactiveIndicatorColor(android.R.color.white);
@@ -70,6 +74,17 @@ public class OnboardingAvtivity extends OnboarderActivity
 
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
+    }
+
+
+
+    private void buttonSetTextColor(int clr)
+    {
+        Button skip = findViewById(R.id.btn_skip);
+        skip.setTextColor(clr);
+
+        Button finish = findViewById(R.id.btn_finish);
+        finish.setTextColor(clr);
     }
 
     @Override
