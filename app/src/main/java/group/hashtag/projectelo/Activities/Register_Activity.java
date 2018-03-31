@@ -262,12 +262,18 @@ public class Register_Activity extends AppCompatActivity {
                                 UserHandler userHandler = new UserHandler();
                                 userHandler.setName(user.getDisplayName());
                                 Log.e(Register_Activity.class.getCanonicalName(), user.getEmail());
-                                UserHandler userhandler = new UserHandler(user.getDisplayName(), user.getEmail(), userId);
+                                UserHandler userhandler = new UserHandler(user.getDisplayName(),  userId, user.getEmail());
 
                                 mDatabase.child(userId).setValue(userhandler);
 
 
-                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
+                                Bundle b = new Bundle();
+                                b.putString("userName", user.getDisplayName());
+                                b.putString("userEmail", user.getEmail());
+                                b.putString("userId", userId);
+                                intent.putExtras(b);
+                                startActivity(intent);
                                 finish();
                             }
 
