@@ -89,6 +89,7 @@
             android:label="@string/title_activity_select_photo"
             android:theme="@style/MyMaterialTheme" />
         <activity android:name=".Activities.ReviewPhotoSelection"></activity>
+        <activity android:name=".Activities.OnboardingAvtivity" />
     </application>
 
 </manifest>
