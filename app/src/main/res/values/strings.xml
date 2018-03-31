@@ -354,7 +354,7 @@
         <item>Nov</item>
         <item>Dec</item>
     </string-array>
-
+<string name="test"></string>
     <string-array name="dob_year">
         <item>Year</item>
         <item>1970</item>
