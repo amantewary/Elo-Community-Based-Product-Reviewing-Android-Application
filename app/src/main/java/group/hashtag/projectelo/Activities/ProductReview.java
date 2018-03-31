@@ -282,27 +282,28 @@ public class ProductReview extends AppCompatActivity {
         commentAuthorId = auth.getUid();
 
         if(!TextUtils.isEmpty(commentContent)){
-//            userRef.child(commentAuthorId).addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(DataSnapshot dataSnapshot) {
-//                    mapCommentAuthor = (Map<String, Object>) dataSnapshot.getValue();
-//                    commentAuthorName = mapCommentAuthor.get("name").toString();
-//                    Log.e("Here", "1" + commentAuthorName);
-//                    String id = commentRef.push().getKey();
-//                    CommentHandler newComment = new CommentHandler(id, commentContent, commentAuthorId, commentAuthorName);
-//                    commentRef.child(stringReviewId).child(id).setValue(newComment);
-//                    commentText.setText("");
-//                    commentLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-//                }
-//                @Override
-//                public void onCancelled(DatabaseError databaseError) {
-//
-//                }
-//            });
-            CommentHandler newComment = new CommentHandler(commentAuthorId, commentContent, commentAuthorId, commentAuthorName);
-            commentRef.child(stringReviewId).child(commentAuthorId).setValue(newComment);
-            commentText.setText("");
-            commentLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+            userRef.child(commentAuthorId).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    mapCommentAuthor = (Map<String, Object>) dataSnapshot.getValue();
+                    commentAuthorName = mapCommentAuthor.get("name").toString();
+                    Log.e("Here", "1" + commentAuthorName);
+                    String id = commentRef.push().getKey();
+                    CommentHandler newComment = new CommentHandler(id, commentContent, commentAuthorId, commentAuthorName);
+                    commentRef.child(stringReviewId).child(id).setValue(newComment);
+                    commentText.setText("");
+                    commentLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+            //TODO: Simple method (not showing username of comment author)
+//            CommentHandler newComment = new CommentHandler(commentAuthorId, commentContent, commentAuthorId, commentAuthorName);
+//            commentRef.child(stringReviewId).child(commentAuthorId).setValue(newComment);
+//            commentText.setText("");
+//            commentLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
         }
         else{
             commentText.setError("Comment cannot be empty");
