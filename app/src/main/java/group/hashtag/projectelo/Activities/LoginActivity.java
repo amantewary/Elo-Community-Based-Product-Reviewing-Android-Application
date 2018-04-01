@@ -27,11 +27,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import group.hashtag.projectelo.Handlers.UserHandler;
 import group.hashtag.projectelo.R;
 
 /**
@@ -48,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
     GoogleSignInClient mGoogleSignInClient;
     ImageView googleSignIn;
     int RC_SIGN_IN = 110;
+    DatabaseReference mDatabase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
+                .requestProfile()
                 .build();
 
 
@@ -64,10 +73,15 @@ public class LoginActivity extends AppCompatActivity {
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
 
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+
         if (auth.getCurrentUser() != null) {
             startActivity(new Intent(LoginActivity.this, HomeActivity.class));
             finish();
         }
+
+
 
 
 //        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
@@ -211,7 +225,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
-        Log.e("Here","Here");
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -219,12 +232,87 @@ public class LoginActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            Log.e(LoginActivity.class.getCanonicalName(), "signInWithCredential:success");
-                            //FirebaseUser user = auth.getCurrentUser();
 
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
+                            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            if (user != null){
+                                Log.e("Here", ""+user.getUid());
+
+                                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                                        if (dataSnapshot.hasChild(user.getUid())){
+                                            Log.e("Heres", ""+user.getUid());
+
+                                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                            Log.e(LoginActivity.class.getCanonicalName(), "signInWithCredential:success");
+                                        }else {
+                                            Log.e("Heres", "walah walah");
+
+                                            String userId = user.getUid();
+                                            UserHandler userHandler = new UserHandler();
+                                            userHandler.setName(user.getDisplayName());
+                                            UserHandler userhandler = new UserHandler(user.getDisplayName(),  userId, user.getEmail());
+
+                                            mDatabase.child(userId).setValue(userhandler);
+
+
+                                            Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
+                                            Bundle b = new Bundle();
+                                            b.putString("userName", user.getDisplayName());
+                                            b.putString("userEmail", user.getEmail());
+                                            b.putString("userId", userId);
+                                            intent.putExtras(b);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+//                                        for (DataSnapshot dsnp : dataSnapshot.getChildren())
+//                                        {
+//                                            Log.e("Heres", ""+dsnp.getKey().equals(user.getUid()));
+//
+//                                            if (dsnp.getKey().equals(user.getUid())){
+//
+//
+//                                                break;
+//                                            }else if (!dsnp.getKey().equals(user.getUid())){
+//                                                Log.e("Heres", ""+dsnp.hasChild(user.getUid()));
+//
+//                                            }else {
+//                                                String userId = user.getUid();
+//                                                UserHandler userHandler = new UserHandler();
+//                                                userHandler.setName(user.getDisplayName());
+//                                                UserHandler userhandler = new UserHandler(user.getDisplayName(),  userId, user.getEmail());
+//
+//                                                mDatabase.child(userId).setValue(userhandler);
+//
+//
+//                                                Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
+//                                                Bundle b = new Bundle();
+//                                                b.putString("userName", user.getDisplayName());
+//                                                b.putString("userEmail", user.getEmail());
+//                                                b.putString("userId", userId);
+//                                                intent.putExtras(b);
+//                                                startActivity(intent);
+//                                                finish();
+//                                                break;
+//                                            }
+//
+//                                            }
+                                    }
+
+
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.e("Here",""+databaseError);
+                                    }
+                                });
+
+                            }
+
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.e(LoginActivity.class.getCanonicalName(), "signInWithCredential:failure", task.getException());
@@ -238,5 +326,11 @@ public class LoginActivity extends AppCompatActivity {
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+//        super.onBackPressed();
     }
 }
