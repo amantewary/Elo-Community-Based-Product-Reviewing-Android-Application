@@ -7,4 +7,14 @@
     <color name="colorCardViewBackground">#eeeeee</color>
     <color name="colorYellow">#ffd600</color>
     <color name="colorRed">#d50000</color>
+    <color name="grey2">#545454</color>
+    <color name="black">#000000</color>
+    <color name="grey1">#f72b2b2b</color>
+    <color name="white">#FFFFFF</color>
+    <color name="blackshade2">#0a0a0a</color>
+
+    <color name="custom_progress_red_header">#ffcc0000</color>
+    <color name="custom_progress_red_progress">#ffff4444</color>
+    <color name="custom_progress_red_progress_half">#7fff4444</color>
+
 </resources>

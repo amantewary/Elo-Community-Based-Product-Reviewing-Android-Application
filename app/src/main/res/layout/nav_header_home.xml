@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/nav_header_height"
     android:background="@drawable/cover"
@@ -13,28 +14,43 @@
     android:theme="@style/MyMaterialTheme">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/imageView"
+        android:id="@+id/nav_profileimg"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:src="@drawable/profile"
         app:civ_border_color="#FF000000" />
 
     <TextView
+        android:id="@+id/nav_username"
         style="@style/TextAppearance.AppCompat.Body1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
-        android:text="Aman Tewary"
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         android:textColor="@color/colorPrimary"
-        android:typeface="sans"
         android:textStyle="bold"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        android:typeface="sans"
+        tools:text="Username" />
 
-    <android.support.v4.widget.ContentLoadingProgressBar
-        android:layout_width="match_parent"
+
+
+    <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
+        android:id="@+id/nav_progress"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:progress="50"
-        android:progressTint="@color/colorTrendingBackground"
-        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:rcBackgroundPadding="2dp"
+        app:rcIconBackgroundColor="@color/custom_progress_red_header"
+        app:rcIconPadding="5dp"
+        app:rcIconSize="40dp"
+        app:rcMax="100"
+        app:rcProgress="37"
+        app:rcProgressColor="@color/custom_progress_red_progress"
+        app:rcRadius="5dp" />
 
 </LinearLayout>

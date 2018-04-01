@@ -11,6 +11,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -47,11 +48,16 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.text.DecimalFormat;
 
 import group.hashtag.projectelo.Handlers.FeaturedContentHandler;
 import group.hashtag.projectelo.Handlers.ReviewHandler;
 import group.hashtag.projectelo.R;
 import group.hashtag.projectelo.SettingsActivity;
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
+import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
+
+
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
@@ -66,11 +72,16 @@ public class HomeActivity extends AppCompatActivity
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
+    DatabaseReference userRef;
     ReviewHandler reviewHandler;
 
     List<ReviewHandler> reviewHandlerList;
 
     TextView featuredTitle;
+    TextView navUsername;
+    //ContentLoadingProgressBar navProgress;
+    IconRoundCornerProgressBar navProgress;
+    Map<String, Object> mapUser;
     FeaturedContentHandler featuredContentHandler;
     ImageView imageViewTitle;
 
@@ -89,7 +100,6 @@ public class HomeActivity extends AppCompatActivity
 
         reviewHandler = new ReviewHandler();
         featuredContentHandler = new FeaturedContentHandler();
-
         categories = findViewById(R.id.search_catogories);
         title = findViewById(R.id.title_toolbar);
         final Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
@@ -175,6 +185,7 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -183,6 +194,8 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
 
 
         //Todo: Populate suggestions from db remaining
@@ -214,6 +227,25 @@ public class HomeActivity extends AppCompatActivity
                 categories.setVisibility(View.GONE);
                 toolbar.setVisibility(View.VISIBLE);
 
+            }
+        });
+        navProgress = header.findViewById(R.id.nav_progress);
+        navUsername = header.findViewById(R.id.nav_username);
+        userRef = FirebaseDatabase.getInstance().getReference("users");
+        userRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mapUser = (Map<String, Object>) dataSnapshot.getValue();
+                String userName = mapUser.get("name").toString();
+                String userLike = mapUser.get("likes").toString();
+                Log.e("Here", "Current UserName => " + userName);
+                navUsername.setText(userName);
+                navProgress.setProgress(Integer.parseInt(userLike));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
             }
         });
 
