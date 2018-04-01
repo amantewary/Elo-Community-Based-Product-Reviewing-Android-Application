@@ -76,6 +76,7 @@ public class HomeActivity extends AppCompatActivity
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     boolean firstRun;
+    boolean clicked;
 
     List<ReviewHandler> reviewHandlerList;
 
@@ -250,7 +251,7 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
-
+        clicked = false;
 
     }
 
@@ -260,20 +261,19 @@ public class HomeActivity extends AppCompatActivity
     {
         if(view.getId()==R.id.fab)
         {
-
-            if(firstRun)
-            {
-                MaterialShowcaseView.resetAll(getApplicationContext());
-                presentShowcaseSequence();
-                Log.i("onCreate: "," First time");
-                editor.putBoolean("firstRun", false); // It is no longer the first run
-                editor.apply();
-            }
-            else
-            {
-                startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
-                Log.i("onCreate: ","Not First time");
-            }
+            if(!clicked) {
+                clicked = true;
+                if (firstRun) {
+                    MaterialShowcaseView.resetAll(getApplicationContext());
+                    presentShowcaseSequence();
+                    Log.e("onCreate: ", " First time");
+                    editor.putBoolean("firstRun", false); // It is no longer the first run
+                    editor.apply();
+                }
+            }else {
+                    startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
+                    Log.i("onCreate: ", "Not First time");
+                }
         }
     }
 
@@ -302,7 +302,6 @@ public class HomeActivity extends AppCompatActivity
                 if(position==1)
                 {
                     drawer.openDrawer(GravityCompat.START);
-                    Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
                 }
                 else if(position==2)
                 {
@@ -310,7 +309,6 @@ public class HomeActivity extends AppCompatActivity
                     {
                         drawer.closeDrawer(GravityCompat.START);
                     }
-                    Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT ).show();
                 }
                 else
                 {
@@ -318,9 +316,9 @@ public class HomeActivity extends AppCompatActivity
                     {
                         drawer.closeDrawer(GravityCompat.START);
                     }
-                    Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
 
                 }
+
             }
         });
 
@@ -359,12 +357,6 @@ public class HomeActivity extends AppCompatActivity
 
         sequence.start();
     }
-
-
-
-
-
-
 
     @Override
     public void onBackPressed() {
