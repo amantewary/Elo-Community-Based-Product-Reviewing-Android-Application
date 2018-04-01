@@ -82,7 +82,7 @@ public class NewReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_review_layout);
 
-        ReviewPic = (ImageView) findViewById(R.id.new_review_image);
+        ReviewPic = (ImageView) findViewById(R.id.new_review_image_new);
         Permission();
 
 
@@ -171,13 +171,14 @@ public class NewReviewActivity extends AppCompatActivity {
 
             }
         });
+        //
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
-        findViewById(R.id.new_review_image).setOnClickListener(new View.OnClickListener() {
+        ReviewPic.setOnClickListener(new View.OnClickListener() {
 
             @Override
-            public void onClick (View view) {
+            public void onClick(View view) {
 
                 showMenu();
 
@@ -188,7 +189,7 @@ public class NewReviewActivity extends AppCompatActivity {
 
     private void showMenu() {
         SheetMenu.with(this)
-                .setTitle("Select An Option:").setMenu(R.menu.sheet_menu).setClick(new MenuItem.OnMenuItemClickListener() {
+                .setTitle("Select An Option:").setMenu(R.menu.sheet_menu).setAutoCancel(true).setClick(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_cam) {
@@ -196,7 +197,7 @@ public class NewReviewActivity extends AppCompatActivity {
                     Camera();
 
 
-                } else if(item.getItemId() == R.id.action_gal) {
+                } else if (item.getItemId() == R.id.action_gal) {
 
                     Gallery();
 
@@ -205,15 +206,14 @@ public class NewReviewActivity extends AppCompatActivity {
             }
         }).show();
     }
-    private void  Gallery()
-    {
+
+    private void Gallery() {
 
         GalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(Intent.createChooser(GalleryIntent, "Select Image From Gallery"), 2);
     }
 
-    private  void Camera()
-    {
+    private void Camera() {
 
         CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
@@ -224,60 +224,64 @@ public class NewReviewActivity extends AppCompatActivity {
         startActivityForResult(CameraIntent, 0);
     }
 
-    protected  void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 0 && resultCode == RESULT_OK) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == 0 && resultCode == RESULT_OK) {
             Crop();
-        }
 
-        else if (requestCode == 2) {
-            if(data != null) {
-                uri = data.getData();
-                Crop();
+//            if (data != null) {
+//                Bundle bundle = data.getExtras();
+//                Bitmap bitmap = bundle.getParcelable("data");
+//                ReviewPic.setImageBitmap(bitmap);
+
+            } else if (requestCode == 2) {
+                if (data != null) {
+                    uri = data.getData();
+                    Crop();
+                }
+            } else if (requestCode == 1) {
+                if (data != null) {
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap = bundle.getParcelable("data");
+                    ReviewPic.setImageBitmap(bitmap);
+
+                }
             }
+
         }
 
-        else if (requestCode == 1) {
-            if (data != null ) {
-                Bundle bundle = data.getExtras();
-                Bitmap bitmap = bundle.getParcelable("data");
-                ReviewPic.setImageBitmap(bitmap);
-            }
-        }
 
-    }
     public void Crop() {
 
         try {
             CropIntent = new Intent("com.android.camera.action.CROP");
-            CropIntent.setDataAndType(uri,"image");
+            CropIntent.setDataAndType(uri, "image/*");
             CropIntent.putExtra("crop", true);
             CropIntent.putExtra("OutputX", 256);
             CropIntent.putExtra("OutputY", 256);
-            CropIntent.putExtra("aspectX",1);
-            CropIntent.putExtra("aspectY",1);
+            CropIntent.putExtra("aspectX", 1);
+            CropIntent.putExtra("aspectY", 1);
             CropIntent.putExtra("scale", true);
-            CropIntent.putExtra("return-data",true);
+            CropIntent.putExtra("return-data", true);
 
             startActivityForResult(CropIntent, PermissionCode);
 
 
-        }catch (ActivityNotFoundException e) {
-
+        } catch (ActivityNotFoundException e) {
+            Log.e("here", "" + e);
         }
 
     }
 
     public void Permission() {
 
-        if(ActivityCompat.shouldShowRequestPermissionRationale(NewReviewActivity.this, android.Manifest.permission.CAMERA))
-        {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(NewReviewActivity.this, android.Manifest.permission.CAMERA)) {
 
             Toast.makeText(NewReviewActivity.this, "Allow Camera Permission to Add photos", Toast.LENGTH_LONG).show();
-        }
-        else{
-            ActivityCompat.requestPermissions(NewReviewActivity.this, new String[] { android.Manifest.permission.CAMERA}, PermissionCode);
+        } else {
+            ActivityCompat.requestPermissions(NewReviewActivity.this, new String[]{android.Manifest.permission.CAMERA}, PermissionCode);
         }
     }
+
     public void onRequestPermissionsResult(int RC, String per[], int[] PRresult) {
 
         switch (RC) {
@@ -285,16 +289,15 @@ public class NewReviewActivity extends AppCompatActivity {
             case PermissionCode:
 
                 if (PRresult.length > 0 && PRresult[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(NewReviewActivity.this,"Permission Granted",Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewReviewActivity.this, "Permission Granted", Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(NewReviewActivity.this, "Permission Canceled",Toast.LENGTH_LONG).show();
+                    Toast.makeText(NewReviewActivity.this, "Permission Canceled", Toast.LENGTH_LONG).show();
                 }
                 break;
 
 
         }
     }
-
 
 
     @Override
@@ -347,7 +350,7 @@ public class NewReviewActivity extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                listDevices.add(0,"Select Device");
+                listDevices.add(0, "Select Device");
                 for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
                     for (DataSnapshot dsnp2 : dsnp.getChildren()) {
 //                        Log.e("Here", "" + dsnp2);

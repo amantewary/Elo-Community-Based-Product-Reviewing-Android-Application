@@ -67,9 +67,9 @@ public class SelectPhotoActivity extends AppCompatActivity {
             }
         });
 
-        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+      /*  StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-
+*/
         Permission();
 
 
@@ -95,14 +95,13 @@ public class SelectPhotoActivity extends AppCompatActivity {
 
    // https://github.com/whalemare/sheetmenu
     private void showMenu() {
-        SheetMenu.with(this).setTitle("Select An Option:").setMenu(R.menu.sheet_menu).setClick(new MenuItem.OnMenuItemClickListener() {
+        SheetMenu.with(this).setTitle("Select An Option:").setAutoCancel(true).setMenu(R.menu.sheet_menu).setClick(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_cam) {
 
-
-
                     Camera();
+
 
                 } else if(item.getItemId() == R.id.action_gal) {
 
