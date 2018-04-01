@@ -82,16 +82,12 @@
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.ProfileSetup"
-<<<<<<< HEAD
+
             android:theme="@style/MyMaterialTheme" />
         <activity
             android:name=".Activities.EditUserProfile"
             android:theme="@style/MyMaterialTheme" />
-=======
-            android:theme="@style/MyMaterialTheme"/>
-        <activity android:name=".Activities.EditUserProfile"
-            android:theme="@style/MyMaterialTheme"/>
->>>>>>> master
+      
         <activity android:name=".Activities.OtherUserActivities.OtherUserWishlist" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserFollowers" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity" />
@@ -99,12 +95,8 @@
             android:name=".Activities.SelectPhotoActivity"
             android:label="@string/title_activity_select_photo"
             android:theme="@style/MyMaterialTheme" />
-<<<<<<< HEAD
 
-=======
-        <activity android:name=".Activities.ReviewPhotoSelection"></activity>
         <activity android:name=".Activities.OnboardingAvtivity" />
->>>>>>> master
     </application>
 
 </manifest>
