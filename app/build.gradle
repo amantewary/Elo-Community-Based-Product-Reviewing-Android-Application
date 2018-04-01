@@ -41,7 +41,6 @@ dependencies {
     compile 'com.github.varunest:sparkbutton:1.0.5'
     compile 'com.github.whalemare:sheetmenu:1.0'
     compile 'com.soundcloud.android:android-crop:1.0.1@aar'
-    compile 'in.championswimmer:SimpleFingerGestures_Android_Library:1.2'
     repositories {
         mavenCentral()
     }
