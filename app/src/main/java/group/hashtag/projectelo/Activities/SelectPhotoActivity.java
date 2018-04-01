@@ -2,12 +2,15 @@ package group.hashtag.projectelo.Activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -15,11 +18,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.io.File;
+import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import group.hashtag.projectelo.Manifest;
 import ru.whalemare.sheetmenu.SheetMenu;
 import group.hashtag.projectelo.R;
 
@@ -39,6 +47,8 @@ public class SelectPhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_select);
+
+
 
         imageView = (ImageView) findViewById(R.id.iv);
         title = findViewById(R.id.title_toolbar);
@@ -60,8 +70,11 @@ public class SelectPhotoActivity extends AppCompatActivity {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
 
+        Permission();
+
 
     }
+
 
 
     @Override
@@ -73,22 +86,26 @@ public class SelectPhotoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_photo){
+        if (id == R.id.action_photo)
+        {
             showMenu();
         }
         return super.onOptionsItemSelected(item);
     }
 
-   //  https://github.com/whalemare/sheetmenu
+   // https://github.com/whalemare/sheetmenu
     private void showMenu() {
         SheetMenu.with(this).setTitle("Select An Option:").setMenu(R.menu.sheet_menu).setClick(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_cam) {
 
+
+
                     Camera();
 
                 } else if(item.getItemId() == R.id.action_gal) {
+
 
                     Gallery();
 
@@ -116,18 +133,22 @@ public class SelectPhotoActivity extends AppCompatActivity {
     }
 
     protected  void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == 0 && resultCode == RESULT_OK) {
+        if(requestCode == 0 && resultCode == RESULT_OK)
+        {
             Crop();
         }
 
-        else if (requestCode == 2) {
-            if(data != null) {
+        else if (requestCode == 2)
+        {
+            if(data != null)
+            {
                 uri = data.getData();
                 Crop();
             }
         }
 
-        else if (requestCode == 1) {
+        else if (requestCode == 1)
+        {
             if (data != null ) {
                 Bundle bundle = data.getExtras();
                 Bitmap bitmap = bundle.getParcelable("data");
@@ -157,6 +178,37 @@ public class SelectPhotoActivity extends AppCompatActivity {
         }
 
     }
+
+    public void Permission() {
+
+        if(ActivityCompat.shouldShowRequestPermissionRationale(SelectPhotoActivity.this, android.Manifest.permission.CAMERA))
+        {
+
+            Toast.makeText(SelectPhotoActivity.this, "Allow Camera Permission to Setup Profile", Toast.LENGTH_LONG).show();
+        }
+        else{
+            ActivityCompat.requestPermissions(SelectPhotoActivity.this, new String[] { android.Manifest.permission.CAMERA}, PermissionCode);
+        }
+    }
+    public void onRequestPermissionsResult(int RC, String per[], int[] PRresult) {
+
+        switch (RC) {
+
+            case PermissionCode:
+
+                if (PRresult.length > 0 && PRresult[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(SelectPhotoActivity.this,"Permission Granted",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(SelectPhotoActivity.this, "Permission Canceled",Toast.LENGTH_LONG).show();
+                }
+                break;
+
+
+        }
+    }
+
+
+
 
 
 }

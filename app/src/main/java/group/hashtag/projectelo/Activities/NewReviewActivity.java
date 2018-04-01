@@ -1,9 +1,17 @@
 package group.hashtag.projectelo.Activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.StrictMode;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -14,6 +22,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,12 +36,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import group.hashtag.projectelo.Handlers.NewReviewHandler;
 import group.hashtag.projectelo.R;
+import ru.whalemare.sheetmenu.SheetMenu;
 
 /**
  * Created by nikhilkamath on 01/03/18.
@@ -57,11 +70,21 @@ public class NewReviewActivity extends AppCompatActivity {
     ArrayAdapter<String> categories;
     ArrayAdapter<String> devices;
 
+    private ImageView ReviewPic;
+    private File file;
+    private Uri uri;
+    private Intent CameraIntent, GalleryIntent, CropIntent;
+    public static final int PermissionCode = 1;
+
     //Todo: validate spinner before adding new review
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_review_layout);
+
+        ReviewPic = (ImageView) findViewById(R.id.new_review_image);
+        Permission();
+
 
         reviewDatabase = FirebaseDatabase.getInstance().getReference("newReview");
         title = findViewById(R.id.title_toolbar);
@@ -148,16 +171,130 @@ public class NewReviewActivity extends AppCompatActivity {
 
             }
         });
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.setVmPolicy(builder.build());
 
         findViewById(R.id.new_review_image).setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                Intent ReviewPic = new Intent(NewReviewActivity.this, ReviewPhotoSelection.class);
-                startActivity(ReviewPic);
+            public void onClick (View view) {
+
+                showMenu();
+
 
             }
         });
     }
+
+    private void showMenu() {
+        SheetMenu.with(this)
+                .setTitle("Select An Option:").setMenu(R.menu.sheet_menu).setClick(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if (item.getItemId() == R.id.action_cam) {
+
+                    Camera();
+
+
+                } else if(item.getItemId() == R.id.action_gal) {
+
+                    Gallery();
+
+                }
+                return false;
+            }
+        }).show();
+    }
+    private void  Gallery()
+    {
+
+        GalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(Intent.createChooser(GalleryIntent, "Select Image From Gallery"), 2);
+    }
+
+    private  void Camera()
+    {
+
+        CameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        file = new File(Environment.getExternalStorageDirectory(), "file" + timeStamp + ".jpg");
+        uri = Uri.fromFile(file);
+        CameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
+        CameraIntent.putExtra("return-data", true);
+        startActivityForResult(CameraIntent, 0);
+    }
+
+    protected  void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(requestCode == 0 && resultCode == RESULT_OK) {
+            Crop();
+        }
+
+        else if (requestCode == 2) {
+            if(data != null) {
+                uri = data.getData();
+                Crop();
+            }
+        }
+
+        else if (requestCode == 1) {
+            if (data != null ) {
+                Bundle bundle = data.getExtras();
+                Bitmap bitmap = bundle.getParcelable("data");
+                ReviewPic.setImageBitmap(bitmap);
+            }
+        }
+
+    }
+    public void Crop() {
+
+        try {
+            CropIntent = new Intent("com.android.camera.action.CROP");
+            CropIntent.setDataAndType(uri,"image");
+            CropIntent.putExtra("crop", true);
+            CropIntent.putExtra("OutputX", 256);
+            CropIntent.putExtra("OutputY", 256);
+            CropIntent.putExtra("aspectX",1);
+            CropIntent.putExtra("aspectY",1);
+            CropIntent.putExtra("scale", true);
+            CropIntent.putExtra("return-data",true);
+
+            startActivityForResult(CropIntent, PermissionCode);
+
+
+        }catch (ActivityNotFoundException e) {
+
+        }
+
+    }
+
+    public void Permission() {
+
+        if(ActivityCompat.shouldShowRequestPermissionRationale(NewReviewActivity.this, android.Manifest.permission.CAMERA))
+        {
+
+            Toast.makeText(NewReviewActivity.this, "Allow Camera Permission to Add photos", Toast.LENGTH_LONG).show();
+        }
+        else{
+            ActivityCompat.requestPermissions(NewReviewActivity.this, new String[] { android.Manifest.permission.CAMERA}, PermissionCode);
+        }
+    }
+    public void onRequestPermissionsResult(int RC, String per[], int[] PRresult) {
+
+        switch (RC) {
+
+            case PermissionCode:
+
+                if (PRresult.length > 0 && PRresult[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(NewReviewActivity.this,"Permission Granted",Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(NewReviewActivity.this, "Permission Canceled",Toast.LENGTH_LONG).show();
+                }
+                break;
+
+
+        }
+    }
+
 
 
     @Override
