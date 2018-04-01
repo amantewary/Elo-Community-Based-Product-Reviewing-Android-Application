@@ -260,6 +260,7 @@ public class HomeActivity extends AppCompatActivity
     {
         if(view.getId()==R.id.fab)
         {
+
             if(firstRun)
             {
                 MaterialShowcaseView.resetAll(getApplicationContext());
@@ -310,7 +311,6 @@ public class HomeActivity extends AppCompatActivity
                         drawer.closeDrawer(GravityCompat.START);
                     }
                     Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT ).show();
-
                 }
                 else
                 {
@@ -334,6 +334,28 @@ public class HomeActivity extends AppCompatActivity
                         .withRectangleShape()
                         .build()
         );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(findViewById(R.id.drawer_layout))
+                        .setMaskColour(R.color.colorPrimary)
+                        .setDismissText("GOT IT")
+                        .setMaskColour(R.color.colorBlue)
+                        .setContentText("\n Would you like to update your details?Click on the User Profile option!\n\nTo change your app settings select the Settings options.\n")
+                        .withoutShape()
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(findViewById(R.id.toolbar))
+                        .setDismissText("GOT IT")
+                        .setContentText(" \n Looking for something? Type your key words here for the search results to appear below! \n")
+                        .withRectangleShape()
+                        .build()
+        );
+
+
 
         sequence.start();
     }
