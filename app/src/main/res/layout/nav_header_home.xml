@@ -33,24 +33,21 @@
         tools:text="Username" />
 
 
-
-    <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
+    <com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar
         android:id="@+id/nav_progress"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="10dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:rcBackgroundColor="@color/colorPrimaryDark"
         app:rcBackgroundPadding="2dp"
-        app:rcIconBackgroundColor="@color/custom_progress_red_header"
-        app:rcIconPadding="5dp"
-        app:rcIconSize="40dp"
         app:rcMax="100"
-        app:rcProgress="37"
-        app:rcProgressColor="@color/custom_progress_red_progress"
-        app:rcRadius="5dp" />
+        app:rcProgress="0"
+        app:rcProgressColor="@color/colorAccent"
+        app:rcRadius="10dp" />
 
 </LinearLayout>

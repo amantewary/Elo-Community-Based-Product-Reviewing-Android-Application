@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -33,6 +34,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -70,12 +73,14 @@ public class HomeActivity extends AppCompatActivity
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
+    DatabaseReference userRef;
     ReviewHandler reviewHandler;
 
     private static final String SHOWCASE_ID = "element_display";
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     boolean firstRun;
+    boolean clicked;
 
     List<ReviewHandler> reviewHandlerList;
 
@@ -83,6 +88,9 @@ public class HomeActivity extends AppCompatActivity
     FeaturedContentHandler featuredContentHandler;
     ImageView imageViewTitle;
     FloatingActionButton fab;
+    TextView navUsername;
+    RoundCornerProgressBar navProgress;
+    Map<String, Object> mapUser;
 
     String FeaturedTitleString;
     String FeaturedContentString;
@@ -218,6 +226,8 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        View header = navigationView.getHeaderView(0);
+
 
         //Todo: Populate suggestions from db remaining
         categories.setSuggestions(getResources().getStringArray(R.array.device_categories));
@@ -250,7 +260,26 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
+        navProgress = header.findViewById(R.id.nav_progress);
+        navUsername = header.findViewById(R.id.nav_username);
+        userRef = FirebaseDatabase.getInstance().getReference("users");
+        userRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mapUser = (Map<String, Object>) dataSnapshot.getValue();
+                String userName = mapUser.get("name").toString();
+                String userLike = mapUser.get("likes").toString();
+                Log.e("Here", "Current UserName => " + userName);
+                navUsername.setText(userName);
+                navProgress.setProgress(Integer.parseInt(userLike));
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
+            }
+        });
+        clicked = false;
 
     }
 
@@ -260,20 +289,21 @@ public class HomeActivity extends AppCompatActivity
     {
         if(view.getId()==R.id.fab)
         {
-
-            if(firstRun)
-            {
-                MaterialShowcaseView.resetAll(getApplicationContext());
-                presentShowcaseSequence();
-                Log.i("onCreate: "," First time");
-                editor.putBoolean("firstRun", false); // It is no longer the first run
-                editor.apply();
-            }
-            else
-            {
-                startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
-                Log.i("onCreate: ","Not First time");
-            }
+            if(!clicked) {
+                clicked = true;
+                if (firstRun) {
+                    MaterialShowcaseView.resetAll(getApplicationContext());
+                    presentShowcaseSequence();
+                    Log.e("onCreate: ", " First time");
+                    editor.putBoolean("firstRun", false); // It is no longer the first run
+                    editor.apply();
+                }else{
+                    startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
+                }
+            }else {
+                    startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
+                    Log.i("onCreate: ", "Not First time");
+                }
         }
     }
 
@@ -302,7 +332,6 @@ public class HomeActivity extends AppCompatActivity
                 if(position==1)
                 {
                     drawer.openDrawer(GravityCompat.START);
-                    Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
                 }
                 else if(position==2)
                 {
@@ -310,7 +339,6 @@ public class HomeActivity extends AppCompatActivity
                     {
                         drawer.closeDrawer(GravityCompat.START);
                     }
-                    Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT ).show();
                 }
                 else
                 {
@@ -318,9 +346,9 @@ public class HomeActivity extends AppCompatActivity
                     {
                         drawer.closeDrawer(GravityCompat.START);
                     }
-                    Toast.makeText(itemView.getContext(), "Item #" + position, Toast.LENGTH_SHORT).show();
 
                 }
+
             }
         });
 
@@ -359,12 +387,6 @@ public class HomeActivity extends AppCompatActivity
 
         sequence.start();
     }
-
-
-
-
-
-
 
     @Override
     public void onBackPressed() {
