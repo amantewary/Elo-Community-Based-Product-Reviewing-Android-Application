@@ -74,12 +74,14 @@ public class ProductReview extends AppCompatActivity {
     String userDobYear;
     String userGender;
     String userId;
+    String userLikenumber;
     String commentAuthorId;
     String commentAuthorName;
     String commentContent;
-    Double likeNumber;
+    Integer likeNumber;
     SlidingUpPanelLayout commentLayout;
     DatabaseReference userRef;
+    DatabaseReference userLikeRef;
     DatabaseReference commentRef;
     DatabaseReference likeRef;
     FirebaseUser auth;
@@ -128,6 +130,7 @@ public class ProductReview extends AppCompatActivity {
         content.setText(stringContent);
         reviewDevice.setText(stringCategory);
         userRef = FirebaseDatabase.getInstance().getReference("users");
+        userLikeRef = FirebaseDatabase.getInstance().getReference("users");
         userRef.child(stringReviewAuthor).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -142,6 +145,8 @@ public class ProductReview extends AppCompatActivity {
                 userDobYear = mapUser.get("dob_year").toString();
                 userGender = mapUser.get("gender").toString();
                 userWebLink = mapUser.get("webLink").toString();
+                userLikenumber = mapUser.get("likes").toString();
+                likeNumber = Integer.parseInt(userLikenumber);
             }
 
             @Override
@@ -181,7 +186,6 @@ public class ProductReview extends AppCompatActivity {
                 addComment();
             }
         });
-        likeNumber = 0.0;
         likeRef = FirebaseDatabase.getInstance().getReference("likes");
         likeRef.child(stringReviewId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -212,17 +216,17 @@ public class ProductReview extends AppCompatActivity {
                     if(buttonState){
                         String date = DateFormat.getDateTimeInstance().format(new Date());
                         String since = "Liked on "+date;
-                        likeNumber += 1.0;
+                        likeNumber = likeNumber + 1;
                         UserHandler addLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString());
-                        userRef.child(userId).setValue(addLike);
+                        userLikeRef.child(userId).setValue(addLike);
                         likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
                         Log.e("Here", "ButtonState_if"+buttonState);
                     }else{
                         likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
                         Log.e("Here", "ButtonState_else"+buttonState);
-                        likeNumber -= 1.0;
+                        likeNumber = likeNumber - 1;
                         UserHandler subLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString());
-                        userRef.child(stringReviewAuthor).setValue(subLike);
+                        userLikeRef.child(stringReviewAuthor).setValue(subLike);
                 }
             }
 
@@ -290,13 +294,18 @@ public class ProductReview extends AppCompatActivity {
                     commentText.setText("");
                     commentLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
             });
-        }else{
+            //TODO: Simple method (not showing username of comment author)
+//            CommentHandler newComment = new CommentHandler(commentAuthorId, commentContent, commentAuthorId, commentAuthorName);
+//            commentRef.child(stringReviewId).child(commentAuthorId).setValue(newComment);
+//            commentText.setText("");
+//            commentLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+        }
+        else{
             commentText.setError("Comment cannot be empty");
         }
 

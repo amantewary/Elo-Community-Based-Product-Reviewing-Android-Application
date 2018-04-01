@@ -3,6 +3,7 @@ package group.hashtag.projectelo.Activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -32,6 +34,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
+import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -52,9 +56,12 @@ import group.hashtag.projectelo.Handlers.FeaturedContentHandler;
 import group.hashtag.projectelo.Handlers.ReviewHandler;
 import group.hashtag.projectelo.R;
 import group.hashtag.projectelo.SettingsActivity;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
+import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
+import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener {
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener , View.OnClickListener {
 
 
     ListView listView;
@@ -66,13 +73,24 @@ public class HomeActivity extends AppCompatActivity
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
+    DatabaseReference userRef;
     ReviewHandler reviewHandler;
+
+    private static final String SHOWCASE_ID = "element_display";
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
+    boolean firstRun;
+    boolean clicked;
 
     List<ReviewHandler> reviewHandlerList;
 
     TextView featuredTitle;
     FeaturedContentHandler featuredContentHandler;
     ImageView imageViewTitle;
+    FloatingActionButton fab;
+    TextView navUsername;
+    RoundCornerProgressBar navProgress;
+    Map<String, Object> mapUser;
 
     String FeaturedTitleString;
     String FeaturedContentString;
@@ -125,6 +143,30 @@ public class HomeActivity extends AppCompatActivity
 //        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 //        account = GoogleSignIn.getLastSignedInAccount(this);
 
+        prefs = HomeActivity.this.getSharedPreferences("group.hashtag.projectelo.Activities.HomeActivity",0);
+        editor= prefs.edit();
+        firstRun = prefs.getBoolean("firstRun", true);
+
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(this);
+
+//        firstRun=true;
+        if(firstRun)
+        {
+            final Toast toast = Toast.makeText(getApplicationContext(), "Click on the plus button for user manual!", Toast.LENGTH_SHORT);
+            toast.show();
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    toast.cancel();
+                }
+            }, 1000000);
+
+
+
+        }
+
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -155,13 +197,13 @@ public class HomeActivity extends AppCompatActivity
 //            }
 //        });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
+//            }
+//        });
 
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -183,6 +225,8 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
 
 
         //Todo: Populate suggestions from db remaining
@@ -216,8 +260,132 @@ public class HomeActivity extends AppCompatActivity
 
             }
         });
+        navProgress = header.findViewById(R.id.nav_progress);
+        navUsername = header.findViewById(R.id.nav_username);
+        userRef = FirebaseDatabase.getInstance().getReference("users");
+        userRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mapUser = (Map<String, Object>) dataSnapshot.getValue();
+                String userName = mapUser.get("name").toString();
+                String userLike = mapUser.get("likes").toString();
+                Log.e("Here", "Current UserName => " + userName);
+                navUsername.setText(userName);
+                navProgress.setProgress(Integer.parseInt(userLike));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
+            }
+        });
+        clicked = false;
+
+    }
 
 
+    @Override
+    public void onClick(View view)
+    {
+        if(view.getId()==R.id.fab)
+        {
+            if(!clicked) {
+                clicked = true;
+                if (firstRun) {
+                    MaterialShowcaseView.resetAll(getApplicationContext());
+                    presentShowcaseSequence();
+                    Log.e("onCreate: ", " First time");
+                    editor.putBoolean("firstRun", false); // It is no longer the first run
+                    editor.apply();
+                }else{
+                    startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
+                }
+            }else {
+                    startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
+                    Log.i("onCreate: ", "Not First time");
+                }
+        }
+    }
+
+    private void presentShowcaseSequence()
+    {
+        // Items added to showcase
+        // 1. Navigation view
+        // 2. FAB
+        // 3. List View
+        // 4. Settings
+        // 5. Search
+
+        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ShowcaseConfig config = new ShowcaseConfig();
+
+        // one and a half second between each showcase view
+        config.setDelay(1000);
+        MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
+
+
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener()
+        {
+            @Override
+            public void onShow(MaterialShowcaseView itemView, int position)
+            {
+                if(position==1)
+                {
+                    drawer.openDrawer(GravityCompat.START);
+                }
+                else if(position==2)
+                {
+                    if (drawer.isDrawerOpen(GravityCompat.START))
+                    {
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
+                }
+                else
+                {
+                    if (drawer.isDrawerOpen(GravityCompat.START))
+                    {
+                        drawer.closeDrawer(GravityCompat.START);
+                    }
+
+                }
+
+            }
+        });
+
+        sequence.setConfig(config);
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(findViewById(R.id.linear_layout_featured))
+                        .setDismissText("GOT IT")
+                        .setContentText(" \n Checkout the highlighted reviews here!  \n \n")
+                        .withRectangleShape()
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(findViewById(R.id.drawer_layout))
+                        .setMaskColour(R.color.colorPrimary)
+                        .setDismissText("GOT IT")
+                        .setMaskColour(R.color.colorBlue)
+                        .setContentText("\n Would you like to update your details?Click on the User Profile option!\n\nTo change your app settings select the Settings options.\n")
+                        .withoutShape()
+                        .build()
+        );
+
+        sequence.addSequenceItem(
+                new MaterialShowcaseView.Builder(this)
+                        .setTarget(findViewById(R.id.toolbar))
+                        .setDismissText("GOT IT")
+                        .setContentText(" \n Looking for something? Type your key words here for the search results to appear below! \n")
+                        .withRectangleShape()
+                        .build()
+        );
+
+
+
+        sequence.start();
     }
 
     @Override
@@ -457,5 +625,4 @@ public class HomeActivity extends AppCompatActivity
 
     }
 }
-
 
