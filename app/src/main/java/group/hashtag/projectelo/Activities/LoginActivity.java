@@ -300,7 +300,11 @@ public class LoginActivity extends AppCompatActivity {
 //                                            }
 //
 //                                            }
+<<<<<<< Updated upstream
                                     }
+=======
+                                        }
+>>>>>>> Stashed changes
 
 
 
