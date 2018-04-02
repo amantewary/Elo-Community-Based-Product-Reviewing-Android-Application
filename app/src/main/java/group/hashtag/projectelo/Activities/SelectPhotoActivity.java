@@ -38,6 +38,8 @@ import java.io.File;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import group.hashtag.projectelo.Handlers.UserHandler;
 import ru.whalemare.sheetmenu.SheetMenu;
@@ -196,8 +198,9 @@ public class SelectPhotoActivity extends AppCompatActivity {
                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         try{
-//                            UserHandler userHandler = new UserHandler(downloadUrl.toString());
-//                            mDatabase.child(userId).child("displayPic").setValue(userHandler);
+                            Map<String, Object> updatePic = new HashMap<>();
+                            updatePic.put("Display_Pic",downloadUrl.toString());
+                            mDatabase.child(userId).updateChildren(updatePic);
 
                         }catch (Exception e){
                             Log.e("StackTrace",""+e);

@@ -268,47 +268,12 @@ public class LoginActivity extends AppCompatActivity {
                                             startActivity(intent);
                                             finish();
                                         }
-//                                        for (DataSnapshot dsnp : dataSnapshot.getChildren())
-//                                        {
-//                                            Log.e("Heres", ""+dsnp.getKey().equals(user.getUid()));
-//
-//                                            if (dsnp.getKey().equals(user.getUid())){
-//
-//
-//                                                break;
-//                                            }else if (!dsnp.getKey().equals(user.getUid())){
-//                                                Log.e("Heres", ""+dsnp.hasChild(user.getUid()));
-//
-//                                            }else {
-//                                                String userId = user.getUid();
-//                                                UserHandler userHandler = new UserHandler();
-//                                                userHandler.setName(user.getDisplayName());
-//                                                UserHandler userhandler = new UserHandler(user.getDisplayName(),  userId, user.getEmail());
-//
-//                                                mDatabase.child(userId).setValue(userhandler);
-//
-//
-//                                                Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
-//                                                Bundle b = new Bundle();
-//                                                b.putString("userName", user.getDisplayName());
-//                                                b.putString("userEmail", user.getEmail());
-//                                                b.putString("userId", userId);
-//                                                intent.putExtras(b);
-//                                                startActivity(intent);
-//                                                finish();
-//                                                break;
-//                                            }
-//
-//                                            }
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
+
+
                                     }
-=======
-                                        }
->>>>>>> Stashed changes
-=======
-                                        }
->>>>>>> Stashed changes
+
+
+
 
 
 
