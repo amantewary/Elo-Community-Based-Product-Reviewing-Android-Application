@@ -3,7 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="group.hashtag.projectelo">
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -38,7 +42,7 @@
             android:name=".Activities.UserProfile"
             android:label="@string/app_name"
             android:parentActivityName=".Activities.HomeActivity"
-            android:theme="@style/MyMaterialTheme" />
+            android:theme="@style/MyMaterialTheme"/>
         <activity
             android:name=".Activities.FeaturedArticle"
             android:theme="@style/MyMaterialTheme" />
@@ -82,7 +86,6 @@
         <activity
             android:name=".Activities.EditUserProfile"
             android:theme="@style/MyMaterialTheme" />
-        android:theme="@style/MyMaterialTheme" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserWishlist" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserFollowers" />
         <activity android:name=".Activities.OtherUserActivities.OtherUserDevicesActivity" />
@@ -90,7 +93,8 @@
             android:name=".Activities.SelectPhotoActivity"
             android:label="@string/title_activity_select_photo"
             android:theme="@style/MyMaterialTheme" />
-        <activity android:name=".Activities.ReviewPhotoSelection"></activity>
+
+        <activity android:name=".Activities.OnboardingAvtivity" />
     </application>
 
 </manifest>

@@ -15,7 +15,7 @@ public class UserHandler {
 
     public String name;
     public String UserId;
-    public String DisplayPic;
+    public String Display_Pic;
     public String country;
     public String dob_date;
     public String dob_month;
@@ -44,13 +44,10 @@ public class UserHandler {
         return webLink;
     }
 
-    public String getDisplayPicss() {
-        return DisplayPic;
-    }
+//    public String getDisplay_Pic() {
+//        return Display_Pic;
+//    }
 
-    public void setDisplayPicss(String displayPic) {
-        DisplayPic = displayPic;
-    }
 
     public String getEmail() {
         return email;
@@ -86,8 +83,23 @@ public class UserHandler {
         this.name = name;
         this.email = email;
         this.UserId = UserId;
-        this.DisplayPic = DisplayPic;
+        this.Display_Pic = DisplayPic;
     }
+
+    public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender, String dob_date, String likes, String DisplayPic) {
+        this.name = name;
+        UserId = userId;
+        this.country = country;
+        this.dob_date = dob_date;
+        this.dob_month = dob_month;
+        this.dob_year = dob_year;
+        this.webLink = webLink;
+        this.email = email;
+        this.gender = gender;
+        this.likes = likes;
+        this.Display_Pic = DisplayPic;
+    }
+
 
     public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender, String dob_date, String likes) {
         this.name = name;
@@ -101,6 +113,7 @@ public class UserHandler {
         this.gender = gender;
         this.likes = likes;
     }
+
     public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender, String dob_date) {
         this.name = name;
         UserId = userId;
@@ -113,4 +126,7 @@ public class UserHandler {
         this.gender = gender;
     }
 
+    public UserHandler(String displayPic) {
+        Display_Pic = displayPic;
+    }
 }
