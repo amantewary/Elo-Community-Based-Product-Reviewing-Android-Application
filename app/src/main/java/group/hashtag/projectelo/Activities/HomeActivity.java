@@ -256,6 +256,7 @@ public class HomeActivity extends AppCompatActivity
                 mapUser = (Map<String, Object>) dataSnapshot.getValue();
                 String userName = mapUser.get("name").toString();
                 String userLike = mapUser.get("likes").toString();
+                //TODO:
                 String userImage = mapUser.get("Display_Pic").toString();
                 Log.e("Here", "Current UserName => " + userName);
                 navUsername.setText(userName);
@@ -540,7 +541,9 @@ public class HomeActivity extends AppCompatActivity
             });
 
             TextView reviewTitle = reviewtitles.findViewById(R.id.text_headline);
+            TextView reviewDevice = reviewtitles.findViewById(R.id.text_device);
             reviewTitle.setText(reviewHandler.reviewTitle);
+            reviewDevice.setText(reviewHandler.device);
             return reviewtitles;
         }
 

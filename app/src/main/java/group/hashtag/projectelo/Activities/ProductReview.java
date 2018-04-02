@@ -75,6 +75,7 @@ public class ProductReview extends AppCompatActivity {
     String userGender;
     String userId;
     String userLikenumber;
+    String userPic;
     String commentAuthorId;
     String commentAuthorName;
     String commentContent;
@@ -146,6 +147,7 @@ public class ProductReview extends AppCompatActivity {
                 userGender = mapUser.get("gender").toString();
                 userWebLink = mapUser.get("webLink").toString();
                 userLikenumber = mapUser.get("likes").toString();
+                userPic = mapUser.get("Display_Pic").toString();
                 likeNumber = Integer.parseInt(userLikenumber);
             }
 
@@ -217,7 +219,7 @@ public class ProductReview extends AppCompatActivity {
                         String date = DateFormat.getDateTimeInstance().format(new Date());
                         String since = "Liked on "+date;
                         likeNumber = likeNumber + 1;
-                        UserHandler addLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString());
+                        UserHandler addLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString(),userPic);
                         userLikeRef.child(userId).setValue(addLike);
                         likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
                         Log.e("Here", "ButtonState_if"+buttonState);
@@ -225,7 +227,7 @@ public class ProductReview extends AppCompatActivity {
                         likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
                         Log.e("Here", "ButtonState_else"+buttonState);
                         likeNumber = likeNumber - 1;
-                        UserHandler subLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString());
+                        UserHandler subLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString(),userPic);
                         userLikeRef.child(stringReviewAuthor).setValue(subLike);
                 }
             }
@@ -265,16 +267,6 @@ public class ProductReview extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.wishlist, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
-    }
 
     public void addComment(){
 
