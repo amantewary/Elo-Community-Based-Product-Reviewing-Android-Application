@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.Handlers.UserHandler;
@@ -44,15 +47,15 @@ public class UserProfile extends AppCompatActivity {
     TextView userEmailText;
     TextView userWeblinkText;
     TextView userGenderText;
+    IconRoundCornerProgressBar userProgress;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
     private DatabaseReference mDatabase3;
     private DatabaseReference mDatabase4;
-    private ImageButton messages;
-    private ImageButton reviews;
     private LinearLayout btnWishlist, btnUserDevices, btnUserFollowers;
     private CircleImageView displayImageView;
     UserHandler user;
+    Map<String, Object> mapUser;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,8 +73,6 @@ public class UserProfile extends AppCompatActivity {
 
         btnUserFollowers = findViewById(R.id.followers_user_profile);
         btnUserDevices = findViewById(R.id.devices_user_profile);
-        messages = findViewById(R.id.imageButton);
-        reviews= findViewById(R.id.imageButton2);
         displayImageView = (CircleImageView) findViewById(R.id.userDisplayPic);
         followerCounter = findViewById(R.id.user_profile_follower_count);
         deviceCounter = findViewById(R.id.devices_user_counter);
@@ -195,6 +196,21 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(),UserDeviceActivity.class));
+            }
+        });
+
+        userProgress = findViewById(R.id.profile_progress);
+        mDatabase.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mapUser = (Map<String, Object>) dataSnapshot.getValue();
+                String userLike = mapUser.get("likes").toString();
+                userProgress.setProgress(Integer.parseInt(userLike));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
             }
         });
 

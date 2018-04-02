@@ -43,11 +43,11 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:rcBackgroundColor="@color/colorPrimaryDark"
+        app:rcBackgroundColor="#616161"
         app:rcBackgroundPadding="2dp"
         app:rcMax="100"
         app:rcProgress="0"
-        app:rcProgressColor="@color/colorAccent"
+        app:rcProgressColor="#ffffff"
         app:rcRadius="10dp" />
 
 </LinearLayout>
