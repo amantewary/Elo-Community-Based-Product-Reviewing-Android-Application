@@ -84,7 +84,7 @@
                     <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
                         android:id="@+id/profile_progress"
                         android:layout_width="200dp"
-                        android:layout_height="20dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginEnd="8dp"
                         android:layout_marginStart="8dp"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -92,11 +92,13 @@
                         app:layout_constraintTop_toBottomOf="@+id/country_textview"
                         app:rcBackgroundColor="#616161"
                         app:rcBackgroundPadding="2dp"
-                        app:rcIconBackgroundColor="#000000"
+                        app:rcIconBackgroundColor="#66009a"
+                        app:rcIconPadding="1dp"
+                        app:rcIconSize="20dp"
                         app:rcIconSrc="@drawable/ic_progress_icon"
                         app:rcMax="100"
                         app:rcProgress="0"
-                        app:rcProgressColor="#ffffff"
+                        app:rcProgressColor="#cd66ff"
                         app:rcRadius="5dp" />
 
                 </android.support.constraint.ConstraintLayout>

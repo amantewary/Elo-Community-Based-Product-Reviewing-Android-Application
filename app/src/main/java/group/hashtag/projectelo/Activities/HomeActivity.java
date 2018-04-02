@@ -116,7 +116,6 @@ public class HomeActivity extends AppCompatActivity
         title = findViewById(R.id.title_toolbar);
         final Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
         featuredTitle = findViewById(R.id.featured_textView_title);
-        imageViewTitle = findViewById(R.id.featured_imageView_image);
         reviewHandlerList = new ArrayList<ReviewHandler>();
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
