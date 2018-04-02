@@ -17,8 +17,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -45,7 +47,7 @@ public class ProfileSetup extends AppCompatActivity {
     Integer likes;
     CircleImageView displayImage;
     StorageReference storageRef;
-    String downloadURLString;
+    String downloadURLString = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,20 +114,24 @@ public class ProfileSetup extends AppCompatActivity {
         displayImage.setDrawingCacheEnabled(true);
         Bitmap bitmap = displayImage.getDrawingCache();
         likes = 0;
-        if (!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear)) {
-            String displayurl = uploadDisplayPic(bitmap);
-            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate, likes.toString(), displayurl);
-//            userRef.child(stringUserId).setValue(item);
-//            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-//            finish();
-            Log.e("Here",displayurl);
+        uploadDisplayPic(bitmap);
+        if(downloadURLString.equals("")){
+            Toast.makeText(getApplicationContext(), "Please wait till the file gets uploaded :)",Toast.LENGTH_SHORT).show();
+        }
+        else if (!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear) ) {
+
+            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate, likes.toString(), downloadURLString);
+            userRef.child(stringUserId).setValue(item);
+            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            finish();
+            Log.e("Here",downloadURLString);
         } else {
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    public String uploadDisplayPic(final Bitmap downloadUri){
+    public void uploadDisplayPic(final Bitmap downloadUri){
         StorageReference reviewImageRef = storageRef.child(stringUserId+".jpg");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         downloadUri.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -138,17 +144,19 @@ public class ProfileSetup extends AppCompatActivity {
                 // Handle unsuccessful uploads
                 Toast.makeText(getApplicationContext(),"Failed to upload",Toast.LENGTH_SHORT).show();
             }
+        }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+            }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 downloadURLString = downloadUrl.toString();
-                Toast.makeText(getApplicationContext(),downloadURLString,Toast.LENGTH_SHORT).show();
-                Log.e("Here", downloadURLString);
             }
         });
 
-        return downloadURLString;
     }
 }

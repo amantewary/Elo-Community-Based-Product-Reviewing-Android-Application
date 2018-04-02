@@ -101,8 +101,8 @@ public class UserProfile extends AppCompatActivity {
                 userYearText.setText(user.getDob_year());
                 userWeblinkText.setText(user.getWebLink());
                 userGenderText.setText(user.getGender());
-                loadDisplayPics(user.getDisplayPics());
-                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.getDisplayPics() + ", email " + user.getEmail());
+                loadDisplayPics(user.Display_Pic);
+                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.Display_Pic + ", email " + user.getEmail());
             }
 
             @Override
