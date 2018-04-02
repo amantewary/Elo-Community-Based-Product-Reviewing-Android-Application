@@ -15,7 +15,7 @@ public class UserHandler {
 
     public String name;
     public String UserId;
-    public String DisplayPic;
+    public String Display_Pic;
     public String country;
     public String dob_date;
     public String dob_month;
@@ -44,9 +44,9 @@ public class UserHandler {
         return webLink;
     }
 
-    public String getDisplayPics() {
-        return DisplayPic;
-    }
+//    public String getDisplay_Pic() {
+//        return Display_Pic;
+//    }
 
 
     public String getEmail() {
@@ -83,7 +83,7 @@ public class UserHandler {
         this.name = name;
         this.email = email;
         this.UserId = UserId;
-        this.DisplayPic = DisplayPic;
+        this.Display_Pic = DisplayPic;
     }
 
     public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender, String dob_date, String likes, String DisplayPic) {
@@ -97,7 +97,7 @@ public class UserHandler {
         this.email = email;
         this.gender = gender;
         this.likes = likes;
-        this.DisplayPic = DisplayPic;
+        this.Display_Pic = DisplayPic;
     }
 
 
@@ -126,4 +126,7 @@ public class UserHandler {
         this.gender = gender;
     }
 
+    public UserHandler(String displayPic) {
+        Display_Pic = displayPic;
+    }
 }

@@ -12,6 +12,7 @@ public class NewReviewHandler {
     String reviewDescription;
     String device;
     String category;
+    String reviewImage;
 
     public NewReviewHandler() {
 
@@ -24,6 +25,16 @@ public class NewReviewHandler {
         this.reviewDescription = reviewDescription;
         this.device = device;
         this.category = category;
+    }
+
+    public NewReviewHandler(String userId, String reviewId, String reviewTitle, String reviewDescription, String device, String category, String reviewurl) {
+        this.userId = userId;
+        this.reviewId = reviewId;
+        this.reviewTitle = reviewTitle;
+        this.reviewDescription = reviewDescription;
+        this.device = device;
+        this.category = category;
+        this.reviewImage = reviewurl;
     }
 
     public String getUserId() {
