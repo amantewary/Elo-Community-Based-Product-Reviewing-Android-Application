@@ -214,7 +214,7 @@ public class Register_Activity extends AppCompatActivity {
                                         Bundle b = new Bundle();
                                         b.putString("userName", name);
                                         b.putString("userEmail", email);
-                                        b.putString("userId", userId);;
+                                        b.putString("userId", userId);
                                         intent.putExtras(b);
                                         startActivity(intent);
                                     }
@@ -269,7 +269,6 @@ public class Register_Activity extends AppCompatActivity {
                                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                             finish();
                                         }else {
-                                            Log.e("Heres", "walah walah");
 
                                             String userId = user.getUid();
                                             UserHandler userHandler = new UserHandler();
@@ -288,38 +287,7 @@ public class Register_Activity extends AppCompatActivity {
                                             startActivity(intent);
                                             finish();
                                         }
-//                                        for (DataSnapshot dsnp : dataSnapshot.getChildren())
-//                                        {
-//                                            Log.e("Heres", ""+dsnp.getKey().equals(user.getUid()));
-//
-//                                            if (dsnp.getKey().equals(user.getUid())){
-//
-//
-//                                                break;
-//                                            }else if (!dsnp.getKey().equals(user.getUid())){
-//                                                Log.e("Heres", ""+dsnp.hasChild(user.getUid()));
-//
-//                                            }else {
-//                                                String userId = user.getUid();
-//                                                UserHandler userHandler = new UserHandler();
-//                                                userHandler.setName(user.getDisplayName());
-//                                                UserHandler userhandler = new UserHandler(user.getDisplayName(),  userId, user.getEmail());
-//
-//                                                mDatabase.child(userId).setValue(userhandler);
-//
-//
-//                                                Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
-//                                                Bundle b = new Bundle();
-//                                                b.putString("userName", user.getDisplayName());
-//                                                b.putString("userEmail", user.getEmail());
-//                                                b.putString("userId", userId);
-//                                                intent.putExtras(b);
-//                                                startActivity(intent);
-//                                                finish();
-//                                                break;
-//                                            }
-//
-//                                            }
+
                                     }
 
 
