@@ -1,10 +1,14 @@
 package group.hashtag.projectelo.Activities;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -13,10 +17,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.Handlers.UserHandler;
@@ -33,6 +44,8 @@ public class ProfileSetup extends AppCompatActivity {
     String stringUserId, stringUserName, stringUserEmail;
     Integer likes;
     CircleImageView displayImage;
+    StorageReference storageRef;
+    String downloadURLString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +54,10 @@ public class ProfileSetup extends AppCompatActivity {
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
         userRef = FirebaseDatabase.getInstance().getReference("users");
         auth = FirebaseAuth.getInstance().getCurrentUser();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        downloadURLString = "";
+        storageRef = storage.getReference();
 
         username = findViewById(R.id.username_textview);
         country = findViewById(R.id.spinnercountry);
@@ -92,15 +109,46 @@ public class ProfileSetup extends AppCompatActivity {
         String userBirthYear = year.getSelectedItem().toString();
         String userGender = gender.getSelectedItem().toString();
         String userWebLink = webLink.getText().toString();
+        displayImage.setDrawingCacheEnabled(true);
+        Bitmap bitmap = displayImage.getDrawingCache();
         likes = 0;
         if (!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear)) {
-            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate, likes.toString());
-            userRef.child(stringUserId).setValue(item);
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-            finish();
+            String displayurl = uploadDisplayPic(bitmap);
+            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate, likes.toString(), displayurl);
+//            userRef.child(stringUserId).setValue(item);
+//            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+//            finish();
+            Log.e("Here",displayurl);
         } else {
             Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    public String uploadDisplayPic(final Bitmap downloadUri){
+        StorageReference reviewImageRef = storageRef.child(stringUserId+".jpg");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        downloadUri.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] datai = baos.toByteArray();
+
+        UploadTask uploadTask = reviewImageRef.putBytes(datai);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Toast.makeText(getApplicationContext(),"Failed to upload",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                downloadURLString = downloadUrl.toString();
+                Toast.makeText(getApplicationContext(),downloadURLString,Toast.LENGTH_SHORT).show();
+                Log.e("Here", downloadURLString);
+            }
+        });
+
+        return downloadURLString;
     }
 }
