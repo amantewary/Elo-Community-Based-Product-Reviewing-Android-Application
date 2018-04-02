@@ -9,11 +9,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.os.UserHandle;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,12 +25,21 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import group.hashtag.projectelo.Manifest;
+import group.hashtag.projectelo.Handlers.UserHandler;
 import ru.whalemare.sheetmenu.SheetMenu;
 import group.hashtag.projectelo.R;
 
@@ -41,13 +53,24 @@ public class SelectPhotoActivity extends AppCompatActivity {
     private Uri uri;
     private Intent CameraIntent, GalleryIntent, CropIntent;
     public static final int PermissionCode = 1;
-
-
+    StorageReference storageRef;
+    String userId;
+    DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_select);
 
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        Intent intent = getIntent();
+        if(intent != null){
+            userId = intent.getStringExtra("userId");
+        }
+
+
+        storageRef = storage.getReference();
 
 
         imageView = (ImageView) findViewById(R.id.iv);
@@ -67,9 +90,9 @@ public class SelectPhotoActivity extends AppCompatActivity {
             }
         });
 
-      /*  StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+        StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
-*/
+
         Permission();
 
 
@@ -152,6 +175,36 @@ public class SelectPhotoActivity extends AppCompatActivity {
                 Bundle bundle = data.getExtras();
                 Bitmap bitmap = bundle.getParcelable("data");
                 imageView.setImageBitmap(bitmap);
+                imageView.setDrawingCacheEnabled(true);
+                imageView.buildDrawingCache();
+                StorageReference reviewImageRef = storageRef.child(userId+".jpg");
+                bitmap = imageView.getDrawingCache();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] datai = baos.toByteArray();
+
+                UploadTask uploadTask = reviewImageRef.putBytes(datai);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        Toast.makeText(getApplicationContext(),"Failed to upload",Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        try{
+//                            UserHandler userHandler = new UserHandler(downloadUrl.toString());
+//                            mDatabase.child(userId).child("displayPic").setValue(userHandler);
+
+                        }catch (Exception e){
+                            Log.e("StackTrace",""+e);
+                        }
+                    }
+                });
+
             }
         }
 
