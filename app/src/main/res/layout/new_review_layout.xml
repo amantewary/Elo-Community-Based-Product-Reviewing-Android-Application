@@ -27,7 +27,7 @@
                         <ImageView
                             android:layout_width="match_parent"
                             android:layout_weight="30"
-                            android:id="@+id/new_review_image"
+                            android:id="@+id/new_review_image_new"
                             android:src="@drawable/razer"
                             android:scaleType="fitXY"
                             android:layout_height="0dp"/>

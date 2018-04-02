@@ -52,6 +52,7 @@ public class UserProfile extends AppCompatActivity {
     private ImageButton reviews;
     private LinearLayout btnWishlist, btnUserDevices, btnUserFollowers;
     private CircleImageView displayImageView;
+    UserHandler user;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +92,7 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                UserHandler user = dataSnapshot.getValue(UserHandler.class);
+                user = dataSnapshot.getValue(UserHandler.class);
                 usernameText.setText(user.getName());
                 userEmailText.setText(user.getEmail());
                 userCountryText.setText(user.getCountry());
@@ -100,8 +101,8 @@ public class UserProfile extends AppCompatActivity {
                 userYearText.setText(user.getDob_year());
                 userWeblinkText.setText(user.getWebLink());
                 userGenderText.setText(user.getGender());
-                loadDisplayPics(user.getDisplayPicss());
-                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.getDisplayPicss() + ", email " + user.getEmail());
+                loadDisplayPics(user.getDisplayPics());
+                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.getDisplayPics() + ", email " + user.getEmail());
             }
 
             @Override
@@ -164,6 +165,7 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent profilepic = new Intent(UserProfile.this, SelectPhotoActivity.class);
+                profilepic.putExtra("userId",user.UserId);
                 startActivity(profilepic);
 
             }
