@@ -28,8 +28,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -211,7 +214,7 @@ public class Register_Activity extends AppCompatActivity {
                                         Bundle b = new Bundle();
                                         b.putString("userName", name);
                                         b.putString("userEmail", email);
-                                        b.putString("userId", userId);;
+                                        b.putString("userId", userId);
                                         intent.putExtras(b);
                                         startActivity(intent);
                                     }
@@ -256,20 +259,47 @@ public class Register_Activity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.e(Register_Activity.class.getCanonicalName(), "signInWithCredential:success");
-                            FirebaseUser user = auth.getCurrentUser();
+                            final FirebaseUser user = auth.getCurrentUser();
                             if (user != null) {
-                                String userId = user.getUid();
-                                UserHandler userHandler = new UserHandler();
-                                userHandler.setName(user.getDisplayName());
-                                Log.e(Register_Activity.class.getCanonicalName(), user.getEmail());
-                                UserHandler userhandler = new UserHandler(user.getDisplayName(), user.getEmail(), userId);
+                                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                mDatabase.child(userId).setValue(userhandler);
+                                        if (dataSnapshot.hasChild(user.getUid())){
+                                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                            finish();
+                                        }else {
+
+                                            String userId = user.getUid();
+                                            UserHandler userHandler = new UserHandler();
+                                            userHandler.setName(user.getDisplayName());
+                                            UserHandler userhandler = new UserHandler(user.getDisplayName(),  userId, user.getEmail());
+
+                                            mDatabase.child(userId).setValue(userhandler);
 
 
-                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-                                finish();
+                                            Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
+                                            Bundle b = new Bundle();
+                                            b.putString("userName", user.getDisplayName());
+                                            b.putString("userEmail", user.getEmail());
+                                            b.putString("userId", userId);
+                                            intent.putExtras(b);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+
+                                    }
+
+
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        Log.e("Here",""+databaseError);
+                                    }
+                                });
+
                             }
+
 
 
                         } else {
@@ -277,7 +307,6 @@ public class Register_Activity extends AppCompatActivity {
                             Log.e(Register_Activity.class.getCanonicalName(), "signInWithCredential:failure", task.getException());
                         }
 
-                        // ...
                     }
                 });
     }

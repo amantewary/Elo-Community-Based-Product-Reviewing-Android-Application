@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,6 +23,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.Handlers.UserHandler;
@@ -44,14 +47,15 @@ public class UserProfile extends AppCompatActivity {
     TextView userEmailText;
     TextView userWeblinkText;
     TextView userGenderText;
+    IconRoundCornerProgressBar userProgress;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
     private DatabaseReference mDatabase3;
     private DatabaseReference mDatabase4;
-    private ImageButton messages;
-    private ImageButton reviews;
     private LinearLayout btnWishlist, btnUserDevices, btnUserFollowers;
     private CircleImageView displayImageView;
+    UserHandler user;
+    Map<String, Object> mapUser;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,8 +73,6 @@ public class UserProfile extends AppCompatActivity {
 
         btnUserFollowers = findViewById(R.id.followers_user_profile);
         btnUserDevices = findViewById(R.id.devices_user_profile);
-        messages = findViewById(R.id.imageButton);
-        reviews= findViewById(R.id.imageButton2);
         displayImageView = (CircleImageView) findViewById(R.id.userDisplayPic);
         followerCounter = findViewById(R.id.user_profile_follower_count);
         deviceCounter = findViewById(R.id.devices_user_counter);
@@ -91,7 +93,7 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                UserHandler user = dataSnapshot.getValue(UserHandler.class);
+                user = dataSnapshot.getValue(UserHandler.class);
                 usernameText.setText(user.getName());
                 userEmailText.setText(user.getEmail());
                 userCountryText.setText(user.getCountry());
@@ -100,8 +102,8 @@ public class UserProfile extends AppCompatActivity {
                 userYearText.setText(user.getDob_year());
                 userWeblinkText.setText(user.getWebLink());
                 userGenderText.setText(user.getGender());
-                loadDisplayPics(user.getDisplayPicss());
-                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.getDisplayPicss() + ", email " + user.getEmail());
+                loadDisplayPics(user.Display_Pic);
+                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.Display_Pic + ", email " + user.getEmail());
             }
 
             @Override
@@ -160,9 +162,17 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        displayImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent profilepic = new Intent(UserProfile.this, SelectPhotoActivity.class);
+                profilepic.putExtra("userId",user.UserId);
+                startActivity(profilepic);
+
+            }
+        });
+
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
-
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
@@ -189,6 +199,21 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        userProgress = findViewById(R.id.profile_progress);
+        mDatabase.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mapUser = (Map<String, Object>) dataSnapshot.getValue();
+                String userLike = mapUser.get("likes").toString();
+                userProgress.setProgress(Integer.parseInt(userLike));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
+            }
+        });
+
     }
     //TODO: Need to work on settings page which will double as profile edit page.
     @Override
@@ -199,7 +224,16 @@ public class UserProfile extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+        int id = item.getItemId();
+        if (id == R.id.action_setting) {
+            Intent intent = new Intent (UserProfile.this, EditUserProfile.class);
+            intent.putExtra("username",usernameText.getText().toString());
+            intent.putExtra("useremail",userEmailText.getText().toString());
+            intent.putExtra("usergender",userGenderText.getText().toString());
+            intent.putExtra("userweblink",userWeblinkText.getText().toString());
+            startActivity(intent);
+        }
+            return super.onOptionsItemSelected(item);
     }
 
     public void loadDisplayPics(String url){

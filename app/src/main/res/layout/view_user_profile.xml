@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="group.hashtag.projectelo.Activities.ViewUserProfile">
+    tools:context="group.hashtag.projectelo.Activities.OtherUserActivities.ViewUserProfile">
 
     <include layout="@layout/toolbar">
 
@@ -24,12 +24,12 @@
             <android.support.v7.widget.CardView
                 android:id="@+id/view"
                 android:layout_width="0dp"
-                android:layout_height="180dp"
+                android:layout_height="220dp"
                 android:layout_marginBottom="8dp"
 
                 android:backgroundTint="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.0"
 
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -47,62 +47,28 @@
                         android:layout_marginBottom="68dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintDimensionRatio="w,1:1"
+                        app:layout_constraintHorizontal_bias="0.498"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.068" />
 
                     <TextView
                         android:id="@+id/view_country_textview"
                         style="@style/Base.TextAppearance.AppCompat.Body1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
                         android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
                         android:autoLink="map"
                         android:text="Halifax, NS"
                         android:textColor="@color/colorPrimary"
                         android:textStyle="italic"
+                        app:layout_constraintBottom_toTopOf="@+id/view_profile_progress"
                         app:layout_constraintEnd_toEndOf="@+id/viewUserName"
                         app:layout_constraintStart_toStartOf="@+id/viewUserName"
                         app:layout_constraintTop_toBottomOf="@+id/viewUserName" />
-
-                    <ImageButton
-                        android:id="@+id/imageButton"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginEnd="16dp"
-                        android:layout_marginTop="52dp"
-                        android:background="@android:color/transparent"
-                        android:tint="@color/colorPrimary"
-                        app:layout_constraintEnd_toStartOf="@+id/viewUserDisplayPic"
-                        app:layout_constraintTop_toTopOf="@+id/viewUserDisplayPic"
-                        app:srcCompat="@drawable/ic_comment"
-                        tools:ignore="VectorDrawableCompat" />
-
-                    <TextView
-                        android:id="@+id/textView3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Reviews"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageButton"
-                        app:layout_constraintEnd_toEndOf="@+id/imageButton"
-                        app:layout_constraintStart_toStartOf="@+id/imageButton"
-                        app:layout_constraintTop_toBottomOf="@+id/imageButton" />
-
-                    <TextView
-                        android:id="@+id/textView4"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Messages"
-                        android:textAlignment="center"
-                        android:textColor="@color/colorPrimary"
-                        android:textSize="10sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
-                        app:layout_constraintEnd_toEndOf="@+id/imageButton2"
-                        app:layout_constraintStart_toStartOf="@+id/imageButton2"
-                        app:layout_constraintTop_toBottomOf="@+id/imageButton2"
-                        app:layout_constraintVertical_bias="0.52" />
 
                     <TextView
                         android:id="@+id/viewUserName"
@@ -119,18 +85,27 @@
                         app:layout_constraintStart_toStartOf="@+id/viewUserDisplayPic"
                         app:layout_constraintTop_toBottomOf="@+id/viewUserDisplayPic" />
 
-                    <ImageButton
-                        android:id="@+id/imageButton2"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="52dp"
-                        android:background="@android:color/transparent"
-                        android:tint="@color/colorPrimary"
-                        app:layout_constraintStart_toEndOf="@+id/viewUserDisplayPic"
-                        app:layout_constraintTop_toTopOf="@+id/viewUserDisplayPic"
-                        app:srcCompat="@drawable/ic_question_answer"
-                        tools:ignore="VectorDrawableCompat" />
+                    <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
+                        android:id="@+id/view_profile_progress"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:layout_marginEnd="8dp"
+                        android:layout_marginStart="8dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:rcBackgroundColor="#616161"
+                        app:rcBackgroundPadding="2dp"
+                        app:rcIconBackgroundColor="#66009a"
+                        app:rcIconPadding="1dp"
+                        app:rcIconSize="20dp"
+                        app:rcIconSrc="@drawable/ic_progress_icon"
+                        app:rcMax="100"
+                        app:rcProgress="0"
+                        app:rcProgressColor="#cd66ff"
+                        app:rcRadius="5dp" />
+
                 </android.support.constraint.ConstraintLayout>
             </android.support.v7.widget.CardView>
 
@@ -139,7 +114,7 @@
                 android:layout_width="350dp"
                 android:layout_height="120dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="164dp"
+                android:layout_marginTop="210dp"
                 android:backgroundTint="@color/colorPrimary"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -156,6 +131,7 @@
                         android:weightSum="3">
 
                         <LinearLayout
+                            android:id="@+id/other_user_devices"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -170,6 +146,7 @@
                                 android:textSize="20sp" />
 
                             <TextView
+                                android:id="@+id/other_user_devices_count_text_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="10dp"
@@ -181,7 +158,7 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/btn_view_wish"
+                            android:id="@+id/other_user_wishlist"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -198,7 +175,7 @@
                                 android:textSize="20sp" />
 
                             <TextView
-                                android:id="@+id/viewWishlistCounter"
+                                android:id="@+id/other_user_wishlist_count_text_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="10dp"
@@ -211,6 +188,7 @@
 
                         <LinearLayout
                             android:layout_width="0dp"
+                            android:id="@+id/other_user_followers"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
@@ -224,6 +202,7 @@
                                 android:textSize="20sp" />
 
                             <TextView
+                                android:id="@+id/other_user_followers_count_text_view"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:paddingTop="10dp"
@@ -338,6 +317,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
+                    android:autoLink="web"
                     android:paddingLeft="20dp"
                     android:text="Show all comments"
                     android:textStyle="bold"

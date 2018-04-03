@@ -1,4 +1,4 @@
-package group.hashtag.projectelo.Activities;
+package group.hashtag.projectelo.Activities.OtherUserActivities;
 
 import android.content.Intent;
 import android.graphics.Typeface;
@@ -8,8 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -20,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.R;
@@ -37,6 +40,9 @@ public class ViewUserProfile extends AppCompatActivity {
     TextView viewUserEmailText;
     TextView viewUserWeblinkText;
     TextView viewUserGenderText;
+    TextView viewUserDeviceCounter;
+    TextView viewUserWishlistCounter;
+    TextView viewUserFollowersCounter;
     Button followButton;
     private CircleImageView userProfilePic;
     String stringReviewUserName;
@@ -49,8 +55,18 @@ public class ViewUserProfile extends AppCompatActivity {
     String stringReviewUserGender;
     String stringReviewUserWebLink;
     String stringReviewUserCountry;
+    IconRoundCornerProgressBar userProgress;
+    Map<String, Object> mapUser;
 
     DatabaseReference followRef;
+    DatabaseReference otherUserWishList;
+    DatabaseReference otherUserFollowers;
+    DatabaseReference otherUserDevices;
+    DatabaseReference otherUserRef;
+
+    private LinearLayout btnOtherUserWishlist, btnOtherUserDevices, btnOtherUserFollowers;
+
+
     FirebaseUser auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +75,7 @@ public class ViewUserProfile extends AppCompatActivity {
         setContentView(R.layout.view_user_profile);
         follow_status="not_following";
         followRef = FirebaseDatabase.getInstance().getReference("follow");
+        otherUserRef = FirebaseDatabase.getInstance().getReference("users");
         Intent intent = getIntent();
         stringReviewUserName = intent.getStringExtra("reviewUser");
         stringReviewUserId = intent.getStringExtra("reviewUserId");
@@ -88,6 +105,13 @@ public class ViewUserProfile extends AppCompatActivity {
         followButton = findViewById(R.id.btnFollow);
         userProfilePic = findViewById(R.id.viewUserDisplayPic);
         title.setTypeface(ReemKufi_Regular);
+        btnOtherUserFollowers = findViewById(R.id.other_user_followers);
+        btnOtherUserDevices = findViewById(R.id.other_user_devices);
+        btnOtherUserWishlist = findViewById(R.id.other_user_wishlist);
+        viewUserWishlistCounter = findViewById(R.id.other_user_wishlist_count_text_view);
+        viewUserDeviceCounter = findViewById(R.id.other_user_devices_count_text_view);
+        viewUserFollowersCounter = findViewById(R.id.other_user_followers_count_text_view);
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -107,6 +131,80 @@ public class ViewUserProfile extends AppCompatActivity {
         viewUserYearText.setText(stringReviewUserDobYear);
         viewUserWeblinkText.setText(stringReviewUserWebLink);
         viewUserGenderText.setText(stringReviewUserGender);
+
+
+        otherUserWishList = FirebaseDatabase.getInstance().getReference("User_device").child("Wishlist").child(stringReviewUserId);
+        otherUserFollowers = FirebaseDatabase.getInstance().getReference("follow").child(stringReviewUserId);
+        otherUserDevices = FirebaseDatabase.getInstance().getReference("User_device").child("Owner").child(stringReviewUserId);
+
+        otherUserWishList.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long wlCounter = dataSnapshot.getChildrenCount();
+                viewUserWishlistCounter.setText(Long.toString(wlCounter));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        otherUserFollowers.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long flCounter = dataSnapshot.getChildrenCount();
+                viewUserFollowersCounter.setText(Long.toString(flCounter));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        otherUserDevices.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Long dvCounter = dataSnapshot.getChildrenCount();
+                viewUserDeviceCounter.setText(Long.toString(dvCounter));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+
+        btnOtherUserWishlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent wlintent = new Intent(getApplicationContext(), OtherUserWishlist.class);
+                wlintent.putExtra("otherUserId", stringReviewUserId);
+                startActivity(wlintent);
+            }
+        });
+
+        btnOtherUserFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent flintent = new Intent(getApplicationContext(), OtherUserFollowers.class);
+                flintent.putExtra("otherUserId", stringReviewUserId);
+                startActivity(flintent);
+            }
+        });
+
+        btnOtherUserDevices.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent dlintent = new Intent(getApplicationContext(), OtherUserFollowers.class);
+                dlintent.putExtra("otherUserId", stringReviewUserId);
+                startActivity(dlintent);
+            }
+        });
 
         followRef.child(stringReviewUserId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -143,6 +241,21 @@ public class ViewUserProfile extends AppCompatActivity {
                     follow_status = "not_following";
                     followButton.setText("Follow Me");
                 }
+            }
+        });
+
+        userProgress = findViewById(R.id.view_profile_progress);
+        otherUserRef.child(stringReviewUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mapUser = (Map<String, Object>) dataSnapshot.getValue();
+                String userLike = mapUser.get("likes").toString();
+                userProgress.setProgress(Integer.parseInt(userLike));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
             }
         });
     }
