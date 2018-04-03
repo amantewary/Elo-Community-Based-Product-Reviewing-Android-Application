@@ -103,7 +103,7 @@
                         app:rcIconSrc="@drawable/ic_progress_icon"
                         app:rcMax="100"
                         app:rcProgress="0"
-                        app:rcProgressColor="#cd66ff"
+                        app:rcProgressColor="#cd60ff"
                         app:rcRadius="5dp" />
 
                 </android.support.constraint.ConstraintLayout>
