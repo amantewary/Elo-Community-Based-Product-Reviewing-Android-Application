@@ -170,6 +170,7 @@ public class UserProfile extends AppCompatActivity {
             public void onClick(View v) {
                 Intent profilepic = new Intent(UserProfile.this, SelectPhotoActivity.class);
                 profilepic.putExtra("userId",user.UserId);
+                profilepic.putExtra("displayPicUri",user.Display_Pic);
                 startActivity(profilepic);
 
             }
