@@ -56,6 +56,8 @@ public class UserProfile extends AppCompatActivity {
     private CircleImageView displayImageView;
     UserHandler user;
     Map<String, Object> mapUser;
+    String userLike;
+    String displayPic;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,6 +106,7 @@ public class UserProfile extends AppCompatActivity {
                 userGenderText.setText(user.getGender());
                 loadDisplayPics(user.Display_Pic);
                 Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.Display_Pic + ", email " + user.getEmail());
+                displayPic = user.Display_Pic;
             }
 
             @Override
@@ -204,7 +207,7 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mapUser = (Map<String, Object>) dataSnapshot.getValue();
-                String userLike = mapUser.get("likes").toString();
+                userLike = mapUser.get("likes").toString();
                 userProgress.setProgress(Integer.parseInt(userLike));
             }
 
@@ -231,6 +234,8 @@ public class UserProfile extends AppCompatActivity {
             intent.putExtra("useremail",userEmailText.getText().toString());
             intent.putExtra("usergender",userGenderText.getText().toString());
             intent.putExtra("userweblink",userWeblinkText.getText().toString());
+            intent.putExtra("userlike",userLike);
+            intent.putExtra("userpic",displayPic);
             startActivity(intent);
         }
             return super.onOptionsItemSelected(item);

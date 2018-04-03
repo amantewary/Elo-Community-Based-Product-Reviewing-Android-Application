@@ -97,13 +97,13 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:rcBackgroundColor="#616161"
                         app:rcBackgroundPadding="2dp"
-                        app:rcIconBackgroundColor="#66009a"
+                        app:rcIconBackgroundColor="#ffffff"
                         app:rcIconPadding="1dp"
                         app:rcIconSize="20dp"
                         app:rcIconSrc="@drawable/ic_progress_icon"
                         app:rcMax="100"
                         app:rcProgress="0"
-                        app:rcProgressColor="#cd66ff"
+                        app:rcProgressColor="#a1a0a1"
                         app:rcRadius="5dp" />
 
                 </android.support.constraint.ConstraintLayout>

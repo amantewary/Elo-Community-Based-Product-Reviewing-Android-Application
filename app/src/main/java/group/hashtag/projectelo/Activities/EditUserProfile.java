@@ -33,7 +33,7 @@ public class EditUserProfile extends AppCompatActivity {
     Button cancel;
     DatabaseReference userRef;
     FirebaseUser auth;
-    String stringUserGender, stringUserName, stringUserEmail, stringWebLink;
+    String stringUserGender, stringUserName, stringUserEmail, stringWebLink, stringUserLike, stringUserPic;
 
 
     @Override
@@ -61,6 +61,8 @@ public class EditUserProfile extends AppCompatActivity {
         stringUserEmail = intent.getStringExtra("useremail");
         stringUserGender = intent.getStringExtra("usergender");
         stringWebLink = intent.getStringExtra("userweblink");
+        stringUserLike = intent.getStringExtra("userlike");
+        stringUserPic = intent.getStringExtra("userpic");
 
         title.setTypeface(ReemKufi_Regular);
         setSupportActionBar(toolbar);
@@ -89,7 +91,7 @@ public class EditUserProfile extends AppCompatActivity {
 
                 if(!TextUtils.isEmpty(newUsername)){
 
-                    UserHandler newDetails = new UserHandler(newUsername, id, newCountry, newMonth, newYear, newWebLink, stringUserEmail, stringUserGender, newDate);
+                    UserHandler newDetails = new UserHandler(newUsername, id, newCountry, newMonth, newYear, newWebLink, stringUserEmail, stringUserGender, newDate, stringUserLike, stringUserPic);
                     userRef.child(id).setValue(newDetails);
                     finish();
 
