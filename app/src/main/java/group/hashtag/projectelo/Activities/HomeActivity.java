@@ -422,7 +422,7 @@ public class HomeActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_user_profile) {
-            startActivity(new Intent(HomeActivity.this, UserProfile.class));
+            startActivity(new Intent(getApplicationContext(), UserProfile.class));
         } else if (id == R.id.nav_licence) {
             startActivity(new Intent(getApplicationContext(), OpenSourceActivity.class));
         }  else if (id == R.id.nav_logout) {

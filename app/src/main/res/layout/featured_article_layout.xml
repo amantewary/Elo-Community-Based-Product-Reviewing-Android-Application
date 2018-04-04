@@ -53,6 +53,7 @@
                         android:layout_alignEnd="@+id/featured_view_imageview"
                         android:padding="@dimen/activity_vertical_margin"
                         android:layout_marginTop="@dimen/activity_horizontal_margin"
+                        android:autoLink="all"
                         android:layout_alignParentBottom="true"
                         android:scrollbars="vertical"
                         android:layout_below="@+id/featured_view_imageview"
