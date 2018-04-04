@@ -19,6 +19,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -55,6 +56,7 @@ public class ViewUserProfile extends AppCompatActivity {
     String stringReviewUserGender;
     String stringReviewUserWebLink;
     String stringReviewUserCountry;
+    String otherUserDisplay;
     IconRoundCornerProgressBar userProgress;
     Map<String, Object> mapUser;
 
@@ -177,7 +179,22 @@ public class ViewUserProfile extends AppCompatActivity {
         });
 
 
+        userProgress = findViewById(R.id.view_profile_progress);
+        otherUserRef.child(stringReviewUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mapUser = (Map<String, Object>) dataSnapshot.getValue();
+                String userLike = mapUser.get("likes").toString();
+                otherUserDisplay = mapUser.get("Display_Pic").toString();
+                loadDisplayPics(otherUserDisplay);
+                userProgress.setProgress(Integer.parseInt(userLike));
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
+            }
+        });
 
         btnOtherUserWishlist.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,6 +243,8 @@ public class ViewUserProfile extends AppCompatActivity {
 
             }
         });
+//        loadDisplayPics(otherUserDisplay);
+
 
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -244,20 +263,20 @@ public class ViewUserProfile extends AppCompatActivity {
             }
         });
 
-        userProgress = findViewById(R.id.view_profile_progress);
-        otherUserRef.child(stringReviewUserId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mapUser = (Map<String, Object>) dataSnapshot.getValue();
-                String userLike = mapUser.get("likes").toString();
-                userProgress.setProgress(Integer.parseInt(userLike));
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("Here", "" + databaseError);
-            }
-        });
     }
+    public void loadDisplayPics(String url){
+        Log.e("load",url);
+        Picasso.get().load(url).fit().error(R.drawable.cover).placeholder(R.drawable.female).into(userProfilePic);
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+
+    }
+
 
 }

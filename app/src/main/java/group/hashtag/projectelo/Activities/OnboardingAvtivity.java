@@ -108,6 +108,7 @@ public class OnboardingAvtivity extends OnboarderActivity
 
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
+        finish();
     }
 
 
@@ -126,6 +127,7 @@ public class OnboardingAvtivity extends OnboarderActivity
     {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
+        finish();
     }
 
     @Override

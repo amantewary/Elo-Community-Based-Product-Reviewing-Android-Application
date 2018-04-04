@@ -177,7 +177,7 @@ public class HomeActivity extends AppCompatActivity
                 for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
 
                     Map<String, Object> map = (Map<String, Object>) dsnp.getValue();
-                    reviewHandler = new ReviewHandler(map.get("category").toString(), map.get("device").toString(), map.get("reviewDescription").toString(), map.get("reviewId").toString(), map.get("reviewTitle").toString(), map.get("userId").toString());
+                    reviewHandler = new ReviewHandler(map.get("category").toString(), map.get("device").toString(), map.get("reviewDescription").toString(), map.get("reviewId").toString(), map.get("reviewTitle").toString(), map.get("userId").toString(), map.get("reviewImage").toString());
 //                    Log.e("Here", "" + map);
                     reviewHandlerList.add(reviewHandler);
                 }
@@ -400,20 +400,20 @@ public class HomeActivity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+//        int id = item.getItemId();
+//
+//        //noinspection SimplifiableIfStatement
+//        if (id == R.id.action_settings) {
+//            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
+//        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -425,9 +425,7 @@ public class HomeActivity extends AppCompatActivity
             startActivity(new Intent(HomeActivity.this, UserProfile.class));
         } else if (id == R.id.nav_licence) {
             startActivity(new Intent(getApplicationContext(), OpenSourceActivity.class));
-        } else if (id == R.id.nav_settings) {
-            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-        } else if (id == R.id.nav_logout) {
+        }  else if (id == R.id.nav_logout) {
             showDialog();
         }
 
@@ -534,6 +532,7 @@ public class HomeActivity extends AppCompatActivity
                     b.putString("reviewContent", reviewHandler.reviewDescription);
                     b.putString("category", reviewHandler.category);
                     b.putString("reviewId",reviewHandler.reviewId);
+                    b.putString("reviewImage", reviewHandler.reviewImage);
                     intent.putExtras(b);
                     startActivity(intent);
 

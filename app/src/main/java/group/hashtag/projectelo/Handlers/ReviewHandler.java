@@ -6,6 +6,7 @@ package group.hashtag.projectelo.Handlers;
 
 public class ReviewHandler {
 
+<<<<<<< Updated upstream
     public String category;
     public String device;
     public String reviewDescription;
@@ -13,6 +14,15 @@ public class ReviewHandler {
     public String reviewTitle;
     public String userId;
     public String reviewImage;
+=======
+   public String category;
+   public String device;
+   public String reviewDescription;
+   public String reviewId;
+   public String reviewTitle;
+   public String userId;
+   public String reviewImage;
+>>>>>>> Stashed changes
 
     public ReviewHandler() {
     }

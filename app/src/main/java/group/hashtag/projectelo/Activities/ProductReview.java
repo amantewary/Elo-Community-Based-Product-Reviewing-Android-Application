@@ -24,6 +24,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.squareup.picasso.Picasso;
 import com.varunest.sparkbutton.SparkButton;
 import com.varunest.sparkbutton.SparkEventListener;
 
@@ -52,7 +53,7 @@ public class ProductReview extends AppCompatActivity {
     EditText commentText;
     ImageButton commentPost;
     SparkButton likeButton;
-
+    ImageView reviewImageView;
     ListView commentListView;
     List<CommentHandler> commentHandlerList;
 
@@ -76,6 +77,7 @@ public class ProductReview extends AppCompatActivity {
     String userId;
     String userLikenumber;
     String userPic;
+    String reviewImage;
     String commentAuthorId;
     String commentAuthorName;
     String commentContent;
@@ -92,6 +94,7 @@ public class ProductReview extends AppCompatActivity {
         auth = FirebaseAuth.getInstance().getCurrentUser();
         setContentView(R.layout.review_layout);
         commentLayout = findViewById(R.id.sliding_review_layout);
+
         title = findViewById(R.id.title_toolbar);
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
@@ -109,6 +112,7 @@ public class ProductReview extends AppCompatActivity {
             }
         });
         likeButton = findViewById(R.id.spark_button);
+        reviewImageView = findViewById(R.id.imageView2);
         commentListView = findViewById(R.id.commentList);
         commentHandlerList = new ArrayList<>();
         userAuthorImage = findViewById(R.id.reviewAuthor);
@@ -124,6 +128,9 @@ public class ProductReview extends AppCompatActivity {
             stringContent = bundle.getString("reviewContent");
             stringCategory = bundle.getString("category");
             stringReviewId = bundle.getString("reviewId");
+            reviewImage = bundle.getString("reviewImage");
+            Picasso.get().load(reviewImage).fit().error(R.drawable.cover).placeholder(R.drawable.razer).into(reviewImageView);
+
         }
 
 
@@ -149,6 +156,8 @@ public class ProductReview extends AppCompatActivity {
                 userLikenumber = mapUser.get("likes").toString();
                 userPic = mapUser.get("Display_Pic").toString();
                 likeNumber = Integer.parseInt(userLikenumber);
+                Picasso.get().load(userPic).fit().error(R.drawable.cover).placeholder(R.drawable.female).into(userAuthorImage);
+
             }
 
             @Override

@@ -56,7 +56,7 @@ public class Splashscreen extends AppCompatActivity {
                 // Android native animator
 
                 animator.setInterpolator(new AccelerateDecelerateInterpolator());
-                animator.setDuration(1500);
+                animator.setDuration(1200);
                 animator.start();
 
             }
@@ -67,10 +67,8 @@ public class Splashscreen extends AppCompatActivity {
         public void run() {
 
             try {
-                // get the center for the clipping circle
 
-
-                sleep(1500);
+                sleep(1300);
 
             } catch (InterruptedException e) {
                 e.printStackTrace();

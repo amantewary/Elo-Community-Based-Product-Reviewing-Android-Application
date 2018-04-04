@@ -158,7 +158,7 @@ public class Register_Activity extends AppCompatActivity {
                     emailInput.setError(null);
                     usernameInput.setError(null);
                     confirmPasswordInput.setError(null);
-                    passwordInput.setError("Please keep your length less than 6");
+                    passwordInput.setError("Please keep your length more than 6");
                     return;
                 }
                 if (!isEmailValid(email)) {

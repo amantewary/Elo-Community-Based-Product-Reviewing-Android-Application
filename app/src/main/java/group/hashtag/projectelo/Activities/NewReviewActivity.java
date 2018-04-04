@@ -1,5 +1,6 @@
 package group.hashtag.projectelo.Activities;
 
+import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -88,6 +89,8 @@ public class NewReviewActivity extends AppCompatActivity {
     StorageReference storageRef;
     String id;
     String downloadURLString = "";
+    ProgressDialog pd;
+
     //Todo: validate spinner before adding new review
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +106,7 @@ public class NewReviewActivity extends AppCompatActivity {
         title = findViewById(R.id.title_toolbar);
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
+        pd = new ProgressDialog(NewReviewActivity.this);
 
         listCategories = new ArrayList<>();
         listMapCategories = new ArrayList<>();
@@ -242,21 +246,21 @@ public class NewReviewActivity extends AppCompatActivity {
             Crop();
 
 
-            } else if (requestCode == 2) {
-                if (data != null) {
-                    uri = data.getData();
-                    Crop();
-                }
-            } else if (requestCode == 1) {
-                if (data != null) {
-                    Bundle bundle = data.getExtras();
-                    Bitmap bitmap = bundle.getParcelable("data");
-                    ReviewPic.setImageBitmap(bitmap);
-
-                }
+        } else if (requestCode == 2) {
+            if (data != null) {
+                uri = data.getData();
+                Crop();
             }
+        } else if (requestCode == 1) {
+            if (data != null) {
+                Bundle bundle = data.getExtras();
+                Bitmap bitmap = bundle.getParcelable("data");
+                ReviewPic.setImageBitmap(bitmap);
 
+            }
         }
+
+    }
 
 
     public void Crop() {
@@ -405,13 +409,19 @@ public class NewReviewActivity extends AppCompatActivity {
         String reviewDescription = newReviewDescription.getText().toString().trim();
         String deviceCategory = category.getSelectedItem().toString();
         String deviceName = device.getSelectedItem().toString();
+        ReviewPic.setDrawingCacheEnabled(true);
+        ReviewPic.buildDrawingCache();
+        Bitmap bitmap = ReviewPic.getDrawingCache();
 
         if (!TextUtils.isEmpty(reviewTitle) && !TextUtils.isEmpty(reviewDescription)) {
             id = reviewDatabase.push().getKey();
-            NewReviewHandler newReview = new NewReviewHandler(userId, id, reviewTitle, reviewDescription, deviceName, deviceCategory, downloadURLString);
-            reviewDatabase.child(id).setValue(newReview);
-            Toast.makeText(this, "New Review Added", Toast.LENGTH_SHORT).show();
-            finish();
+            uploadImage(bitmap);
+            UploadDelay uploadDelay = new UploadDelay();
+            pd.setMessage("please wait...");
+            pd.show();
+            uploadDelay.start();
+            uploadDelay.getvariables(userId, reviewTitle, reviewDescription, deviceName, deviceCategory);
+
         } else {
             if (reviewTitle.matches("")) {
                 newReviewTitle.setError("Title cannot be empty");
@@ -424,8 +434,8 @@ public class NewReviewActivity extends AppCompatActivity {
         }
     }
 
-    public void uploadImage(final Bitmap downloadUri){
-        StorageReference reviewImageRef = storageRef.child(id+".jpg");
+    public void uploadImage(final Bitmap downloadUri) {
+        StorageReference reviewImageRef = storageRef.child(id + ".jpg");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         downloadUri.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] datai = baos.toByteArray();
@@ -435,7 +445,7 @@ public class NewReviewActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
-                Toast.makeText(getApplicationContext(),"Failed to upload",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
             }
         }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -451,5 +461,36 @@ public class NewReviewActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private class UploadDelay extends Thread {
+
+        String userId,reviewTitle,reviewDescription,deviceName, deviceCategory;
+
+        public void getvariables(String userId, String reviewTitle, String reviewDescription, String deviceName, String deviceCategory){
+            this.userId = userId;
+            this.reviewTitle = reviewTitle;
+            this.reviewDescription = reviewDescription;
+            this.deviceName = deviceName;
+            this.deviceCategory = deviceCategory;
+        }
+        public void run() {
+
+            try {
+                // get the center for the clipping circle
+
+
+                sleep(4300);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            pd.cancel();
+
+            NewReviewHandler newReview = new NewReviewHandler(userId, id, reviewTitle, reviewDescription, deviceName, deviceCategory, downloadURLString);
+            reviewDatabase.child(id).setValue(newReview);
+//            Toast.makeText(NewReviewActivity.this, "New Review Added", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 }
