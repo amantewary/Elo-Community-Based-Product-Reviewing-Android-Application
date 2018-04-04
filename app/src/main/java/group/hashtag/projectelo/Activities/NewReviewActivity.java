@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -23,10 +24,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -35,7 +41,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -75,7 +85,9 @@ public class NewReviewActivity extends AppCompatActivity {
     private Uri uri;
     private Intent CameraIntent, GalleryIntent, CropIntent;
     public static final int PermissionCode = 1;
-
+    StorageReference storageRef;
+    String id;
+    String downloadURLString = "";
     //Todo: validate spinner before adding new review
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,7 +97,8 @@ public class NewReviewActivity extends AppCompatActivity {
         ReviewPic = (ImageView) findViewById(R.id.new_review_image_new);
         Permission();
 
-
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        storageRef = storage.getReference();
         reviewDatabase = FirebaseDatabase.getInstance().getReference("newReview");
         title = findViewById(R.id.title_toolbar);
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
@@ -228,10 +241,6 @@ public class NewReviewActivity extends AppCompatActivity {
         if (requestCode == 0 && resultCode == RESULT_OK) {
             Crop();
 
-//            if (data != null) {
-//                Bundle bundle = data.getExtras();
-//                Bitmap bitmap = bundle.getParcelable("data");
-//                ReviewPic.setImageBitmap(bitmap);
 
             } else if (requestCode == 2) {
                 if (data != null) {
@@ -389,6 +398,7 @@ public class NewReviewActivity extends AppCompatActivity {
     }
 
     public void addReview() {
+
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         String userId = auth.getUid();
         String reviewTitle = newReviewTitle.getText().toString().trim();
@@ -397,8 +407,8 @@ public class NewReviewActivity extends AppCompatActivity {
         String deviceName = device.getSelectedItem().toString();
 
         if (!TextUtils.isEmpty(reviewTitle) && !TextUtils.isEmpty(reviewDescription)) {
-            String id = reviewDatabase.push().getKey();
-            NewReviewHandler newReview = new NewReviewHandler(userId, id, reviewTitle, reviewDescription, deviceName, deviceCategory);
+            id = reviewDatabase.push().getKey();
+            NewReviewHandler newReview = new NewReviewHandler(userId, id, reviewTitle, reviewDescription, deviceName, deviceCategory, downloadURLString);
             reviewDatabase.child(id).setValue(newReview);
             Toast.makeText(this, "New Review Added", Toast.LENGTH_SHORT).show();
             finish();
@@ -412,5 +422,34 @@ public class NewReviewActivity extends AppCompatActivity {
                 return;
             }
         }
+    }
+
+    public void uploadImage(final Bitmap downloadUri){
+        StorageReference reviewImageRef = storageRef.child(id+".jpg");
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        downloadUri.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] datai = baos.toByteArray();
+
+        UploadTask uploadTask = reviewImageRef.putBytes(datai);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                Toast.makeText(getApplicationContext(),"Failed to upload",Toast.LENGTH_SHORT).show();
+            }
+        }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                downloadURLString = downloadUrl.toString();
+            }
+        });
+
     }
 }

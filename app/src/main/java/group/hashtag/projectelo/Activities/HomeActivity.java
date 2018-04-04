@@ -47,11 +47,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.Handlers.FeaturedContentHandler;
 import group.hashtag.projectelo.Handlers.ReviewHandler;
 import group.hashtag.projectelo.R;
@@ -96,6 +98,8 @@ public class HomeActivity extends AppCompatActivity
     String FeaturedContentString;
     String FeaturedWriter;
 
+    CircleImageView navDisplayPic;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +116,6 @@ public class HomeActivity extends AppCompatActivity
         title = findViewById(R.id.title_toolbar);
         final Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
         featuredTitle = findViewById(R.id.featured_textView_title);
-        imageViewTitle = findViewById(R.id.featured_imageView_image);
         reviewHandlerList = new ArrayList<ReviewHandler>();
 
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -187,23 +190,6 @@ public class HomeActivity extends AppCompatActivity
             }
         });
 
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-////                Intent intent = new Intent(view.getContext(), ProductReview.class);
-////
-////                startActivity(intent);
-//
-//            }
-//        });
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
-//            }
-//        });
 
         linearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -262,6 +248,7 @@ public class HomeActivity extends AppCompatActivity
         });
         navProgress = header.findViewById(R.id.nav_progress);
         navUsername = header.findViewById(R.id.nav_username);
+        navDisplayPic = header.findViewById(R.id.nav_profileimg);
         userRef = FirebaseDatabase.getInstance().getReference("users");
         userRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -269,9 +256,12 @@ public class HomeActivity extends AppCompatActivity
                 mapUser = (Map<String, Object>) dataSnapshot.getValue();
                 String userName = mapUser.get("name").toString();
                 String userLike = mapUser.get("likes").toString();
+                //TODO:
+                String userImage = mapUser.get("Display_Pic").toString();
                 Log.e("Here", "Current UserName => " + userName);
                 navUsername.setText(userName);
                 navProgress.setProgress(Integer.parseInt(userLike));
+                loadDisplayPics(userImage);
             }
 
             @Override
@@ -551,7 +541,9 @@ public class HomeActivity extends AppCompatActivity
             });
 
             TextView reviewTitle = reviewtitles.findViewById(R.id.text_headline);
+            TextView reviewDevice = reviewtitles.findViewById(R.id.text_device);
             reviewTitle.setText(reviewHandler.reviewTitle);
+            reviewDevice.setText(reviewHandler.device);
             return reviewtitles;
         }
 
@@ -622,6 +614,11 @@ public class HomeActivity extends AppCompatActivity
                 Log.e("Here", "" + databaseError);
             }
         });
+
+    }
+
+    public void loadDisplayPics(String url){
+        Picasso.get().load(url).fit().error(R.drawable.cover).placeholder(R.drawable.male).into(navDisplayPic);
 
     }
 }

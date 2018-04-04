@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -17,8 +19,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -44,8 +48,9 @@ public class ProfileSetup extends AppCompatActivity {
     String stringUserId, stringUserName, stringUserEmail;
     Integer likes;
     CircleImageView displayImage;
+    ProgressDialog savingData;
     StorageReference storageRef;
-    String downloadURLString;
+    String downloadURLString = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class ProfileSetup extends AppCompatActivity {
 
         downloadURLString = "";
         storageRef = storage.getReference();
-
+        savingData = new ProgressDialog(this);
         username = findViewById(R.id.username_textview);
         country = findViewById(R.id.spinnercountry);
         date = findViewById(R.id.dob_date);
@@ -103,29 +108,44 @@ public class ProfileSetup extends AppCompatActivity {
     }
 
     public void addUserDetail() {
-        String userCountry = country.getSelectedItem().toString();
-        String userBirthDate = date.getSelectedItem().toString();
-        String userBirthMonth = month.getSelectedItem().toString();
-        String userBirthYear = year.getSelectedItem().toString();
-        String userGender = gender.getSelectedItem().toString();
-        String userWebLink = webLink.getText().toString();
+        final String userCountry = country.getSelectedItem().toString();
+        final String userBirthDate = date.getSelectedItem().toString();
+        final String userBirthMonth = month.getSelectedItem().toString();
+        final String userBirthYear = year.getSelectedItem().toString();
+        final String userGender = gender.getSelectedItem().toString();
+        final String userWebLink = webLink.getText().toString();
         displayImage.setDrawingCacheEnabled(true);
         Bitmap bitmap = displayImage.getDrawingCache();
         likes = 0;
-        if (!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear)) {
-            String displayurl = uploadDisplayPic(bitmap);
-            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate, likes.toString(), displayurl);
-//            userRef.child(stringUserId).setValue(item);
-//            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-//            finish();
-            Log.e("Here",displayurl);
-        } else {
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
-        }
+        uploadDisplayPic(bitmap);
+        if (downloadURLString.equals("")) {
+//            Toast.makeText(getApplicationContext(), "Please wait till the file gets uploaded :)",Toast.LENGTH_SHORT).show();
+            savingData.setMessage("Uploading");
+            savingData.show();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear)) {
+                        savingData.dismiss();
+                        UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate, likes.toString(), downloadURLString);
+                        userRef.child(stringUserId).setValue(item);
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        finish();
+                        Log.e("Here", downloadURLString);
+                    } else {
+//                        Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                    }
 
+                }
+            }, 5000);
+
+        } else {
+            //Do Nothing
+        }
     }
 
-    public String uploadDisplayPic(final Bitmap downloadUri){
+    public void uploadDisplayPic(final Bitmap downloadUri){
         StorageReference reviewImageRef = storageRef.child(stringUserId+".jpg");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         downloadUri.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -138,17 +158,19 @@ public class ProfileSetup extends AppCompatActivity {
                 // Handle unsuccessful uploads
                 Toast.makeText(getApplicationContext(),"Failed to upload",Toast.LENGTH_SHORT).show();
             }
+        }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+
+            }
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 downloadURLString = downloadUrl.toString();
-                Toast.makeText(getApplicationContext(),downloadURLString,Toast.LENGTH_SHORT).show();
-                Log.e("Here", downloadURLString);
             }
         });
 
-        return downloadURLString;
     }
 }
