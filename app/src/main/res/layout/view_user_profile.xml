@@ -348,6 +348,7 @@
 
             <Button
                 android:id="@+id/btnFollow"
+                style="?android:textAppearanceSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"

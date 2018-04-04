@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -46,6 +48,7 @@ public class ProfileSetup extends AppCompatActivity {
     String stringUserId, stringUserName, stringUserEmail;
     Integer likes;
     CircleImageView displayImage;
+    ProgressDialog savingData;
     StorageReference storageRef;
     String downloadURLString = "";
 
@@ -60,7 +63,7 @@ public class ProfileSetup extends AppCompatActivity {
 
         downloadURLString = "";
         storageRef = storage.getReference();
-
+        savingData = new ProgressDialog(this);
         username = findViewById(R.id.username_textview);
         country = findViewById(R.id.spinnercountry);
         date = findViewById(R.id.dob_date);
@@ -105,30 +108,41 @@ public class ProfileSetup extends AppCompatActivity {
     }
 
     public void addUserDetail() {
-        String userCountry = country.getSelectedItem().toString();
-        String userBirthDate = date.getSelectedItem().toString();
-        String userBirthMonth = month.getSelectedItem().toString();
-        String userBirthYear = year.getSelectedItem().toString();
-        String userGender = gender.getSelectedItem().toString();
-        String userWebLink = webLink.getText().toString();
+        final String userCountry = country.getSelectedItem().toString();
+        final String userBirthDate = date.getSelectedItem().toString();
+        final String userBirthMonth = month.getSelectedItem().toString();
+        final String userBirthYear = year.getSelectedItem().toString();
+        final String userGender = gender.getSelectedItem().toString();
+        final String userWebLink = webLink.getText().toString();
         displayImage.setDrawingCacheEnabled(true);
         Bitmap bitmap = displayImage.getDrawingCache();
         likes = 0;
         uploadDisplayPic(bitmap);
-        if(downloadURLString.equals("")){
-            Toast.makeText(getApplicationContext(), "Please wait till the file gets uploaded :)",Toast.LENGTH_SHORT).show();
-        }
-        else if (!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear) ) {
+        if (downloadURLString.equals("")) {
+//            Toast.makeText(getApplicationContext(), "Please wait till the file gets uploaded :)",Toast.LENGTH_SHORT).show();
+            savingData.setMessage("Uploading");
+            savingData.show();
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (!TextUtils.isEmpty(userCountry) && !TextUtils.isEmpty(userBirthMonth) && !TextUtils.isEmpty(userBirthYear)) {
+                        savingData.dismiss();
+                        UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate, likes.toString(), downloadURLString);
+                        userRef.child(stringUserId).setValue(item);
+                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                        finish();
+                        Log.e("Here", downloadURLString);
+                    } else {
+//                        Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+                    }
 
-            UserHandler item = new UserHandler(stringUserName, stringUserId, userCountry, userBirthMonth, userBirthYear, userWebLink, stringUserEmail, userGender, userBirthDate, likes.toString(), downloadURLString);
-            userRef.child(stringUserId).setValue(item);
-            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
-            finish();
-            Log.e("Here",downloadURLString);
+                }
+            }, 5000);
+
         } else {
-            Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
+            //Do Nothing
         }
-
     }
 
     public void uploadDisplayPic(final Bitmap downloadUri){
