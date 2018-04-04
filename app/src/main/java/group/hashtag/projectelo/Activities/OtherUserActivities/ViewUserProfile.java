@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.R;
@@ -53,11 +55,14 @@ public class ViewUserProfile extends AppCompatActivity {
     String stringReviewUserGender;
     String stringReviewUserWebLink;
     String stringReviewUserCountry;
+    IconRoundCornerProgressBar userProgress;
+    Map<String, Object> mapUser;
 
     DatabaseReference followRef;
     DatabaseReference otherUserWishList;
     DatabaseReference otherUserFollowers;
     DatabaseReference otherUserDevices;
+    DatabaseReference otherUserRef;
 
     private LinearLayout btnOtherUserWishlist, btnOtherUserDevices, btnOtherUserFollowers;
 
@@ -70,6 +75,7 @@ public class ViewUserProfile extends AppCompatActivity {
         setContentView(R.layout.view_user_profile);
         follow_status="not_following";
         followRef = FirebaseDatabase.getInstance().getReference("follow");
+        otherUserRef = FirebaseDatabase.getInstance().getReference("users");
         Intent intent = getIntent();
         stringReviewUserName = intent.getStringExtra("reviewUser");
         stringReviewUserId = intent.getStringExtra("reviewUserId");
@@ -235,6 +241,21 @@ public class ViewUserProfile extends AppCompatActivity {
                     follow_status = "not_following";
                     followButton.setText("Follow Me");
                 }
+            }
+        });
+
+        userProgress = findViewById(R.id.view_profile_progress);
+        otherUserRef.child(stringReviewUserId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mapUser = (Map<String, Object>) dataSnapshot.getValue();
+                String userLike = mapUser.get("likes").toString();
+                userProgress.setProgress(Integer.parseInt(userLike));
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
             }
         });
     }

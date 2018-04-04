@@ -32,12 +32,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import group.hashtag.projectelo.Handlers.UserHandler;
 import ru.whalemare.sheetmenu.SheetMenu;
@@ -55,6 +58,7 @@ public class SelectPhotoActivity extends AppCompatActivity {
     public static final int PermissionCode = 1;
     StorageReference storageRef;
     String userId;
+    String displayPic;
     DatabaseReference mDatabase;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class SelectPhotoActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent != null){
             userId = intent.getStringExtra("userId");
+            displayPic = intent.getStringExtra("displayPicUri");
         }
 
 
@@ -74,6 +79,7 @@ public class SelectPhotoActivity extends AppCompatActivity {
 
 
         imageView = (ImageView) findViewById(R.id.iv);
+        Picasso.get().load(displayPic).fit().error(R.drawable.cover).placeholder(R.drawable.male).into(imageView);
         title = findViewById(R.id.title_toolbar);
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
@@ -196,8 +202,9 @@ public class SelectPhotoActivity extends AppCompatActivity {
                         // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         try{
-//                            UserHandler userHandler = new UserHandler(downloadUrl.toString());
-//                            mDatabase.child(userId).child("displayPic").setValue(userHandler);
+                            Map<String, Object> updatePic = new HashMap<>();
+                            updatePic.put("Display_Pic",downloadUrl.toString());
+                            mDatabase.child(userId).updateChildren(updatePic);
 
                         }catch (Exception e){
                             Log.e("StackTrace",""+e);
