@@ -89,11 +89,12 @@ public class WishlistAddItem extends AppCompatActivity {
         wlCatSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if(position==0){}
-                else{
+                if (position == 0) {
+                } else {
                     Log.e(NewReviewActivity.class.getCanonicalName(), "Position" + position);
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
@@ -106,12 +107,13 @@ public class WishlistAddItem extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.add_wishlist_item, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_save){
-                addDevice();
+        if (id == R.id.action_save) {
+            addDevice();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -138,18 +140,18 @@ public class WishlistAddItem extends AppCompatActivity {
         });
     }
 
-    public void addDevice(){
+    public void addDevice() {
 
         String deviceName = wlAddDeviceName.getText().toString().trim();
         String categoryName = wlCatSpinner.getSelectedItem().toString();
 
-        if (!TextUtils.isEmpty(deviceName)){
+        if (!TextUtils.isEmpty(deviceName)) {
             String id = wlRef.push().getKey();
             WishlistItem item = new WishlistItem(id, deviceName, categoryName);
             wlRef.child(id).setValue(item);
-            Toast.makeText(this,"Device Added",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Device Added", Toast.LENGTH_SHORT).show();
             finish();
-        }else{
+        } else {
             wlAddDeviceName.setError("Device name cannot be empty.");
         }
     }

@@ -1,7 +1,5 @@
 package group.hashtag.projectelo.Handlers;
 
-import android.util.Log;
-
 /**
  * Created by amant on 21-03-2018.
  */

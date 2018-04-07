@@ -1,12 +1,12 @@
 package group.hashtag.projectelo.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -87,11 +87,12 @@ public class ProfileSetup extends AppCompatActivity {
                 if (adapterView.getItemAtPosition(i).toString().equals("Male")) {
                     // Do nothing
                     displayImage.setImageDrawable(getResources().getDrawable(R.drawable.male));
-                } else if (adapterView.getItemAtPosition(i).toString().equals("Female")){
+                } else if (adapterView.getItemAtPosition(i).toString().equals("Female")) {
                     displayImage.setImageDrawable(getResources().getDrawable(R.drawable.female));
 
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -145,8 +146,8 @@ public class ProfileSetup extends AppCompatActivity {
         }
     }
 
-    public void uploadDisplayPic(final Bitmap downloadUri){
-        StorageReference reviewImageRef = storageRef.child(stringUserId+".jpg");
+    public void uploadDisplayPic(final Bitmap downloadUri) {
+        StorageReference reviewImageRef = storageRef.child(stringUserId + ".jpg");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         downloadUri.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] datai = baos.toByteArray();
@@ -156,7 +157,7 @@ public class ProfileSetup extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
-                Toast.makeText(getApplicationContext(),"Failed to upload",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
             }
         }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override

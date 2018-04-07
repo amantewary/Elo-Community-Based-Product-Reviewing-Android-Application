@@ -9,9 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
 import java.util.List;
-
 
 import group.hashtag.projectelo.Handlers.CommentHandler;
 import group.hashtag.projectelo.R;
@@ -23,7 +21,6 @@ import group.hashtag.projectelo.R;
 public class CommentAdapter extends ArrayAdapter {
     Activity context;
     List<CommentHandler> commentList;
-
 
 
     public CommentAdapter(Activity context, List<CommentHandler> commentList) {

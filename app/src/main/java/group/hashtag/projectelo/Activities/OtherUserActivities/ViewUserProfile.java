@@ -45,7 +45,6 @@ public class ViewUserProfile extends AppCompatActivity {
     TextView viewUserWishlistCounter;
     TextView viewUserFollowersCounter;
     Button followButton;
-    private CircleImageView userProfilePic;
     String stringReviewUserName;
     String stringReviewUserId;
     String follow_status;
@@ -59,23 +58,21 @@ public class ViewUserProfile extends AppCompatActivity {
     String otherUserDisplay;
     IconRoundCornerProgressBar userProgress;
     Map<String, Object> mapUser;
-
     DatabaseReference followRef;
     DatabaseReference otherUserWishList;
     DatabaseReference otherUserFollowers;
     DatabaseReference otherUserDevices;
     DatabaseReference otherUserRef;
-
+    FirebaseUser auth;
+    private CircleImageView userProfilePic;
     private LinearLayout btnOtherUserWishlist, btnOtherUserDevices, btnOtherUserFollowers;
 
-
-    FirebaseUser auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance().getCurrentUser();
         setContentView(R.layout.view_user_profile);
-        follow_status="not_following";
+        follow_status = "not_following";
         followRef = FirebaseDatabase.getInstance().getReference("follow");
         otherUserRef = FirebaseDatabase.getInstance().getReference("users");
         Intent intent = getIntent();
@@ -226,12 +223,12 @@ public class ViewUserProfile extends AppCompatActivity {
         followRef.child(stringReviewUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot followers : dataSnapshot.getChildren()){
+                for (DataSnapshot followers : dataSnapshot.getChildren()) {
                     String followerId = followers.getKey();
-                    if(followerId.equals(auth.getUid())){
+                    if (followerId.equals(auth.getUid())) {
                         follow_status = "following";
                         followButton.setText("Unfollow");
-                    }else{
+                    } else {
                         follow_status = "not_following";
                         followButton.setText("Follow Me");
                     }
@@ -249,13 +246,13 @@ public class ViewUserProfile extends AppCompatActivity {
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(follow_status.equals("not_following")){
+                if (follow_status.equals("not_following")) {
                     String date = DateFormat.getDateTimeInstance().format(new Date());
-                    String since = "Following Since "+date;
+                    String since = "Following Since " + date;
                     followRef.child(stringReviewUserId).child(auth.getUid()).setValue(since);
                     follow_status = "following";
                     followButton.setText("Unfollow");
-                }else{
+                } else {
                     followRef.child(stringReviewUserId).child(auth.getUid()).removeValue();
                     follow_status = "not_following";
                     followButton.setText("Follow Me");
@@ -265,8 +262,9 @@ public class ViewUserProfile extends AppCompatActivity {
 
 
     }
-    public void loadDisplayPics(String url){
-        Log.e("load",url);
+
+    public void loadDisplayPics(String url) {
+        Log.e("load", url);
         Picasso.get().load(url).fit().error(R.drawable.cover).placeholder(R.drawable.female).into(userProfilePic);
 
     }

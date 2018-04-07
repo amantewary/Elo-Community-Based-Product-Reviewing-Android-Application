@@ -25,7 +25,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,6 +62,7 @@ import ru.whalemare.sheetmenu.SheetMenu;
  */
 
 public class NewReviewActivity extends AppCompatActivity {
+    public static final int PermissionCode = 1;
     Toolbar toolbar;
     Spinner category, device;
     EditText newReviewTitle;
@@ -71,7 +71,6 @@ public class NewReviewActivity extends AppCompatActivity {
     DatabaseReference mDatabase2;
     DatabaseReference mDatabase1;
     DatabaseReference reviewDatabase;
-
     Map<String, Object> mapCategories;
     Map<String, Object> mapDevice;
     List<String> listCategories;
@@ -80,16 +79,14 @@ public class NewReviewActivity extends AppCompatActivity {
     List<Map<String, Object>> listMapDevices;
     ArrayAdapter<String> categories;
     ArrayAdapter<String> devices;
-
-    private ImageView ReviewPic;
-    private File file;
-    private Uri uri;
-    private Intent CameraIntent, GalleryIntent, CropIntent;
-    public static final int PermissionCode = 1;
     StorageReference storageRef;
     String id;
     String downloadURLString = "";
     ProgressDialog pd;
+    private ImageView ReviewPic;
+    private File file;
+    private Uri uri;
+    private Intent CameraIntent, GalleryIntent, CropIntent;
 
     //Todo: validate spinner before adding new review
     @Override
@@ -97,7 +94,7 @@ public class NewReviewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_review_layout);
 
-        ReviewPic = (ImageView) findViewById(R.id.new_review_image_new);
+        ReviewPic = findViewById(R.id.new_review_image_new);
         Permission();
 
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -122,7 +119,7 @@ public class NewReviewActivity extends AppCompatActivity {
         mDatabase2 = database.getReference("Device_Category");
         mDatabase1 = database.getReference("Device");
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
         fetchCategories(mDatabase2);
@@ -465,15 +462,16 @@ public class NewReviewActivity extends AppCompatActivity {
 
     private class UploadDelay extends Thread {
 
-        String userId,reviewTitle,reviewDescription,deviceName, deviceCategory;
+        String userId, reviewTitle, reviewDescription, deviceName, deviceCategory;
 
-        public void getvariables(String userId, String reviewTitle, String reviewDescription, String deviceName, String deviceCategory){
+        public void getvariables(String userId, String reviewTitle, String reviewDescription, String deviceName, String deviceCategory) {
             this.userId = userId;
             this.reviewTitle = reviewTitle;
             this.reviewDescription = reviewDescription;
             this.deviceName = deviceName;
             this.deviceCategory = deviceCategory;
         }
+
         public void run() {
 
             try {

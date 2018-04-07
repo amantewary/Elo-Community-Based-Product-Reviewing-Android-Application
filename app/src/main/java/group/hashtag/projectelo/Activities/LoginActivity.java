@@ -47,15 +47,23 @@ import group.hashtag.projectelo.R;
 
 public class LoginActivity extends AppCompatActivity {
 
+    GoogleSignInClient mGoogleSignInClient;
+    ImageView googleSignIn;
+    int RC_SIGN_IN = 110;
+    DatabaseReference mDatabase;
     private EditText inputEmail, inputPassword;
     private TextInputLayout emailInput, passwordInput;
     private FirebaseAuth auth;
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
-    GoogleSignInClient mGoogleSignInClient;
-    ImageView googleSignIn;
-    int RC_SIGN_IN = 110;
-    DatabaseReference mDatabase;
+
+    // Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,29 +90,21 @@ public class LoginActivity extends AppCompatActivity {
         }
 
 
-
-
-//        GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
-//        if (account != null) {
-//            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
-//            finish();
-//        }
-
         // set the view now
         setContentView(R.layout.login_activity);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         emailInput = findViewById(R.id.input_layout_email_login);
         passwordInput = findViewById(R.id.input_layout_password_login);
-        inputEmail = (EditText) findViewById(R.id.login_email);
-        inputPassword = (EditText) findViewById(R.id.login_password);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        btnSignup = (Button) findViewById(R.id.register_button);
-        btnLogin = (Button) findViewById(R.id.login_button);
-        btnReset = (Button) findViewById(R.id.login_btn_reset_password);
-        googleSignIn = (ImageView) findViewById(R.id.google_button);
+        inputEmail = findViewById(R.id.login_email);
+        inputPassword = findViewById(R.id.login_password);
+        progressBar = findViewById(R.id.progressBar);
+        btnSignup = findViewById(R.id.register_button);
+        btnLogin = findViewById(R.id.login_button);
+        btnReset = findViewById(R.id.login_btn_reset_password);
+        googleSignIn = findViewById(R.id.google_button);
 
         //Get Firebase auth instance
         auth = FirebaseAuth.getInstance();
@@ -120,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
         btnReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),ForgotPassword.class));
+                startActivity(new Intent(getApplicationContext(), ForgotPassword.class));
             }
         });
 
@@ -148,7 +148,8 @@ public class LoginActivity extends AppCompatActivity {
                     emailInput.setError(null);
                     passwordInput.setError("Enter correct Password");
                     return;
-                } if(!isEmailValid(email)){
+                }
+                if (!isEmailValid(email)) {
                     passwordInput.setError(null);
                     emailInput.setError("Enter a valid email address");
                     return;
@@ -157,6 +158,11 @@ public class LoginActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
 
                 //authenticate user
+
+                /**
+                 * The code to auth users is taken from Firebase docs and from Android Authority
+                 *  @link:https://www.androidauthority.com/introduction-to-firebase-765262/
+                 **/
                 auth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -217,12 +223,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    // https://stackoverflow.com/a/19828165/3966666
+    // Code is adapted from:- https://stackoverflow.com/a/19828165/3966666
     public void hideKeyboard(View view) {
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
     }
 
+    /**
+     * The code to auth users is taken from Firebase docs
+     *
+     **/
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -234,27 +244,27 @@ public class LoginActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
 
                             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            if (user != null){
-                                Log.e("Here", ""+user.getUid());
+                            if (user != null) {
+                                Log.e("Here", "" + user.getUid());
 
                                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                        if (dataSnapshot.hasChild(user.getUid())){
-                                            Log.e("Heres", ""+user.getUid());
+                                        if (dataSnapshot.hasChild(user.getUid())) {
+                                            Log.e("Heres", "" + user.getUid());
 
                                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                             startActivity(intent);
                                             finish();
                                             Log.e(LoginActivity.class.getCanonicalName(), "signInWithCredential:success");
-                                        }else {
+                                        } else {
                                             Log.e("Heres", "walah walah");
 
                                             String userId = user.getUid();
                                             UserHandler userHandler = new UserHandler();
                                             userHandler.setName(user.getDisplayName());
-                                            UserHandler userhandler = new UserHandler(user.getDisplayName(),  userId, user.getEmail());
+                                            UserHandler userhandler = new UserHandler(user.getDisplayName(), userId, user.getEmail());
 
                                             mDatabase.child(userId).setValue(userhandler);
 
@@ -273,13 +283,9 @@ public class LoginActivity extends AppCompatActivity {
                                     }
 
 
-
-
-
-
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-                                        Log.e("Here",""+databaseError);
+                                        Log.e("Here", "" + databaseError);
                                     }
                                 });
 
@@ -293,17 +299,9 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 });
     }
-    // Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
-    public static boolean isEmailValid(String email) {
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
-    }
 
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
 //        super.onBackPressed();
     }
 }

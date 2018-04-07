@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Map;
 
 import group.hashtag.projectelo.Handlers.NewUserDevice;
-import group.hashtag.projectelo.Handlers.WishlistItem;
 import group.hashtag.projectelo.R;
 
 public class UserAddDevices extends AppCompatActivity {
@@ -78,7 +77,7 @@ public class UserAddDevices extends AppCompatActivity {
         addDevice = FirebaseDatabase.getInstance().getReference("User_device").child("Owner").child(auth.getUid());
 
         fetchCategories(mDatabase2);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
         category = findViewById(R.id.spinner_user_device_category);
         device = findViewById(R.id.spinner_user_product_name);
@@ -164,20 +163,23 @@ public class UserAddDevices extends AppCompatActivity {
             }
         });
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.add_wishlist_item, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         int id = item.getItemId();
-        if (id == R.id.action_save){
+        if (id == R.id.action_save) {
             addDevice();
         }
         return super.onOptionsItemSelected(item);
     }
+
     public void fetchDevice(Query query) {
         query.addValueEventListener(new ValueEventListener() {
 
@@ -221,19 +223,19 @@ public class UserAddDevices extends AppCompatActivity {
         return categoryId;
     }
 
-    public void addDevice(){
+    public void addDevice() {
 
-        String categoryName  = category.getSelectedItem().toString();
+        String categoryName = category.getSelectedItem().toString();
         String deviceName = device.getSelectedItem().toString();
 
-        if (!TextUtils.isEmpty(deviceName)){
+        if (!TextUtils.isEmpty(deviceName)) {
             String id = addDevice.push().getKey();
-            NewUserDevice item = new NewUserDevice(categoryName,deviceName, auth.getUid(),id);
+            NewUserDevice item = new NewUserDevice(categoryName, deviceName, auth.getUid(), id);
             addDevice.child(id).setValue(item);
-            Toast.makeText(this,"Device Added",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Device Added", Toast.LENGTH_SHORT).show();
             finish();
-        }else{
-            Toast.makeText(getApplicationContext(),"Please select a device",Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Please select a device", Toast.LENGTH_SHORT).show();
         }
     }
 }

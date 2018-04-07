@@ -8,6 +8,6 @@
     <item
         android:id="@+id/action_gal"
         android:icon="@drawable/ic_gallery"
-        android:title="Choose Photo"/>
+        android:title="Choose Photo" />
 
 </menu>

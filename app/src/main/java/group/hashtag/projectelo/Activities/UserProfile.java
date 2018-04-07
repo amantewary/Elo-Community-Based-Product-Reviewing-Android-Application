@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,16 +47,17 @@ public class UserProfile extends AppCompatActivity {
     TextView userWeblinkText;
     TextView userGenderText;
     IconRoundCornerProgressBar userProgress;
+    UserHandler user;
+    Map<String, Object> mapUser;
+    String userLike;
+    String displayPic;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
     private DatabaseReference mDatabase3;
     private DatabaseReference mDatabase4;
     private LinearLayout btnWishlist, btnUserDevices, btnUserFollowers;
     private CircleImageView displayImageView;
-    UserHandler user;
-    Map<String, Object> mapUser;
-    String userLike;
-    String displayPic;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,7 +75,7 @@ public class UserProfile extends AppCompatActivity {
 
         btnUserFollowers = findViewById(R.id.followers_user_profile);
         btnUserDevices = findViewById(R.id.devices_user_profile);
-        displayImageView = (CircleImageView) findViewById(R.id.userDisplayPic);
+        displayImageView = findViewById(R.id.userDisplayPic);
         followerCounter = findViewById(R.id.user_profile_follower_count);
         deviceCounter = findViewById(R.id.devices_user_counter);
 
@@ -156,7 +156,6 @@ public class UserProfile extends AppCompatActivity {
         });
 
 
-
         btnWishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -169,8 +168,8 @@ public class UserProfile extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent profilepic = new Intent(UserProfile.this, SelectPhotoActivity.class);
-                profilepic.putExtra("userId",user.UserId);
-                profilepic.putExtra("displayPicUri",user.Display_Pic);
+                profilepic.putExtra("userId", user.UserId);
+                profilepic.putExtra("displayPicUri", user.Display_Pic);
                 startActivity(profilepic);
 
             }
@@ -193,13 +192,13 @@ public class UserProfile extends AppCompatActivity {
         btnUserFollowers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),FollowerList.class));
+                startActivity(new Intent(getApplicationContext(), FollowerList.class));
             }
         });
         btnUserDevices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),UserDeviceActivity.class));
+                startActivity(new Intent(getApplicationContext(), UserDeviceActivity.class));
             }
         });
 
@@ -219,6 +218,7 @@ public class UserProfile extends AppCompatActivity {
         });
 
     }
+
     //TODO: Need to work on settings page which will double as profile edit page.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -230,19 +230,19 @@ public class UserProfile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_setting) {
-            Intent intent = new Intent (UserProfile.this, EditUserProfile.class);
-            intent.putExtra("username",usernameText.getText().toString());
-            intent.putExtra("useremail",userEmailText.getText().toString());
-            intent.putExtra("usergender",userGenderText.getText().toString());
-            intent.putExtra("userweblink",userWeblinkText.getText().toString());
-            intent.putExtra("userlike",userLike);
-            intent.putExtra("userpic",displayPic);
+            Intent intent = new Intent(UserProfile.this, EditUserProfile.class);
+            intent.putExtra("username", usernameText.getText().toString());
+            intent.putExtra("useremail", userEmailText.getText().toString());
+            intent.putExtra("usergender", userGenderText.getText().toString());
+            intent.putExtra("userweblink", userWeblinkText.getText().toString());
+            intent.putExtra("userlike", userLike);
+            intent.putExtra("userpic", displayPic);
             startActivity(intent);
         }
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
-    public void loadDisplayPics(String url){
+    public void loadDisplayPics(String url) {
         Picasso.get().load(url).fit().error(R.drawable.cover).placeholder(R.drawable.male).into(displayImageView);
 
     }

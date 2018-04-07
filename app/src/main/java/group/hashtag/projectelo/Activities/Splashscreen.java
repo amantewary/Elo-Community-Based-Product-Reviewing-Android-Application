@@ -73,14 +73,11 @@ public class Splashscreen extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (auth.getCurrentUser() != null)
-            {
+            if (auth.getCurrentUser() != null) {
                 startActivity(new Intent(Splashscreen.this, HomeActivity.class));
                 finish();
-            }
-            else
-            {
-                Intent intent = new Intent(getApplicationContext(),  OnboardingAvtivity.class);
+            } else {
+                Intent intent = new Intent(getApplicationContext(), OnboardingAvtivity.class);
                 startActivity(intent);
                 finish();
             }

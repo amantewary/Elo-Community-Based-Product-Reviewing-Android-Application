@@ -7,13 +7,13 @@ package group.hashtag.projectelo.Handlers;
 public class ReviewHandler {
 
 
-   public String category;
-   public String device;
-   public String reviewDescription;
-   public String reviewId;
-   public String reviewTitle;
-   public String userId;
-   public String reviewImage;
+    public String category;
+    public String device;
+    public String reviewDescription;
+    public String reviewId;
+    public String reviewTitle;
+    public String userId;
+    public String reviewImage;
 
     public ReviewHandler() {
     }

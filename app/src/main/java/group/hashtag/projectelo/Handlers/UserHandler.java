@@ -5,14 +5,6 @@ package group.hashtag.projectelo.Handlers;
  */
 
 public class UserHandler {
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String name;
     public String UserId;
     public String Display_Pic;
@@ -23,52 +15,7 @@ public class UserHandler {
     public String webLink;
     public String gender;
     public String likes;
-
-    public String getLikes() {
-        return likes;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public String getDob_month() {
-        return dob_month;
-    }
-
-    public String getDob_year() {
-        return dob_year;
-    }
-
-    public String getWebLink() {
-        return webLink;
-    }
-
-//    public String getDisplay_Pic() {
-//        return Display_Pic;
-//    }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
     public String email;
-
-    // Default constructor required for calls to
-
-    public String getDob_date() {
-        return dob_date;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
     // DataSnapshot.getValue(User.class)
     public UserHandler() {
     }
@@ -100,7 +47,6 @@ public class UserHandler {
         this.Display_Pic = DisplayPic;
     }
 
-
     public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender, String dob_date, String likes) {
         this.name = name;
         UserId = userId;
@@ -126,7 +72,58 @@ public class UserHandler {
         this.gender = gender;
     }
 
+//    public String getDisplay_Pic() {
+//        return Display_Pic;
+//    }
+
+
     public UserHandler(String displayPic) {
         Display_Pic = displayPic;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Default constructor required for calls to
+
+    public String getLikes() {
+        return likes;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getDob_month() {
+        return dob_month;
+    }
+
+    public String getDob_year() {
+        return dob_year;
+    }
+
+    public String getWebLink() {
+        return webLink;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getDob_date() {
+        return dob_date;
+    }
+
+    public String getGender() {
+        return gender;
     }
 }

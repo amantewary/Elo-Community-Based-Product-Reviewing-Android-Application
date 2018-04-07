@@ -46,16 +46,23 @@ import group.hashtag.projectelo.R;
 
 public class Register_Activity extends AppCompatActivity {
 
+    GoogleSignInClient mGoogleSignInClient;
+    ImageView googleButton;
+    int RC_SIGN_IN = 111;
     private EditText inputEmail, inputPassword, inputUsername, inputConfirmPassword;
     private TextInputLayout emailInput, passwordInput, usernameInput, confirmPasswordInput;
     private Button btnSignIn, btnSignUp;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
-    GoogleSignInClient mGoogleSignInClient;
-    ImageView googleButton;
     private DatabaseReference mDatabase;
-    int RC_SIGN_IN = 111;
 
+    // Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,7 +186,13 @@ public class Register_Activity extends AppCompatActivity {
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
+
                 //create user
+
+                /**
+                 * The code to auth users is taken from Firebase docs and from Android Authority
+                 *  @link:https://www.androidauthority.com/introduction-to-firebase-765262/
+                 **/
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(Register_Activity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -202,7 +215,7 @@ public class Register_Activity extends AppCompatActivity {
                                         String userId = user.getUid();
                                         UserHandler userHandler = new UserHandler();
                                         userHandler.setName(name);
-                                        Log.e(Register_Activity.class.getCanonicalName(),email);
+                                        Log.e(Register_Activity.class.getCanonicalName(), email);
                                         UserHandler userhandler = new UserHandler(name, userId, email);
                                         hideKeyboard(v);
 
@@ -229,12 +242,10 @@ public class Register_Activity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -248,6 +259,10 @@ public class Register_Activity extends AppCompatActivity {
         }
     }
 
+    /**
+     * The code to auth users is taken from Firebase docs
+     *
+     **/
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.e(Register_Activity.class.getCanonicalName(), "firebaseAuthWithGoogle:" + acct.getId());
 
@@ -265,15 +280,15 @@ public class Register_Activity extends AppCompatActivity {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                        if (dataSnapshot.hasChild(user.getUid())){
+                                        if (dataSnapshot.hasChild(user.getUid())) {
                                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                             finish();
-                                        }else {
+                                        } else {
 
                                             String userId = user.getUid();
                                             UserHandler userHandler = new UserHandler();
                                             userHandler.setName(user.getDisplayName());
-                                            UserHandler userhandler = new UserHandler(user.getDisplayName(),  userId, user.getEmail());
+                                            UserHandler userhandler = new UserHandler(user.getDisplayName(), userId, user.getEmail());
 
                                             mDatabase.child(userId).setValue(userhandler);
 
@@ -291,15 +306,13 @@ public class Register_Activity extends AppCompatActivity {
                                     }
 
 
-
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-                                        Log.e("Here",""+databaseError);
+                                        Log.e("Here", "" + databaseError);
                                     }
                                 });
 
                             }
-
 
 
                         } else {
@@ -311,24 +324,15 @@ public class Register_Activity extends AppCompatActivity {
                 });
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }
 
-    // https://stackoverflow.com/a/19828165/3966666
+    //Code adapted from: https://stackoverflow.com/a/19828165/3966666
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    // Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
-    public static boolean isEmailValid(String email) {
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
     }
 }
