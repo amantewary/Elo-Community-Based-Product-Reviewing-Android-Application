@@ -10,9 +10,13 @@ Elo is an Android application which allows people to share and contribute their 
 	This is a library which customizes the image view to make it look rounded.
 
 
-    Licensed under the Apache License, Version 2.0 (the "License");you may not use this file except in compliance with the License.You may obtain a copy of the License at [Apache](http://www.apache.org/licenses/LICENSE-2.0)
 
-    Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+                Licensed under the Apache License, Version 2.0 (the "License");you may not use this file except in compliance with the License.You may obtain a copy of the License at [Apache](http://www.apache.org/licenses/LICENSE-2.0)
+
+                Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
+
 
 - **Material Search View** : The Apache Licence (Apache) Copyright (c) 2015 Miguel Catalan Bañuls.
 
@@ -204,7 +208,7 @@ The Minimum functionalities of the project have been completed and tested and we
 - The app follows material design guidelines (Completed)	
 - The app allows the user to edit their information on their profile page. (Completed)
 - The app allows the user to choose their profile picture from existing list of profile avatar,  the photo gallery or camera. (Completed)
-- The app allows the user to search the device they are looking for. (In Progress)
+- The app allows the user to search the device they are looking for. (Completed)
 - The app allows the user to view the profile of another user. (Completed)
 - The app allows the user to write a review about a product they have on their profile. (Completed)
 - The app allows the user to add a picture of the product they are reviewing. (Completed)
@@ -215,7 +219,7 @@ The Minimum functionalities of the project have been completed and tested and we
 #### Bonus Functionality
 - The app allows the user to rate the reviews of another user. (Completed)
 - The app allows the user to send messages to another user. (Completed)
-- The app allows the user to search other users using their nickname. (In Progress)
+- The app allows the user to search other users. (Completed)
 - The app allows the user to navigate using gestures within the app. (Completed)
 - The app allows the user to comment on reviews of another user. (Completed)
 
