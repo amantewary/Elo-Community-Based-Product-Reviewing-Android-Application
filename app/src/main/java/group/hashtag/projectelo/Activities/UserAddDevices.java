@@ -58,8 +58,8 @@ public class UserAddDevices extends AppCompatActivity {
         setContentView(R.layout.user_add_devices);
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
         title = findViewById(R.id.title_toolbar);
-//
-//
+
+
         auth = FirebaseAuth.getInstance().getCurrentUser();
 
         listCategories = new ArrayList<>();
@@ -71,7 +71,6 @@ public class UserAddDevices extends AppCompatActivity {
 
         listDevices = new ArrayList<>();
         listMapDevices = new ArrayList<>();
-//
         mDatabase2 = database.getReference("Device_Category");
         mDatabase1 = database.getReference("Device");
         addDevice = FirebaseDatabase.getInstance().getReference("User_device").child("Owner").child(auth.getUid());
@@ -81,9 +80,7 @@ public class UserAddDevices extends AppCompatActivity {
         title.setTypeface(ReemKufi_Regular);
         category = findViewById(R.id.spinner_user_device_category);
         device = findViewById(R.id.spinner_user_product_name);
-//
 
-//
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp));
@@ -93,7 +90,6 @@ public class UserAddDevices extends AppCompatActivity {
                 finish();
             }
         });
-//
         categories = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, listCategories);
 
         devices = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, listDevices);
@@ -110,11 +106,8 @@ public class UserAddDevices extends AppCompatActivity {
                     listDevices.clear();
                     listMapDevices.clear();
                     String categoryId = searchDeviceId(adapterView.getItemAtPosition(i).toString());
-                    Log.e("Here", categoryId);
-//                    String categoryId = mapCategories.containsKey(adapterView.getItemIdAtPosition(i));
                     Query query = mDatabase1.orderByKey().equalTo(categoryId);
                     fetchDevice(query);
-
                 }
             }
 
@@ -128,7 +121,6 @@ public class UserAddDevices extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (i == 0) {
-                    // Do nothing
                 } else {
                     Log.e(NewReviewActivity.class.getCanonicalName(), "Position" + i);
                 }
@@ -153,7 +145,6 @@ public class UserAddDevices extends AppCompatActivity {
                     listCategories.add(value);
                     listMapCategories.add(mapCategories);
                 }
-                Log.e("Here", "" + listMapCategories);
                 categories.notifyDataSetChanged();
             }
 
@@ -188,19 +179,13 @@ public class UserAddDevices extends AppCompatActivity {
                 listDevices.add(0, "Select Device");
                 for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
                     for (DataSnapshot dsnp2 : dsnp.getChildren()) {
-//                        Log.e("Here", "" + dsnp2);
                         mapDevice = (Map<String, Object>) dsnp2.getValue();
-                        Log.e("Here", "" + mapDevice);
 
                         String value = mapDevice.get("DeviceSeries").toString();
                         listDevices.add(value);
                         listMapDevices.add(mapDevice);
                     }
-                    Log.e("Here", "" + listMapDevices);
                     devices.notifyDataSetChanged();
-//                    String value = mapCategories.get("DeviceSeries").toString();
-//                    listDevices.add(value);
-//                    listMapCategories.add(mapCategories);
                 }
             }
 

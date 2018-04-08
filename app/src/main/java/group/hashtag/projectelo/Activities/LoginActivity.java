@@ -57,7 +57,13 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private Button btnSignup, btnLogin, btnReset;
 
-    // Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
+
+    /**
+     * Adapted From: Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
+     * @param email
+     * @return
+     */
+
     public static boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
@@ -167,12 +173,8 @@ public class LoginActivity extends AppCompatActivity {
                         .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
                                 progressBar.setVisibility(View.GONE);
                                 if (!task.isSuccessful()) {
-                                    // there was an error
                                     if (password.length() < 6) {
                                         passwordInput.setError("Enter correct Password");
                                     } else {
@@ -198,32 +200,28 @@ public class LoginActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
-            //Todo: fix Google sign in by adding Google data to firebase
+
         }
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
             firebaseAuthWithGoogle(account);
 
         } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.e(LoginActivity.class.getCanonicalName(), "signInResult:failed code=" + e.getStatusCode());
-//            updateUI(null);
         }
     }
 
-    // Code is adapted from:- https://stackoverflow.com/a/19828165/3966666
+    /**
+     * Adapted From: Code is adapted from:- https://stackoverflow.com/a/19828165/3966666
+     * @param view
+     */
+
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
@@ -241,25 +239,19 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-
                             final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                             if (user != null) {
-                                Log.e("Here", "" + user.getUid());
-
                                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
 
                                         if (dataSnapshot.hasChild(user.getUid())) {
-                                            Log.e("Heres", "" + user.getUid());
 
                                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                                             startActivity(intent);
                                             finish();
                                             Log.e(LoginActivity.class.getCanonicalName(), "signInWithCredential:success");
                                         } else {
-                                            Log.e("Heres", "walah walah");
 
                                             String userId = user.getUid();
                                             UserHandler userHandler = new UserHandler();
@@ -278,22 +270,17 @@ public class LoginActivity extends AppCompatActivity {
                                             startActivity(intent);
                                             finish();
                                         }
-
-
                                     }
-
 
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
                                         Log.e("Here", "" + databaseError);
                                     }
                                 });
-
                             }
 
 
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.e(LoginActivity.class.getCanonicalName(), "signInWithCredential:failure", task.getException());
                         }
                     }
@@ -302,6 +289,6 @@ public class LoginActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
+
     }
 }

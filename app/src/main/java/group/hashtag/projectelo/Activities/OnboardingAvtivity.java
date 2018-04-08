@@ -41,6 +41,10 @@ import java.util.List;
 
 import group.hashtag.projectelo.R;
 
+/**
+ * Adapted from: "chyrta/AndroidOnboarder", GitHub, 2018. [Online]. Available:  https://github.com/chyrta/AndroidOnboarder. [Accessed: 31- Mar- 2018].
+ */
+
 public class OnboardingAvtivity extends OnboarderActivity {
     List<OnboarderPage> onboarderPages;
 
@@ -49,7 +53,6 @@ public class OnboardingAvtivity extends OnboarderActivity {
         super.onCreate(savedInstanceState);
 
         onboarderPages = new ArrayList<OnboarderPage>();
-//        buttonSetTextColor(Color.BLACK);
 
 
         buttonSetTextColor(Color.BLACK);
@@ -99,8 +102,6 @@ public class OnboardingAvtivity extends OnboarderActivity {
     protected void onSkipButtonPressed() {
         super.onSkipButtonPressed();
 
-        //Go to Home Screen. Currently kept it as onboarding screen.
-
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
         finish();
@@ -124,6 +125,5 @@ public class OnboardingAvtivity extends OnboarderActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
     }
 }

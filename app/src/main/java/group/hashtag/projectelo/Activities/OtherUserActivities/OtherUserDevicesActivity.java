@@ -25,10 +25,12 @@ import java.util.Map;
 import group.hashtag.projectelo.Handlers.NewUserDevice;
 import group.hashtag.projectelo.R;
 
+/**
+ * This class is created to create new instance for user.
+ */
 public class OtherUserDevicesActivity extends AppCompatActivity {
     TextView title;
     Map<String, Object> mapUserDevices;
-    //    Map<String, Object> mapUserDevices;
     DatabaseReference deviceRef;
 
     List<NewUserDevice> newUserDevices;

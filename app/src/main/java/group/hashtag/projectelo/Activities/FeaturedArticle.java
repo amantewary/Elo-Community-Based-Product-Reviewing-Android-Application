@@ -13,6 +13,9 @@ import in.championswimmer.sfg.lib.SimpleFingerGestures;
 
 /**
  * Created by Manish Erramelli on 27/02/18.
+ * This class fetch the featured article written on the latest
+ * technology advancement. It just fetch as the data and shows on the home screen.
+ *  Adapted from: championswimmer/SimpleFingerGestures_Android_Library", GitHub, 2018. [Online]. Available:  https://github.com/championswimmer/SimpleFingerGestures_Android_Library. [Accessed: 31- Mar- 2018]].
  */
 
 public class FeaturedArticle extends AppCompatActivity {

@@ -30,6 +30,10 @@ import java.util.Map;
 import group.hashtag.projectelo.Handlers.UserProfileFollowersHandlers;
 import group.hashtag.projectelo.R;
 
+/**
+ * This class shows list of followers.
+ */
+
 public class FollowerList extends AppCompatActivity {
 
     TextView title;
@@ -86,7 +90,6 @@ public class FollowerList extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             mapUser = (Map<String, Object>) dataSnapshot.getValue();
-                            Log.e("Here", "" + mapUser);
                             followerName = mapUser.get("name").toString();
                             final UserProfileFollowersHandlers userProfileFollowersHandlers = new UserProfileFollowersHandlers(followerName, followerDate);
                             userProfileFollowersHandlersList.add(userProfileFollowersHandlers);
@@ -133,8 +136,6 @@ public class FollowerList extends AppCompatActivity {
             followerName.setText(userProfileFollowersHandlers.followerNameUserProfile);
             followerDate.setText(userProfileFollowersHandlers.followerFollowedDate);
             return followersView;
-
-
         }
     }
 }

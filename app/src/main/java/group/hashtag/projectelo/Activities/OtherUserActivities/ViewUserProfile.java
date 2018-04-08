@@ -28,6 +28,10 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.R;
 
+/**
+ * This class helps user to view user profile of other user.
+ *
+ */
 public class ViewUserProfile extends AppCompatActivity {
 
     TextView title;
@@ -86,7 +90,6 @@ public class ViewUserProfile extends AppCompatActivity {
         stringReviewUserWebLink = intent.getStringExtra("reviewUserWebLink");
         stringReviewUserEmail = intent.getStringExtra("reviewUserEmail");
 
-        //Log.e("ID",stringReviewUserId);
 
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
@@ -121,7 +124,6 @@ public class ViewUserProfile extends AppCompatActivity {
                 finish();
             }
         });
-        //TODO: Displaying name of the review author on profile page.
         viewUserName.setText(stringReviewUserName);
         viewUserEmailText.setText(stringReviewUserEmail);
         viewUserCountryText.setText(stringReviewUserCountry);
@@ -175,7 +177,9 @@ public class ViewUserProfile extends AppCompatActivity {
             }
         });
 
-
+/**
+ * Adapted from: "akexorcist/Android-RoundCornerProgressBar", GitHub, 2018. [Online]. Available:  https://github.com/akexorcist/Android-RoundCornerProgressBar. [Accessed: 31- Mar- 2018].
+ */
         userProgress = findViewById(R.id.view_profile_progress);
         otherUserRef.child(stringReviewUserId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -240,7 +244,6 @@ public class ViewUserProfile extends AppCompatActivity {
 
             }
         });
-//        loadDisplayPics(otherUserDisplay);
 
 
         followButton.setOnClickListener(new View.OnClickListener() {
@@ -263,6 +266,10 @@ public class ViewUserProfile extends AppCompatActivity {
 
     }
 
+    /**
+     * Adapted from: "hdodenhof/CircleImageView", GitHub, 2018. [Online]. Available:  https://github.com/hdodenhof/CircleImageView. [Accessed: 31- Mar- 2018].
+     * @param url
+     */
     public void loadDisplayPics(String url) {
         Log.e("load", url);
         Picasso.get().load(url).fit().error(R.drawable.cover).placeholder(R.drawable.female).into(userProfilePic);

@@ -47,18 +47,13 @@ public class Splashscreen extends AppCompatActivity {
 
                 int cx = (myView.getLeft() + myView.getRight()) / 2;
                 int cy = (myView.getTop() + myView.getBottom()) / 2;
-                // get the final radius for the clipping circle
                 int dx = Math.max(cx, myView.getWidth() - cx);
                 int dy = Math.max(cy, myView.getHeight() - cy);
                 float finalRadius = (float) Math.hypot(dx, dy);
-                animator =
-                        ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
-                // Android native animator
-
+                animator = ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0, finalRadius);
                 animator.setInterpolator(new AccelerateDecelerateInterpolator());
                 animator.setDuration(1200);
                 animator.start();
-
             }
         });
     }
@@ -67,9 +62,7 @@ public class Splashscreen extends AppCompatActivity {
         public void run() {
 
             try {
-
                 sleep(1300);
-
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

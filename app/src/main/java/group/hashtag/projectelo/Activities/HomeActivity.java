@@ -59,6 +59,12 @@ import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
+/**
+ * This is the main activity. This activity fetches data when for the user, when he/she opens the app
+ * Adapted from: deano2390/MaterialShowcaseView", GitHub, 2018. [Online]. Available: https://github.com/deano2390/MaterialShowcaseView. [Accessed: 31- Mar- 2018].
+ */
+
+
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
@@ -92,8 +98,7 @@ public class HomeActivity extends AppCompatActivity
         public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user == null) {
-                // user auth state is changed - user is null
-                // launch login activity
+
                 startActivity(new Intent(HomeActivity.this, Register_Activity.class));
                 finish();
             }
@@ -115,6 +120,10 @@ public class HomeActivity extends AppCompatActivity
 
         reviewHandler = new ReviewHandler();
         featuredContentHandler = new FeaturedContentHandler();
+/**
+ * Adapted from: "MaterialSearchView - Miguel Catalan", Miguelcatalan.info, 2018. [Online]. Available:  http://miguelcatalan.info/2015/09/23/MaterialSearchView/. [Accessed: 31- Mar- 2018].
+ *
+ * */
 
         categories = findViewById(R.id.search_catogories);
         title = findViewById(R.id.title_toolbar);
@@ -147,8 +156,7 @@ public class HomeActivity extends AppCompatActivity
         mDatabase2 = database.getReference("Feature_article");
         fetchFeaturedData(featuredTitle, imageViewTitle, mDatabase2);
 
-//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//        account = GoogleSignIn.getLastSignedInAccount(this);
+/
 
         prefs = HomeActivity.this.getSharedPreferences("group.hashtag.projectelo.Activities.HomeActivity", 0);
         editor = prefs.edit();
@@ -180,7 +188,6 @@ public class HomeActivity extends AppCompatActivity
 
                     Map<String, Object> map = (Map<String, Object>) dsnp.getValue();
                     reviewHandler = new ReviewHandler(map.get("category").toString(), map.get("device").toString(), map.get("reviewDescription").toString(), map.get("reviewId").toString(), map.get("reviewTitle").toString(), map.get("userId").toString(), map.get("reviewImage").toString());
-//                    Log.e("Here", "" + map);
                     reviewHandlerList.add(reviewHandler);
                 }
                 arrayAdapter.notifyDataSetChanged();
@@ -250,6 +257,10 @@ public class HomeActivity extends AppCompatActivity
         });
         navProgress = header.findViewById(R.id.nav_progress);
         navUsername = header.findViewById(R.id.nav_username);
+
+        /**
+         * Adapted from:  "akexorcist/Android-RoundCornerProgressBar", GitHub, 2018. [Online]. Available:  https://github.com/akexorcist/Android-RoundCornerProgressBar. [Accessed: 31- Mar- 2018].
+         */
         navDisplayPic = header.findViewById(R.id.nav_profileimg);
         userRef = FirebaseDatabase.getInstance().getReference("users");
         userRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
@@ -296,6 +307,10 @@ public class HomeActivity extends AppCompatActivity
         }
     }
 
+
+    /**
+     * Adapted from: deano2390/MaterialShowcaseView", GitHub, 2018. [Online]. Available: https://github.com/deano2390/MaterialShowcaseView. [Accessed: 31- Mar- 2018].
+     * */
     private void presentShowcaseSequence() {
         // Items added to showcase
         // 1. Navigation view
@@ -379,20 +394,7 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

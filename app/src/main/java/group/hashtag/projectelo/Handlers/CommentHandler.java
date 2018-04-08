@@ -11,10 +11,20 @@ public class CommentHandler {
     String commentUserName;
 
 
+    /**
+     * Default constructor
+     */
     public CommentHandler() {
 
     }
 
+    /**
+     * Parameterized Constructor
+     * @param commentId
+     * @param commentText
+     * @param commentUserId
+     * @param commentUserName
+     */
     public CommentHandler(String commentId, String commentText, String commentUserId, String commentUserName) {
         this.commentId = commentId;
         this.commentText = commentText;

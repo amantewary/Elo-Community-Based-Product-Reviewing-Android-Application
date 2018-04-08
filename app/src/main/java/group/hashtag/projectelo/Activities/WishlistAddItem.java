@@ -129,7 +129,6 @@ public class WishlistAddItem extends AppCompatActivity {
                     listCategories.add(value);
                     listMapCategories.add(mapCategories);
                 }
-                Log.e("Here", "" + listMapCategories);
                 categories.notifyDataSetChanged();
             }
 

@@ -29,6 +29,10 @@ import group.hashtag.projectelo.Activities.Wishlist;
 import group.hashtag.projectelo.Handlers.WishlistItem;
 import group.hashtag.projectelo.R;
 
+
+/**
+ * This class show wishlist of other users
+ */
 public class OtherUserWishlist extends AppCompatActivity {
 
     Toolbar toolbar;

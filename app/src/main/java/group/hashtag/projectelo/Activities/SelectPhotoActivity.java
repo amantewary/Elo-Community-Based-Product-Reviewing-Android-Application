@@ -117,21 +117,17 @@ public class SelectPhotoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // https://github.com/whalemare/sheetmenu
+    /**
+     * Adapted From: https://github.com/whalemare/sheetmenu
+     */
     private void showMenu() {
         SheetMenu.with(this).setTitle("Select An Option:").setAutoCancel(true).setMenu(R.menu.sheet_menu).setClick(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_cam) {
-
                     Camera();
-
-
                 } else if (item.getItemId() == R.id.action_gal) {
-
-
                     Gallery();
-
                 }
                 return false;
             }
@@ -186,7 +182,6 @@ public class SelectPhotoActivity extends AppCompatActivity {
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                         Uri downloadUrl = taskSnapshot.getDownloadUrl();
                         try {
                             Map<String, Object> updatePic = new HashMap<>();
@@ -226,6 +221,9 @@ public class SelectPhotoActivity extends AppCompatActivity {
 
     }
 
+    /***
+     * Adapted From : https://stackoverflow.com/questions/38552144/how-get-permission-for-camera-in-android-specifically-marshmallow
+     */
     public void Permission() {
 
         if (ActivityCompat.shouldShowRequestPermissionRationale(SelectPhotoActivity.this, android.Manifest.permission.CAMERA)) {
@@ -243,17 +241,12 @@ public class SelectPhotoActivity extends AppCompatActivity {
             case PermissionCode:
 
                 if (PRresult.length > 0 && PRresult[0] == PackageManager.PERMISSION_GRANTED) {
-//                    Toast.makeText(SelectPhotoActivity.this, "Permission Granted", Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(SelectPhotoActivity.this, "Permission Canceled", Toast.LENGTH_LONG).show();
                 }
                 break;
-
-
         }
     }
-
-
 }
 
 

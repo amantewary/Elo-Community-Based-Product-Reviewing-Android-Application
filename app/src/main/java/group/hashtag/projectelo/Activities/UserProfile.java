@@ -62,8 +62,6 @@ public class UserProfile extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //Todo: May have to figure out a better way of storing the name coz it is updating with a long delay
-
 
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
@@ -105,13 +103,12 @@ public class UserProfile extends AppCompatActivity {
                 userWeblinkText.setText(user.getWebLink());
                 userGenderText.setText(user.getGender());
                 loadDisplayPics(user.Display_Pic);
-                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.Display_Pic + ", email " + user.getEmail());
                 displayPic = user.Display_Pic;
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
+
                 Log.e(UserProfile.class.getCanonicalName(), "Failed to read value.", error.toException());
             }
         });
@@ -164,6 +161,9 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        /**
+         * Adapted From : "hdodenhof/CircleImageView", GitHub, 2018. [Online]. Available:  https://github.com/hdodenhof/CircleImageView. [Accessed: 31- Mar- 2018].
+         */
         displayImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -202,6 +202,9 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        /**
+         * Adapted From : "akexorcist/Android-RoundCornerProgressBar", GitHub, 2018. [Online]. Available:  https://github.com/akexorcist/Android-RoundCornerProgressBar. [Accessed: 31- Mar- 2018].
+         */
         userProgress = findViewById(R.id.profile_progress);
         mDatabase.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -219,7 +222,6 @@ public class UserProfile extends AppCompatActivity {
 
     }
 
-    //TODO: Need to work on settings page which will double as profile edit page.
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_wheel, menu);

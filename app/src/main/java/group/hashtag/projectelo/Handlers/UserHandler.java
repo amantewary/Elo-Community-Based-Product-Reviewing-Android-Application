@@ -16,16 +16,33 @@ public class UserHandler {
     public String gender;
     public String likes;
     public String email;
+
+    /**
+     * Default constructor
+     */
     // DataSnapshot.getValue(User.class)
     public UserHandler() {
     }
 
+    /**
+     * Parameterized Constructor
+     * @param name
+     * @param userId
+     * @param email
+     */
     public UserHandler(String name, String userId, String email) {
         this.name = name;
         UserId = userId;
         this.email = email;
     }
 
+    /**
+     * Parameterized Constructor
+     * @param name
+     * @param email
+     * @param UserId
+     * @param DisplayPic
+     */
     public UserHandler(String name, String email, String UserId, String DisplayPic) {
         this.name = name;
         this.email = email;
@@ -33,6 +50,20 @@ public class UserHandler {
         this.Display_Pic = DisplayPic;
     }
 
+    /**
+     * Parameterized Constructor
+     * @param name
+     * @param userId
+     * @param country
+     * @param dob_month
+     * @param dob_year
+     * @param webLink
+     * @param email
+     * @param gender
+     * @param dob_date
+     * @param likes
+     * @param DisplayPic
+     */
     public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender, String dob_date, String likes, String DisplayPic) {
         this.name = name;
         UserId = userId;
@@ -47,6 +78,19 @@ public class UserHandler {
         this.Display_Pic = DisplayPic;
     }
 
+    /**
+     * Parameterized Constructor
+     * @param name
+     * @param userId
+     * @param country
+     * @param dob_month
+     * @param dob_year
+     * @param webLink
+     * @param email
+     * @param gender
+     * @param dob_date
+     * @param likes
+     */
     public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender, String dob_date, String likes) {
         this.name = name;
         UserId = userId;
@@ -60,6 +104,18 @@ public class UserHandler {
         this.likes = likes;
     }
 
+    /**
+     * Parameterized Constructor
+     * @param name
+     * @param userId
+     * @param country
+     * @param dob_month
+     * @param dob_year
+     * @param webLink
+     * @param email
+     * @param gender
+     * @param dob_date
+     */
     public UserHandler(String name, String userId, String country, String dob_month, String dob_year, String webLink, String email, String gender, String dob_date) {
         this.name = name;
         UserId = userId;
@@ -77,6 +133,10 @@ public class UserHandler {
 //    }
 
 
+    /**
+     * Parameterized Constructor
+     * @param displayPic
+     */
     public UserHandler(String displayPic) {
         Display_Pic = displayPic;
     }

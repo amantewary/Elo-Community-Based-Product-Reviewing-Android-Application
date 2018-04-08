@@ -25,6 +25,7 @@ import group.hashtag.projectelo.R;
 
 /**
  * Created by nikhilkamath on 01/03/18.
+ * This class helps user to set password.
  */
 
 public class ForgotPassword extends AppCompatActivity {
@@ -33,7 +34,12 @@ public class ForgotPassword extends AppCompatActivity {
     private EditText forgotEmailEditText;
     private Button forgotButton;
 
-    // Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
+    /**
+     * Adapted from:Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
+     * @param email
+     * @return
+     */
+
     public static boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
@@ -102,7 +108,11 @@ public class ForgotPassword extends AppCompatActivity {
 
     }
 
-    // https://stackoverflow.com/a/19828165/3966666
+    /**
+     * Adapted from: https://stackoverflow.com/a/19828165/3966666
+     * @param view
+     */
+
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);

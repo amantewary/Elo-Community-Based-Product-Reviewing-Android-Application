@@ -187,7 +187,6 @@ public class Register_Activity extends AppCompatActivity {
 
                 progressBar.setVisibility(View.VISIBLE);
 
-                //create user
 
                 /**
                  * The code to auth users is taken from Firebase docs and from Android Authority
@@ -198,9 +197,6 @@ public class Register_Activity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
@@ -215,13 +211,11 @@ public class Register_Activity extends AppCompatActivity {
                                         String userId = user.getUid();
                                         UserHandler userHandler = new UserHandler();
                                         userHandler.setName(name);
-                                        Log.e(Register_Activity.class.getCanonicalName(), email);
                                         UserHandler userhandler = new UserHandler(name, userId, email);
                                         hideKeyboard(v);
 
                                         mDatabase.child(userId).setValue(userhandler);
 
-                                        //TODO: NEED TO PASS DATA
 
                                         Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
                                         Bundle b = new Bundle();
@@ -249,11 +243,9 @@ public class Register_Activity extends AppCompatActivity {
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
                 Log.w(Register_Activity.class.getCanonicalName(), "Google sign in failed", e);
             }
         }
@@ -272,8 +264,6 @@ public class Register_Activity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.e(Register_Activity.class.getCanonicalName(), "signInWithCredential:success");
                             final FirebaseUser user = auth.getCurrentUser();
                             if (user != null) {
                                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -316,7 +306,6 @@ public class Register_Activity extends AppCompatActivity {
 
 
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.e(Register_Activity.class.getCanonicalName(), "signInWithCredential:failure", task.getException());
                         }
 
@@ -330,7 +319,10 @@ public class Register_Activity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 
-    //Code adapted from: https://stackoverflow.com/a/19828165/3966666
+    /**
+     * Adapted From : https://stackoverflow.com/a/19828165/3966666
+     * @param view
+     */
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);

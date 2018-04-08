@@ -21,6 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import group.hashtag.projectelo.Handlers.UserHandler;
 import group.hashtag.projectelo.R;
 
+/**
+ * Class for editing user information
+ */
+
 public class EditUserProfile extends AppCompatActivity {
 
     Toolbar toolbar;

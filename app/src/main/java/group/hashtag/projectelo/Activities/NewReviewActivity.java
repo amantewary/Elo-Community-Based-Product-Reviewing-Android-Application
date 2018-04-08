@@ -139,7 +139,6 @@ public class NewReviewActivity extends AppCompatActivity {
         newReviewTitle = findViewById(R.id.new_review_title);
         newReviewDescription = findViewById(R.id.new_review_description);
 
-//        listDevices = new ArrayList<String>(mapDevice.keySet());
 
         categories = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, listCategories);
 
@@ -156,8 +155,6 @@ public class NewReviewActivity extends AppCompatActivity {
                     listDevices.clear();
                     listMapDevices.clear();
                     String categoryId = searchDeviceId(adapterView.getItemAtPosition(i).toString());
-                    Log.e("Here", categoryId);
-//                    String categoryId = mapCategories.containsKey(adapterView.getItemIdAtPosition(i));
                     Query query = mDatabase1.orderByKey().equalTo(categoryId);
                     fetchDevice(query);
 
@@ -190,16 +187,16 @@ public class NewReviewActivity extends AppCompatActivity {
         StrictMode.setVmPolicy(builder.build());
 
         ReviewPic.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
-
                 showMenu();
-
-
             }
         });
     }
+
+    /**
+     * Adapted from: https://github.com/whalemare/sheetmenu
+     */
 
     private void showMenu() {
         SheetMenu.with(this)
@@ -207,14 +204,9 @@ public class NewReviewActivity extends AppCompatActivity {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.action_cam) {
-
                     Camera();
-
-
                 } else if (item.getItemId() == R.id.action_gal) {
-
                     Gallery();
-
                 }
                 return false;
             }
@@ -275,12 +267,15 @@ public class NewReviewActivity extends AppCompatActivity {
 
             startActivityForResult(CropIntent, PermissionCode);
 
-
         } catch (ActivityNotFoundException e) {
             Log.e("here", "" + e);
         }
 
     }
+
+    /**
+     * Adapted from: https://stackoverflow.com/questions/38552144/how-get-permission-for-camera-in-android-specifically-marshmallow
+     */
 
     public void Permission() {
 
@@ -312,22 +307,16 @@ public class NewReviewActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.post_review_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_post) {
             addReview();
-//            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
@@ -344,7 +333,6 @@ public class NewReviewActivity extends AppCompatActivity {
                     listCategories.add(value);
                     listMapCategories.add(mapCategories);
                 }
-                Log.e("Here", "" + listMapCategories);
                 categories.notifyDataSetChanged();
             }
 
@@ -363,19 +351,13 @@ public class NewReviewActivity extends AppCompatActivity {
                 listDevices.add(0, "Select Device");
                 for (DataSnapshot dsnp : dataSnapshot.getChildren()) {
                     for (DataSnapshot dsnp2 : dsnp.getChildren()) {
-//                        Log.e("Here", "" + dsnp2);
                         mapDevice = (Map<String, Object>) dsnp2.getValue();
-                        Log.e("Here", "" + mapDevice);
 
                         String value = mapDevice.get("DeviceSeries").toString();
                         listDevices.add(value);
                         listMapDevices.add(mapDevice);
                     }
-                    Log.e("Here", "" + listMapDevices);
                     devices.notifyDataSetChanged();
-//                    String value = mapCategories.get("DeviceSeries").toString();
-//                    listDevices.add(value);
-//                    listMapCategories.add(mapCategories);
                 }
             }
 
@@ -441,7 +423,6 @@ public class NewReviewActivity extends AppCompatActivity {
         uploadTask.addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
                 Toast.makeText(getApplicationContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
             }
         }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
@@ -452,7 +433,6 @@ public class NewReviewActivity extends AppCompatActivity {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
                 Uri downloadUrl = taskSnapshot.getDownloadUrl();
                 downloadURLString = downloadUrl.toString();
             }
@@ -475,9 +455,6 @@ public class NewReviewActivity extends AppCompatActivity {
         public void run() {
 
             try {
-                // get the center for the clipping circle
-
-
                 sleep(4300);
 
             } catch (InterruptedException e) {
@@ -487,7 +464,6 @@ public class NewReviewActivity extends AppCompatActivity {
 
             NewReviewHandler newReview = new NewReviewHandler(userId, id, reviewTitle, reviewDescription, deviceName, deviceCategory, downloadURLString);
             reviewDatabase.child(id).setValue(newReview);
-//            Toast.makeText(NewReviewActivity.this, "New Review Added", Toast.LENGTH_SHORT).show();
             finish();
         }
     }

@@ -112,6 +112,9 @@ public class ProductReview extends AppCompatActivity {
         reviewImageView = findViewById(R.id.imageView2);
         commentListView = findViewById(R.id.commentList);
         commentHandlerList = new ArrayList<>();
+        /**
+         * Adapted From: "hdodenhof/CircleImageView", GitHub, 2018. [Online]. Available:  https://github.com/hdodenhof/CircleImageView. [Accessed: 31- Mar- 2018].
+         */
         userAuthorImage = findViewById(R.id.reviewAuthor);
         reviewtitle = findViewById(R.id.textView5);
         content = findViewById(R.id.textView4);
@@ -140,7 +143,6 @@ public class ProductReview extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mapUser = (Map<String, Object>) dataSnapshot.getValue();
-                Log.e("Here", "" + mapUser);
                 userName = mapUser.get("name").toString();
                 userId = mapUser.get("UserId").toString();
                 userEmail = mapUser.get("email").toString();
@@ -160,14 +162,12 @@ public class ProductReview extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("Here", "" + databaseError);
-
             }
         });
         userAuthorImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String Id = auth.getUid();
-                Log.e(stringReviewAuthor, Id);
                 if (stringReviewAuthor.equals(Id)) {
                     Intent userProfile = new Intent(ProductReview.this, UserProfile.class);
                     startActivity(userProfile);
@@ -225,10 +225,8 @@ public class ProductReview extends AppCompatActivity {
                     UserHandler addLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString(), userPic);
                     userLikeRef.child(userId).setValue(addLike);
                     likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
-                    Log.e("Here", "ButtonState_if" + buttonState);
                 } else {
                     likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
-                    Log.e("Here", "ButtonState_else" + buttonState);
                     likeNumber = likeNumber - 1;
                     UserHandler subLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString(), userPic);
                     userLikeRef.child(stringReviewAuthor).setValue(subLike);
@@ -282,7 +280,6 @@ public class ProductReview extends AppCompatActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mapCommentAuthor = (Map<String, Object>) dataSnapshot.getValue();
                     commentAuthorName = mapCommentAuthor.get("name").toString();
-                    Log.e("Here", "1" + commentAuthorName);
                     String id = commentRef.push().getKey();
                     CommentHandler newComment = new CommentHandler(id, commentContent, commentAuthorId, commentAuthorName);
                     commentRef.child(stringReviewId).child(id).setValue(newComment);
@@ -295,15 +292,9 @@ public class ProductReview extends AppCompatActivity {
 
                 }
             });
-            //TODO: Simple method (not showing username of comment author)
-//            CommentHandler newComment = new CommentHandler(commentAuthorId, commentContent, commentAuthorId, commentAuthorName);
-//            commentRef.child(stringReviewId).child(commentAuthorId).setValue(newComment);
-//            commentText.setText("");
-//            commentLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+
         } else {
             commentText.setError("Comment cannot be empty");
         }
-
     }
-
 }

@@ -16,6 +16,7 @@ import group.hashtag.projectelo.R;
 
 /**
  * Created by amant on 21-03-2018.
+ * Adapter class created to show all the comments posted by the user on any review
  */
 
 public class CommentAdapter extends ArrayAdapter {

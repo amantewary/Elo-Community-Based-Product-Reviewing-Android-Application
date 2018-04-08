@@ -38,7 +38,6 @@ public class UserDeviceActivity extends AppCompatActivity {
 
     TextView title;
     Map<String, Object> mapUserDevices;
-    //    Map<String, Object> mapUserDevices;
     DatabaseReference deviceRef;
 
     List<NewUserDevice> newUserDevices;
@@ -103,7 +102,6 @@ public class UserDeviceActivity extends AppCompatActivity {
         if (arrayAdapter.getCount() <= 1) {
             Toast.makeText(getApplicationContext(), "You need to have at least one device listed", Toast.LENGTH_SHORT).show();
         } else {
-            Log.e(UserDeviceActivity.class.getCanonicalName(), "Here");
             FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
             deviceRef = FirebaseDatabase.getInstance().getReference("User_device").child("Owner").child(auth.getUid());
             deviceRef.child(deviceId).removeValue();
@@ -141,8 +139,6 @@ public class UserDeviceActivity extends AppCompatActivity {
             deviceName.setText(newUserDevice.deviceName);
             categoryName.setText(newUserDevice.category);
             return deviceView;
-
-
         }
     }
 

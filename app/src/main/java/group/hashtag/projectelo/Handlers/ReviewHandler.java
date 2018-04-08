@@ -15,9 +15,22 @@ public class ReviewHandler {
     public String userId;
     public String reviewImage;
 
+    /**
+     * Default constructor
+     */
     public ReviewHandler() {
     }
 
+    /**
+     * Parameterized Constructor
+     * @param category
+     * @param device
+     * @param reviewDescription
+     * @param reviewId
+     * @param reviewTitle
+     * @param userId
+     * @param reviewImage
+     */
     public ReviewHandler(String category, String device, String reviewDescription, String reviewId, String reviewTitle, String userId, String reviewImage) {
         this.category = category;
         this.device = device;
