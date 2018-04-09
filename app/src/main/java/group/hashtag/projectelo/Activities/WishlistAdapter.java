@@ -24,11 +24,11 @@ import group.hashtag.projectelo.R;
  * Created by amant on 17-03-2018.
  */
 
-public class WishlistAdapter extends ArrayAdapter<WishlistItem>{
+public class WishlistAdapter extends ArrayAdapter<WishlistItem> {
 
+    DatabaseReference wlItemRef;
     private Activity context;
     private List<WishlistItem> wishlist;
-    DatabaseReference wlItemRef;
 
 
     public WishlistAdapter(Activity context, List<WishlistItem> wishlist) {
@@ -63,7 +63,8 @@ public class WishlistAdapter extends ArrayAdapter<WishlistItem>{
 
         return wishlistItem;
     }
-    public void deleteWishlistDevice(String id){
+
+    public void deleteWishlistDevice(String id) {
         FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
         wlItemRef = FirebaseDatabase.getInstance().getReference("User_device").child("Wishlist").child(auth.getUid());
         wlItemRef.child(id).removeValue();

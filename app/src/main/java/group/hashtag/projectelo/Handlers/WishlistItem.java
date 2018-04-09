@@ -9,10 +9,19 @@ public class WishlistItem {
     private String deviceName;
     private String deviceCategory;
 
+    /**
+     * Default constructor
+     */
     public WishlistItem() {
 
     }
 
+    /**
+     * Parameterized Constructor
+     * @param DeviceId
+     * @param DeviceName
+     * @param DeviceCategory
+     */
     public WishlistItem(String DeviceId, String DeviceName, String DeviceCategory) {
         this.deviceId = DeviceId;
         this.deviceName = DeviceName;

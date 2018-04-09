@@ -12,7 +12,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.ContentLoadingProgressBar;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -34,7 +33,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
 import com.akexorcist.roundcornerprogressbar.RoundCornerProgressBar;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -57,35 +55,33 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.Handlers.FeaturedContentHandler;
 import group.hashtag.projectelo.Handlers.ReviewHandler;
 import group.hashtag.projectelo.R;
-import group.hashtag.projectelo.SettingsActivity;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseSequence;
 import uk.co.deanwild.materialshowcaseview.MaterialShowcaseView;
 import uk.co.deanwild.materialshowcaseview.ShowcaseConfig;
 
+/**
+ * This is the main activity. This activity fetches data when for the user, when he/she opens the app
+ * Adapted from: deano2390/MaterialShowcaseView", GitHub, 2018. [Online]. Available: https://github.com/deano2390/MaterialShowcaseView. [Accessed: 31- Mar- 2018].
+ */
+
+
 public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener , View.OnClickListener {
+        implements NavigationView.OnNavigationItemSelectedListener, SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
 
+    private static final String SHOWCASE_ID = "element_display";
     ListView listView;
     TextView title;
     CustomAdapter arrayAdapter;
-    private FirebaseAuth auth;
     GoogleSignInClient mGoogleSignInClient;
     MaterialSearchView categories;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
-    private DatabaseReference mDatabase;
-    private DatabaseReference mDatabase2;
     DatabaseReference userRef;
     ReviewHandler reviewHandler;
-
-    private static final String SHOWCASE_ID = "element_display";
     SharedPreferences prefs;
     SharedPreferences.Editor editor;
     boolean firstRun;
     boolean clicked;
-
     List<ReviewHandler> reviewHandlerList;
-
     TextView featuredTitle;
     FeaturedContentHandler featuredContentHandler;
     ImageView imageViewTitle;
@@ -93,12 +89,25 @@ public class HomeActivity extends AppCompatActivity
     TextView navUsername;
     RoundCornerProgressBar navProgress;
     Map<String, Object> mapUser;
-
     String FeaturedTitleString;
     String FeaturedContentString;
     String FeaturedWriter;
-
     CircleImageView navDisplayPic;
+    FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
+        @Override
+        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+            FirebaseUser user = firebaseAuth.getCurrentUser();
+            if (user == null) {
+
+                startActivity(new Intent(HomeActivity.this, Register_Activity.class));
+                finish();
+            }
+        }
+    };
+    private FirebaseAuth auth;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private DatabaseReference mDatabase;
+    private DatabaseReference mDatabase2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,11 +115,15 @@ public class HomeActivity extends AppCompatActivity
         setContentView(R.layout.activity_homescreen);
 
         LinearLayout linearLayout = findViewById(R.id.linear_layout_featured);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.refresh_reviews);
+        mSwipeRefreshLayout = findViewById(R.id.refresh_reviews);
         mSwipeRefreshLayout.setOnRefreshListener(this);
 
         reviewHandler = new ReviewHandler();
         featuredContentHandler = new FeaturedContentHandler();
+/**
+ * Adapted from: "MaterialSearchView - Miguel Catalan", Miguelcatalan.info, 2018. [Online]. Available:  http://miguelcatalan.info/2015/09/23/MaterialSearchView/. [Accessed: 31- Mar- 2018].
+ *
+ * */
 
         categories = findViewById(R.id.search_catogories);
         title = findViewById(R.id.title_toolbar);
@@ -118,7 +131,7 @@ public class HomeActivity extends AppCompatActivity
         featuredTitle = findViewById(R.id.featured_textView_title);
         reviewHandlerList = new ArrayList<ReviewHandler>();
 
-        final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
         auth = FirebaseAuth.getInstance();
@@ -143,19 +156,17 @@ public class HomeActivity extends AppCompatActivity
         mDatabase2 = database.getReference("Feature_article");
         fetchFeaturedData(featuredTitle, imageViewTitle, mDatabase2);
 
-//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//        account = GoogleSignIn.getLastSignedInAccount(this);
+/
 
-        prefs = HomeActivity.this.getSharedPreferences("group.hashtag.projectelo.Activities.HomeActivity",0);
-        editor= prefs.edit();
+        prefs = HomeActivity.this.getSharedPreferences("group.hashtag.projectelo.Activities.HomeActivity", 0);
+        editor = prefs.edit();
         firstRun = prefs.getBoolean("firstRun", true);
 
-        fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(this);
 
 //        firstRun=true;
-        if(firstRun)
-        {
+        if (firstRun) {
             final Toast toast = Toast.makeText(getApplicationContext(), "Click on the plus button for user manual!", Toast.LENGTH_SHORT);
             toast.show();
             Handler handler = new Handler();
@@ -165,7 +176,6 @@ public class HomeActivity extends AppCompatActivity
                     toast.cancel();
                 }
             }, 1000000);
-
 
 
         }
@@ -178,7 +188,6 @@ public class HomeActivity extends AppCompatActivity
 
                     Map<String, Object> map = (Map<String, Object>) dsnp.getValue();
                     reviewHandler = new ReviewHandler(map.get("category").toString(), map.get("device").toString(), map.get("reviewDescription").toString(), map.get("reviewId").toString(), map.get("reviewTitle").toString(), map.get("userId").toString(), map.get("reviewImage").toString());
-//                    Log.e("Here", "" + map);
                     reviewHandlerList.add(reviewHandler);
                 }
                 arrayAdapter.notifyDataSetChanged();
@@ -203,13 +212,13 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.getHeaderView(0);
@@ -248,6 +257,10 @@ public class HomeActivity extends AppCompatActivity
         });
         navProgress = header.findViewById(R.id.nav_progress);
         navUsername = header.findViewById(R.id.nav_username);
+
+        /**
+         * Adapted from:  "akexorcist/Android-RoundCornerProgressBar", GitHub, 2018. [Online]. Available:  https://github.com/akexorcist/Android-RoundCornerProgressBar. [Accessed: 31- Mar- 2018].
+         */
         navDisplayPic = header.findViewById(R.id.nav_profileimg);
         userRef = FirebaseDatabase.getInstance().getReference("users");
         userRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
@@ -273,13 +286,10 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
-
     @Override
-    public void onClick(View view)
-    {
-        if(view.getId()==R.id.fab)
-        {
-            if(!clicked) {
+    public void onClick(View view) {
+        if (view.getId() == R.id.fab) {
+            if (!clicked) {
                 clicked = true;
                 if (firstRun) {
                     MaterialShowcaseView.resetAll(getApplicationContext());
@@ -287,18 +297,21 @@ public class HomeActivity extends AppCompatActivity
                     Log.e("onCreate: ", " First time");
                     editor.putBoolean("firstRun", false); // It is no longer the first run
                     editor.apply();
-                }else{
+                } else {
                     startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
                 }
-            }else {
-                    startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
-                    Log.i("onCreate: ", "Not First time");
-                }
+            } else {
+                startActivity(new Intent(getApplicationContext(), NewReviewActivity.class));
+                Log.i("onCreate: ", "Not First time");
+            }
         }
     }
 
-    private void presentShowcaseSequence()
-    {
+
+    /**
+     * Adapted from: deano2390/MaterialShowcaseView", GitHub, 2018. [Online]. Available: https://github.com/deano2390/MaterialShowcaseView. [Accessed: 31- Mar- 2018].
+     * */
+    private void presentShowcaseSequence() {
         // Items added to showcase
         // 1. Navigation view
         // 2. FAB
@@ -306,7 +319,7 @@ public class HomeActivity extends AppCompatActivity
         // 4. Settings
         // 5. Search
 
-        final DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        final DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ShowcaseConfig config = new ShowcaseConfig();
 
         // one and a half second between each showcase view
@@ -314,26 +327,17 @@ public class HomeActivity extends AppCompatActivity
         MaterialShowcaseSequence sequence = new MaterialShowcaseSequence(this, SHOWCASE_ID);
 
 
-        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener()
-        {
+        sequence.setOnItemShownListener(new MaterialShowcaseSequence.OnSequenceItemShownListener() {
             @Override
-            public void onShow(MaterialShowcaseView itemView, int position)
-            {
-                if(position==1)
-                {
+            public void onShow(MaterialShowcaseView itemView, int position) {
+                if (position == 1) {
                     drawer.openDrawer(GravityCompat.START);
-                }
-                else if(position==2)
-                {
-                    if (drawer.isDrawerOpen(GravityCompat.START))
-                    {
+                } else if (position == 2) {
+                    if (drawer.isDrawerOpen(GravityCompat.START)) {
                         drawer.closeDrawer(GravityCompat.START);
                     }
-                }
-                else
-                {
-                    if (drawer.isDrawerOpen(GravityCompat.START))
-                    {
+                } else {
+                    if (drawer.isDrawerOpen(GravityCompat.START)) {
                         drawer.closeDrawer(GravityCompat.START);
                     }
 
@@ -374,13 +378,12 @@ public class HomeActivity extends AppCompatActivity
         );
 
 
-
         sequence.start();
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else if (categories.isSearchOpen()) {
@@ -391,6 +394,8 @@ public class HomeActivity extends AppCompatActivity
 
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -399,21 +404,6 @@ public class HomeActivity extends AppCompatActivity
         categories.setMenuItem(item);
         return true;
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            startActivity(new Intent(getApplicationContext(), SettingsActivity.class));
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -425,27 +415,14 @@ public class HomeActivity extends AppCompatActivity
             startActivity(new Intent(getApplicationContext(), UserProfile.class));
         } else if (id == R.id.nav_licence) {
             startActivity(new Intent(getApplicationContext(), OpenSourceActivity.class));
-        }  else if (id == R.id.nav_logout) {
+        } else if (id == R.id.nav_logout) {
             showDialog();
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-    FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-        @Override
-        public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-            FirebaseUser user = firebaseAuth.getCurrentUser();
-            if (user == null) {
-                // user auth state is changed - user is null
-                // launch login activity
-                startActivity(new Intent(HomeActivity.this, Register_Activity.class));
-                finish();
-            }
-        }
-    };
 
     private void signOut() {
         mGoogleSignInClient.signOut()
@@ -503,6 +480,30 @@ public class HomeActivity extends AppCompatActivity
         }, 2000);
     }
 
+    public void fetchFeaturedData(final TextView textTitle, ImageView imageFeaturedPic, DatabaseReference mDatabase2) {
+        mDatabase2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                FeaturedContentHandler featuredContentHandler = dataSnapshot.getValue(FeaturedContentHandler.class);
+                FeaturedTitleString = featuredContentHandler.getArticle_titless();
+                FeaturedContentString = featuredContentHandler.getArticle_contentss();
+                FeaturedWriter = featuredContentHandler.getExternal_Userss();
+                textTitle.setText(featuredContentHandler.getArticle_titless());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("Here", "" + databaseError);
+            }
+        });
+
+    }
+
+    public void loadDisplayPics(String url) {
+        Picasso.get().load(url).fit().error(R.drawable.cover).placeholder(R.drawable.male).into(navDisplayPic);
+
+    }
+
     public class CustomAdapter extends ArrayAdapter<ReviewHandler> implements Filterable {
 
         List<ReviewHandler> reviewHandlerList;
@@ -531,7 +532,7 @@ public class HomeActivity extends AppCompatActivity
                     b.putString("reviewTitle", reviewHandler.reviewTitle);
                     b.putString("reviewContent", reviewHandler.reviewDescription);
                     b.putString("category", reviewHandler.category);
-                    b.putString("reviewId",reviewHandler.reviewId);
+                    b.putString("reviewId", reviewHandler.reviewId);
                     b.putString("reviewImage", reviewHandler.reviewImage);
                     intent.putExtras(b);
                     startActivity(intent);
@@ -594,31 +595,6 @@ public class HomeActivity extends AppCompatActivity
                 return searchDevices.size();
             }
         }
-    }
-
-
-    public void fetchFeaturedData(final TextView textTitle, ImageView imageFeaturedPic, DatabaseReference mDatabase2) {
-        mDatabase2.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                FeaturedContentHandler featuredContentHandler = dataSnapshot.getValue(FeaturedContentHandler.class);
-                FeaturedTitleString = featuredContentHandler.getArticle_titless();
-                FeaturedContentString = featuredContentHandler.getArticle_contentss();
-                FeaturedWriter = featuredContentHandler.getExternal_Userss();
-                textTitle.setText(featuredContentHandler.getArticle_titless());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.e("Here", "" + databaseError);
-            }
-        });
-
-    }
-
-    public void loadDisplayPics(String url){
-        Picasso.get().load(url).fit().error(R.drawable.cover).placeholder(R.drawable.male).into(navDisplayPic);
-
     }
 }
 

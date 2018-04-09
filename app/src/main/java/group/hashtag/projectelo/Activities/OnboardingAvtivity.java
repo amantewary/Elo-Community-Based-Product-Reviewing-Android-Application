@@ -36,23 +36,23 @@ import android.widget.ImageButton;
 import com.chyrta.onboarder.OnboarderActivity;
 import com.chyrta.onboarder.OnboarderPage;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
 import group.hashtag.projectelo.R;
 
-public class OnboardingAvtivity extends OnboarderActivity
-{
+/**
+ * Adapted from: "chyrta/AndroidOnboarder", GitHub, 2018. [Online]. Available:  https://github.com/chyrta/AndroidOnboarder. [Accessed: 31- Mar- 2018].
+ */
+
+public class OnboardingAvtivity extends OnboarderActivity {
     List<OnboarderPage> onboarderPages;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         onboarderPages = new ArrayList<OnboarderPage>();
-//        buttonSetTextColor(Color.BLACK);
 
 
         buttonSetTextColor(Color.BLACK);
@@ -70,7 +70,6 @@ public class OnboardingAvtivity extends OnboarderActivity
         setDividerHeight(5);
 
 
-
         OnboarderPage onboarderPage1 = new OnboarderPage("Elo", "Thinking of buying a gadget? Would you like to get personal review from people who have used the same gadgets? Elo is here to help. Elo is a community based application which allows people to give reviews about the gadgets they have used.", R.drawable.screen_1);
         onboarderPage1.setTitleColor(R.color.black);
         onboarderPage1.setTitleTextSize(25);
@@ -79,7 +78,7 @@ public class OnboardingAvtivity extends OnboarderActivity
         onboarderPage1.setBackgroundColor(R.color.white);
         onboarderPages.add(onboarderPage1);
 
-        OnboarderPage onboarderPage2 = new OnboarderPage("Elo is easy to use.","Click a picture, post a review and rate the reviews. Elo has a great interactive features and is easy to navigate.",R.drawable.screen_2);
+        OnboarderPage onboarderPage2 = new OnboarderPage("Elo is easy to use.", "Click a picture, post a review and rate the reviews. Elo has a great interactive features and is easy to navigate.", R.drawable.screen_2);
         onboarderPage2.setTitleColor(R.color.black);
         onboarderPage2.setTitleTextSize(25);
         onboarderPage2.setDescriptionColor(R.color.black);
@@ -87,7 +86,7 @@ public class OnboardingAvtivity extends OnboarderActivity
         onboarderPage2.setBackgroundColor(R.color.white);
         onboarderPages.add(onboarderPage2);
 
-        OnboarderPage onboarderPage3 = new OnboarderPage("What's next", "What are you waiting for? Go ahead and fill in your details and begin using Elo.",R.drawable.screen_3);
+        OnboarderPage onboarderPage3 = new OnboarderPage("What's next", "What are you waiting for? Go ahead and fill in your details and begin using Elo.", R.drawable.screen_3);
         onboarderPage3.setTitleColor(R.color.black);
         onboarderPage3.setTitleTextSize(25);
         onboarderPage3.setDescriptionColor(R.color.black);
@@ -100,11 +99,8 @@ public class OnboardingAvtivity extends OnboarderActivity
     }
 
     @Override
-    protected void onSkipButtonPressed()
-    {
+    protected void onSkipButtonPressed() {
         super.onSkipButtonPressed();
-
-        //Go to Home Screen. Currently kept it as onboarding screen.
 
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
@@ -112,9 +108,7 @@ public class OnboardingAvtivity extends OnboarderActivity
     }
 
 
-
-    private void buttonSetTextColor(int clr)
-    {
+    private void buttonSetTextColor(int clr) {
         Button skip = findViewById(R.id.btn_skip);
         skip.setTextColor(clr);
 
@@ -123,16 +117,13 @@ public class OnboardingAvtivity extends OnboarderActivity
     }
 
     @Override
-    public void onFinishButtonPressed()
-    {
+    public void onFinishButtonPressed() {
         Intent i = new Intent(this, LoginActivity.class);
         startActivity(i);
         finish();
     }
 
     @Override
-    public void onBackPressed()
-    {
-//        super.onBackPressed();
+    public void onBackPressed() {
     }
 }

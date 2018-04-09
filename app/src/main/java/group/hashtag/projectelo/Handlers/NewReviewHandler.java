@@ -14,10 +14,22 @@ public class NewReviewHandler {
     String category;
     String reviewImage;
 
+    /**
+     * Default constructor
+     */
     public NewReviewHandler() {
 
     }
 
+    /**
+     * Parameterized Constructor
+     * @param userId
+     * @param reviewId
+     * @param reviewTitle
+     * @param reviewDescription
+     * @param device
+     * @param category
+     */
     public NewReviewHandler(String userId, String reviewId, String reviewTitle, String reviewDescription, String device, String category) {
         this.userId = userId;
         this.reviewId = reviewId;
@@ -27,6 +39,16 @@ public class NewReviewHandler {
         this.category = category;
     }
 
+    /**
+     * Parameterized Constructor
+     * @param userId
+     * @param reviewId
+     * @param reviewTitle
+     * @param reviewDescription
+     * @param device
+     * @param category
+     * @param reviewurl
+     */
     public NewReviewHandler(String userId, String reviewId, String reviewTitle, String reviewDescription, String device, String category, String reviewurl) {
         this.userId = userId;
         this.reviewId = reviewId;

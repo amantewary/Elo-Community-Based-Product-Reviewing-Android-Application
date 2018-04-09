@@ -16,10 +16,10 @@
 
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="50dp"
             android:id="@+id/input_layout_email_login"
-            android:layout_height="wrap_content">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp">
 
             <EditText
                 android:id="@+id/login_email"
@@ -34,8 +34,8 @@
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
-            android:layout_width="match_parent"
             android:id="@+id/input_layout_password_login"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <EditText
@@ -79,26 +79,26 @@
             android:id="@+id/register_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@null"
             android:layout_marginTop="20dip"
+            android:background="@null"
             android:text="@string/register_here"
             android:textAllCaps="false"
             android:textColor="@color/colorAccent"
             android:textSize="15dp" />
 
         <TextView
-            android:layout_width="match_parent"
-            android:layout_marginTop="90dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
             style="@style/Base.TextAppearance.AppCompat.Large"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:gravity="center"
             android:text="SIGN IN WITH"
             android:textColor="@color/colorPrimary" />
 
         <ImageView
+            android:id="@+id/google_button"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/google_button"
             android:layout_marginTop="20dp"
             android:src="@drawable/goog_logo" />
     </LinearLayout>

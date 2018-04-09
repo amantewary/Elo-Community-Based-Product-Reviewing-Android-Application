@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,21 +47,20 @@ public class UserProfile extends AppCompatActivity {
     TextView userWeblinkText;
     TextView userGenderText;
     IconRoundCornerProgressBar userProgress;
+    UserHandler user;
+    Map<String, Object> mapUser;
+    String userLike;
+    String displayPic;
     private DatabaseReference mDatabase;
     private DatabaseReference mDatabase2;
     private DatabaseReference mDatabase3;
     private DatabaseReference mDatabase4;
     private LinearLayout btnWishlist, btnUserDevices, btnUserFollowers;
     private CircleImageView displayImageView;
-    UserHandler user;
-    Map<String, Object> mapUser;
-    String userLike;
-    String displayPic;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //Todo: May have to figure out a better way of storing the name coz it is updating with a long delay
 
 
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
@@ -75,7 +73,7 @@ public class UserProfile extends AppCompatActivity {
 
         btnUserFollowers = findViewById(R.id.followers_user_profile);
         btnUserDevices = findViewById(R.id.devices_user_profile);
-        displayImageView = (CircleImageView) findViewById(R.id.userDisplayPic);
+        displayImageView = findViewById(R.id.userDisplayPic);
         followerCounter = findViewById(R.id.user_profile_follower_count);
         deviceCounter = findViewById(R.id.devices_user_counter);
 
@@ -105,13 +103,12 @@ public class UserProfile extends AppCompatActivity {
                 userWeblinkText.setText(user.getWebLink());
                 userGenderText.setText(user.getGender());
                 loadDisplayPics(user.Display_Pic);
-                Log.e(UserProfile.class.getCanonicalName(), "Username: " + user.Display_Pic + ", email " + user.getEmail());
                 displayPic = user.Display_Pic;
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
-                // Failed to read value
+
                 Log.e(UserProfile.class.getCanonicalName(), "Failed to read value.", error.toException());
             }
         });
@@ -156,7 +153,6 @@ public class UserProfile extends AppCompatActivity {
         });
 
 
-
         btnWishlist.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -165,12 +161,15 @@ public class UserProfile extends AppCompatActivity {
             }
         });
 
+        /**
+         * Adapted From : "hdodenhof/CircleImageView", GitHub, 2018. [Online]. Available:  https://github.com/hdodenhof/CircleImageView. [Accessed: 31- Mar- 2018].
+         */
         displayImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent profilepic = new Intent(UserProfile.this, SelectPhotoActivity.class);
-                profilepic.putExtra("userId",user.UserId);
-                profilepic.putExtra("displayPicUri",user.Display_Pic);
+                profilepic.putExtra("userId", user.UserId);
+                profilepic.putExtra("displayPicUri", user.Display_Pic);
                 startActivity(profilepic);
 
             }
@@ -193,16 +192,19 @@ public class UserProfile extends AppCompatActivity {
         btnUserFollowers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),FollowerList.class));
+                startActivity(new Intent(getApplicationContext(), FollowerList.class));
             }
         });
         btnUserDevices.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),UserDeviceActivity.class));
+                startActivity(new Intent(getApplicationContext(), UserDeviceActivity.class));
             }
         });
 
+        /**
+         * Adapted From : "akexorcist/Android-RoundCornerProgressBar", GitHub, 2018. [Online]. Available:  https://github.com/akexorcist/Android-RoundCornerProgressBar. [Accessed: 31- Mar- 2018].
+         */
         userProgress = findViewById(R.id.profile_progress);
         mDatabase.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -219,7 +221,7 @@ public class UserProfile extends AppCompatActivity {
         });
 
     }
-    //TODO: Need to work on settings page which will double as profile edit page.
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings_wheel, menu);
@@ -230,19 +232,19 @@ public class UserProfile extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_setting) {
-            Intent intent = new Intent (UserProfile.this, EditUserProfile.class);
-            intent.putExtra("username",usernameText.getText().toString());
-            intent.putExtra("useremail",userEmailText.getText().toString());
-            intent.putExtra("usergender",userGenderText.getText().toString());
-            intent.putExtra("userweblink",userWeblinkText.getText().toString());
-            intent.putExtra("userlike",userLike);
-            intent.putExtra("userpic",displayPic);
+            Intent intent = new Intent(UserProfile.this, EditUserProfile.class);
+            intent.putExtra("username", usernameText.getText().toString());
+            intent.putExtra("useremail", userEmailText.getText().toString());
+            intent.putExtra("usergender", userGenderText.getText().toString());
+            intent.putExtra("userweblink", userWeblinkText.getText().toString());
+            intent.putExtra("userlike", userLike);
+            intent.putExtra("userpic", displayPic);
             startActivity(intent);
         }
-            return super.onOptionsItemSelected(item);
+        return super.onOptionsItemSelected(item);
     }
 
-    public void loadDisplayPics(String url){
+    public void loadDisplayPics(String url) {
         Picasso.get().load(url).fit().error(R.drawable.cover).placeholder(R.drawable.male).into(displayImageView);
 
     }

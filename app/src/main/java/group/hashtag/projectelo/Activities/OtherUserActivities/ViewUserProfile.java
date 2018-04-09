@@ -28,6 +28,10 @@ import java.util.Map;
 import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.R;
 
+/**
+ * This class helps user to view user profile of other user.
+ *
+ */
 public class ViewUserProfile extends AppCompatActivity {
 
     TextView title;
@@ -45,7 +49,6 @@ public class ViewUserProfile extends AppCompatActivity {
     TextView viewUserWishlistCounter;
     TextView viewUserFollowersCounter;
     Button followButton;
-    private CircleImageView userProfilePic;
     String stringReviewUserName;
     String stringReviewUserId;
     String follow_status;
@@ -59,23 +62,21 @@ public class ViewUserProfile extends AppCompatActivity {
     String otherUserDisplay;
     IconRoundCornerProgressBar userProgress;
     Map<String, Object> mapUser;
-
     DatabaseReference followRef;
     DatabaseReference otherUserWishList;
     DatabaseReference otherUserFollowers;
     DatabaseReference otherUserDevices;
     DatabaseReference otherUserRef;
-
+    FirebaseUser auth;
+    private CircleImageView userProfilePic;
     private LinearLayout btnOtherUserWishlist, btnOtherUserDevices, btnOtherUserFollowers;
 
-
-    FirebaseUser auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         auth = FirebaseAuth.getInstance().getCurrentUser();
         setContentView(R.layout.view_user_profile);
-        follow_status="not_following";
+        follow_status = "not_following";
         followRef = FirebaseDatabase.getInstance().getReference("follow");
         otherUserRef = FirebaseDatabase.getInstance().getReference("users");
         Intent intent = getIntent();
@@ -89,7 +90,6 @@ public class ViewUserProfile extends AppCompatActivity {
         stringReviewUserWebLink = intent.getStringExtra("reviewUserWebLink");
         stringReviewUserEmail = intent.getStringExtra("reviewUserEmail");
 
-        //Log.e("ID",stringReviewUserId);
 
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
@@ -124,7 +124,6 @@ public class ViewUserProfile extends AppCompatActivity {
                 finish();
             }
         });
-        //TODO: Displaying name of the review author on profile page.
         viewUserName.setText(stringReviewUserName);
         viewUserEmailText.setText(stringReviewUserEmail);
         viewUserCountryText.setText(stringReviewUserCountry);
@@ -178,7 +177,9 @@ public class ViewUserProfile extends AppCompatActivity {
             }
         });
 
-
+/**
+ * Adapted from: "akexorcist/Android-RoundCornerProgressBar", GitHub, 2018. [Online]. Available:  https://github.com/akexorcist/Android-RoundCornerProgressBar. [Accessed: 31- Mar- 2018].
+ */
         userProgress = findViewById(R.id.view_profile_progress);
         otherUserRef.child(stringReviewUserId).addValueEventListener(new ValueEventListener() {
             @Override
@@ -226,12 +227,12 @@ public class ViewUserProfile extends AppCompatActivity {
         followRef.child(stringReviewUserId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot followers : dataSnapshot.getChildren()){
+                for (DataSnapshot followers : dataSnapshot.getChildren()) {
                     String followerId = followers.getKey();
-                    if(followerId.equals(auth.getUid())){
+                    if (followerId.equals(auth.getUid())) {
                         follow_status = "following";
                         followButton.setText("Unfollow");
-                    }else{
+                    } else {
                         follow_status = "not_following";
                         followButton.setText("Follow Me");
                     }
@@ -243,19 +244,18 @@ public class ViewUserProfile extends AppCompatActivity {
 
             }
         });
-//        loadDisplayPics(otherUserDisplay);
 
 
         followButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(follow_status.equals("not_following")){
+                if (follow_status.equals("not_following")) {
                     String date = DateFormat.getDateTimeInstance().format(new Date());
-                    String since = "Following Since "+date;
+                    String since = "Following Since " + date;
                     followRef.child(stringReviewUserId).child(auth.getUid()).setValue(since);
                     follow_status = "following";
                     followButton.setText("Unfollow");
-                }else{
+                } else {
                     followRef.child(stringReviewUserId).child(auth.getUid()).removeValue();
                     follow_status = "not_following";
                     followButton.setText("Follow Me");
@@ -265,8 +265,13 @@ public class ViewUserProfile extends AppCompatActivity {
 
 
     }
-    public void loadDisplayPics(String url){
-        Log.e("load",url);
+
+    /**
+     * Adapted from: "hdodenhof/CircleImageView", GitHub, 2018. [Online]. Available:  https://github.com/hdodenhof/CircleImageView. [Accessed: 31- Mar- 2018].
+     * @param url
+     */
+    public void loadDisplayPics(String url) {
+        Log.e("load", url);
         Picasso.get().load(url).fit().error(R.drawable.cover).placeholder(R.drawable.female).into(userProfilePic);
 
     }

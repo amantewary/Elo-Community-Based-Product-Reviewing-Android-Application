@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -33,20 +32,18 @@ import java.util.List;
 import java.util.Map;
 
 import group.hashtag.projectelo.Handlers.NewUserDevice;
-import group.hashtag.projectelo.Handlers.UserProfileFollowersHandlers;
-import group.hashtag.projectelo.Handlers.WishlistItem;
 import group.hashtag.projectelo.R;
 
 public class UserDeviceActivity extends AppCompatActivity {
 
     TextView title;
     Map<String, Object> mapUserDevices;
-//    Map<String, Object> mapUserDevices;
     DatabaseReference deviceRef;
 
     List<NewUserDevice> newUserDevices;
     ListView newDeviceListView;
     CustomDevicesAdapter arrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +52,7 @@ public class UserDeviceActivity extends AppCompatActivity {
         title = findViewById(R.id.title_toolbar);
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
         newDeviceListView = findViewById(R.id.dlListView);
@@ -63,7 +60,7 @@ public class UserDeviceActivity extends AppCompatActivity {
         arrayAdapter = new CustomDevicesAdapter(this, newUserDevices);
 
         deviceRef = FirebaseDatabase.getInstance().getReference("User_device").child("Owner").child(auth.getUid());
-        
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setNavigationIcon(getResources().getDrawable(R.drawable.ic_arrow_back_black_24dp));
@@ -74,11 +71,11 @@ public class UserDeviceActivity extends AppCompatActivity {
             }
         });
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.dlfab);
+        FloatingActionButton fab = findViewById(R.id.dlfab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(),UserAddDevices.class));
+                startActivity(new Intent(getApplicationContext(), UserAddDevices.class));
             }
         });
 
@@ -86,11 +83,11 @@ public class UserDeviceActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 newUserDevices.clear();
-                for(DataSnapshot dlSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot dlSnapshot : dataSnapshot.getChildren()) {
                     NewUserDevice dlItem = dlSnapshot.getValue(NewUserDevice.class);
                     newUserDevices.add(dlItem);
                 }
-                CustomDevicesAdapter dlAdapter= new CustomDevicesAdapter(UserDeviceActivity.this,newUserDevices);
+                CustomDevicesAdapter dlAdapter = new CustomDevicesAdapter(UserDeviceActivity.this, newUserDevices);
                 newDeviceListView.setAdapter(dlAdapter);
             }
 
@@ -101,14 +98,23 @@ public class UserDeviceActivity extends AppCompatActivity {
         });
     }
 
-
+    public void deleteDevicesFunction(String deviceId) {
+        if (arrayAdapter.getCount() <= 1) {
+            Toast.makeText(getApplicationContext(), "You need to have at least one device listed", Toast.LENGTH_SHORT).show();
+        } else {
+            FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
+            deviceRef = FirebaseDatabase.getInstance().getReference("User_device").child("Owner").child(auth.getUid());
+            deviceRef.child(deviceId).removeValue();
+            arrayAdapter.notifyDataSetChanged();
+        }
+    }
 
     public class CustomDevicesAdapter extends ArrayAdapter<NewUserDevice> {
 
         List<NewUserDevice> newUserDeviceList;
 
         public CustomDevicesAdapter(@NonNull Context context, List<NewUserDevice> newUserDevices) {
-            super(context, 0,newUserDevices);
+            super(context, 0, newUserDevices);
             this.newUserDeviceList = newUserDevices;
         }
 
@@ -133,20 +139,6 @@ public class UserDeviceActivity extends AppCompatActivity {
             deviceName.setText(newUserDevice.deviceName);
             categoryName.setText(newUserDevice.category);
             return deviceView;
-
-
-        }
-    }
-
-    public void deleteDevicesFunction(String deviceId){
-        if (arrayAdapter.getCount() <= 1){
-            Toast.makeText(getApplicationContext(),"You need to have at least one device listed",Toast.LENGTH_SHORT).show();
-        }else{
-            Log.e(UserDeviceActivity.class.getCanonicalName(),"Here");
-            FirebaseUser auth = FirebaseAuth.getInstance().getCurrentUser();
-            deviceRef = FirebaseDatabase.getInstance().getReference("User_device").child("Owner").child(auth.getUid());
-            deviceRef.child(deviceId).removeValue();
-            arrayAdapter.notifyDataSetChanged();
         }
     }
 

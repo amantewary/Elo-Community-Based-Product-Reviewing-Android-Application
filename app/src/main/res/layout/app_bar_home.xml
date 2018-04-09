@@ -7,7 +7,6 @@
     tools:context="group.hashtag.projectelo.Activities.HomeActivity">
 
 
-
     <include layout="@layout/activity_main" />
 
     <android.support.design.widget.AppBarLayout
@@ -15,25 +14,24 @@
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <FrameLayout android:id="@+id/toolbar_container"
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/toolbar_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            xmlns:android="http://schemas.android.com/apk/res/android">
+            android:layout_height="wrap_content">
 
             <include layout="@layout/toolbar">
 
             </include>
+
             <com.miguelcatalan.materialsearchview.MaterialSearchView
                 android:id="@+id/search_catogories"
                 android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/search_hint"
                 android:textColor="@color/colorAccent"
                 android:textColorHint="@color/cardview_shadow_start_color"
-                android:hint="@string/search_hint"
-                android:visibility="gone"
-                android:layout_height="wrap_content" />
+                android:visibility="gone" />
         </FrameLayout>
-
-
 
 
     </android.support.design.widget.AppBarLayout>

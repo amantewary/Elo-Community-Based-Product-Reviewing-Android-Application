@@ -29,6 +29,9 @@ import java.util.Map;
 import group.hashtag.projectelo.Handlers.UserProfileFollowersHandlers;
 import group.hashtag.projectelo.R;
 
+/**
+ * Class to follow other follow
+ */
 public class OtherUserFollowers extends AppCompatActivity {
     TextView title;
     TextView flName;
@@ -84,7 +87,6 @@ public class OtherUserFollowers extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             mapUser = (Map<String, Object>) dataSnapshot.getValue();
-                            Log.e("Here", "" + mapUser);
                             followerName = mapUser.get("name").toString();
                             final UserProfileFollowersHandlers userProfileFollowersHandlers = new UserProfileFollowersHandlers(followerName, followerDate);
                             userProfileFollowersHandlersList.add(userProfileFollowersHandlers);
@@ -131,8 +133,6 @@ public class OtherUserFollowers extends AppCompatActivity {
             followerName.setText(userProfileFollowersHandlers.followerNameUserProfile);
             followerDate.setText(userProfileFollowersHandlers.followerFollowedDate);
             return followersView;
-
-
         }
     }
 }
