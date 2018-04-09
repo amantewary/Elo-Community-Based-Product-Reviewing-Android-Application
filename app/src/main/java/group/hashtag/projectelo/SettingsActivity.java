@@ -34,7 +34,6 @@ import java.util.List;
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
-    Toolbar toolbar;
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
@@ -86,6 +85,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             return true;
         }
     };
+    Toolbar toolbar;
 
     /**
      * Helper method to determine if the device has an extra-large screen. For

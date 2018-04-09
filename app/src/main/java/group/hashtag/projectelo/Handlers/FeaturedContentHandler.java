@@ -12,9 +12,20 @@ public class FeaturedContentHandler {
     String External_User;
     String Feature_rev_1;
 
+    /**
+     * Default constructor
+     */
     public FeaturedContentHandler() {
     }
 
+    /**
+     * Parameterized Constructor
+     * @param Article_content
+     * @param Article_title
+     * @param Created_date
+     * @param External_User
+     * @param Feature_rev_1
+     */
     public FeaturedContentHandler(String Article_content, String Article_title, String Created_date, String External_User, String Feature_rev_1) {
         this.Article_content = Article_content;
         this.Article_title = Article_title;

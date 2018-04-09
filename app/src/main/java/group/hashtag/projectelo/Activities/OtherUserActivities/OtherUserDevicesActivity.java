@@ -3,10 +3,10 @@ package group.hashtag.projectelo.Activities.OtherUserActivities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,20 +22,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import group.hashtag.projectelo.Activities.UserDeviceActivity;
 import group.hashtag.projectelo.Handlers.NewUserDevice;
-import group.hashtag.projectelo.Handlers.UserProfileFollowersHandlers;
 import group.hashtag.projectelo.R;
 
+/**
+ * This class is created to create new instance for user.
+ */
 public class OtherUserDevicesActivity extends AppCompatActivity {
     TextView title;
     Map<String, Object> mapUserDevices;
-    //    Map<String, Object> mapUserDevices;
     DatabaseReference deviceRef;
 
     List<NewUserDevice> newUserDevices;
     ListView newDeviceListView;
     CustomDevicesAdapter arrayAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,7 +47,7 @@ public class OtherUserDevicesActivity extends AppCompatActivity {
         String stringUserid = intent.getStringExtra("otherUserId");
 
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
         newDeviceListView = findViewById(R.id.odlListView);

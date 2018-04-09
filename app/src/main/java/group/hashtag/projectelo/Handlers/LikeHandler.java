@@ -10,6 +10,10 @@ public class LikeHandler {
 
     Map<String, Object> map;
 
+    /**
+     * Parameterized Constructor
+     * @param map
+     */
     public LikeHandler(Map<String, Object> map) {
         this.map = map;
     }

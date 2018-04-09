@@ -1,12 +1,12 @@
 package group.hashtag.projectelo.Activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.app.ProgressDialog;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -72,6 +72,9 @@ public class ProfileSetup extends AppCompatActivity {
         gender = findViewById(R.id.spinner_gender);
         webLink = findViewById(R.id.webLink);
         next = findViewById(R.id.btnNext);
+        /**
+         * Adapted From: "hdodenhof/CircleImageView", GitHub, 2018. [Online]. Available:  https://github.com/hdodenhof/CircleImageView. [Accessed: 31- Mar- 2018].
+         */
         displayImage = findViewById(R.id.userDisplayPic);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -85,13 +88,13 @@ public class ProfileSetup extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 if (adapterView.getItemAtPosition(i).toString().equals("Male")) {
-                    // Do nothing
                     displayImage.setImageDrawable(getResources().getDrawable(R.drawable.male));
-                } else if (adapterView.getItemAtPosition(i).toString().equals("Female")){
+                } else if (adapterView.getItemAtPosition(i).toString().equals("Female")) {
                     displayImage.setImageDrawable(getResources().getDrawable(R.drawable.female));
 
                 }
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -119,7 +122,6 @@ public class ProfileSetup extends AppCompatActivity {
         likes = 0;
         uploadDisplayPic(bitmap);
         if (downloadURLString.equals("")) {
-//            Toast.makeText(getApplicationContext(), "Please wait till the file gets uploaded :)",Toast.LENGTH_SHORT).show();
             savingData.setMessage("Uploading");
             savingData.show();
             final Handler handler = new Handler();
@@ -132,21 +134,18 @@ public class ProfileSetup extends AppCompatActivity {
                         userRef.child(stringUserId).setValue(item);
                         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                         finish();
-                        Log.e("Here", downloadURLString);
                     } else {
-//                        Toast.makeText(this, "Error", Toast.LENGTH_SHORT).show();
                     }
 
                 }
             }, 5000);
 
         } else {
-            //Do Nothing
         }
     }
 
-    public void uploadDisplayPic(final Bitmap downloadUri){
-        StorageReference reviewImageRef = storageRef.child(stringUserId+".jpg");
+    public void uploadDisplayPic(final Bitmap downloadUri) {
+        StorageReference reviewImageRef = storageRef.child(stringUserId + ".jpg");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         downloadUri.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] datai = baos.toByteArray();
@@ -156,7 +155,7 @@ public class ProfileSetup extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Exception exception) {
                 // Handle unsuccessful uploads
-                Toast.makeText(getApplicationContext(),"Failed to upload",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Failed to upload", Toast.LENGTH_SHORT).show();
             }
         }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override

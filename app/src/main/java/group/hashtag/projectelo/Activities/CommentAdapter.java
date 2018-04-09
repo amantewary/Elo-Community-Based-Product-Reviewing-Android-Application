@@ -9,21 +9,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
 import java.util.List;
-
 
 import group.hashtag.projectelo.Handlers.CommentHandler;
 import group.hashtag.projectelo.R;
 
 /**
  * Created by amant on 21-03-2018.
+ * Adapter class created to show all the comments posted by the user on any review
  */
 
 public class CommentAdapter extends ArrayAdapter {
     Activity context;
     List<CommentHandler> commentList;
-
 
 
     public CommentAdapter(Activity context, List<CommentHandler> commentList) {

@@ -46,16 +46,23 @@ import group.hashtag.projectelo.R;
 
 public class Register_Activity extends AppCompatActivity {
 
+    GoogleSignInClient mGoogleSignInClient;
+    ImageView googleButton;
+    int RC_SIGN_IN = 111;
     private EditText inputEmail, inputPassword, inputUsername, inputConfirmPassword;
     private TextInputLayout emailInput, passwordInput, usernameInput, confirmPasswordInput;
     private Button btnSignIn, btnSignUp;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
-    GoogleSignInClient mGoogleSignInClient;
-    ImageView googleButton;
     private DatabaseReference mDatabase;
-    int RC_SIGN_IN = 111;
 
+    // Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
+    public static boolean isEmailValid(String email) {
+        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,15 +186,17 @@ public class Register_Activity extends AppCompatActivity {
                 }
 
                 progressBar.setVisibility(View.VISIBLE);
-                //create user
+
+
+                /**
+                 * The code to auth users is taken from Firebase docs and from Android Authority
+                 *  @link:https://www.androidauthority.com/introduction-to-firebase-765262/
+                 **/
                 auth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(Register_Activity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(getApplicationContext(), "Authentication failed." + task.getException(),
                                             Toast.LENGTH_SHORT).show();
@@ -202,13 +211,11 @@ public class Register_Activity extends AppCompatActivity {
                                         String userId = user.getUid();
                                         UserHandler userHandler = new UserHandler();
                                         userHandler.setName(name);
-                                        Log.e(Register_Activity.class.getCanonicalName(),email);
                                         UserHandler userhandler = new UserHandler(name, userId, email);
                                         hideKeyboard(v);
 
                                         mDatabase.child(userId).setValue(userhandler);
 
-                                        //TODO: NEED TO PASS DATA
 
                                         Intent intent = new Intent(getApplicationContext(), ProfileSetup.class);
                                         Bundle b = new Bundle();
@@ -229,25 +236,25 @@ public class Register_Activity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
                 Log.w(Register_Activity.class.getCanonicalName(), "Google sign in failed", e);
             }
         }
     }
 
+    /**
+     * The code to auth users is taken from Firebase docs
+     *
+     **/
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.e(Register_Activity.class.getCanonicalName(), "firebaseAuthWithGoogle:" + acct.getId());
 
@@ -257,23 +264,21 @@ public class Register_Activity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.e(Register_Activity.class.getCanonicalName(), "signInWithCredential:success");
                             final FirebaseUser user = auth.getCurrentUser();
                             if (user != null) {
                                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                        if (dataSnapshot.hasChild(user.getUid())){
+                                        if (dataSnapshot.hasChild(user.getUid())) {
                                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                             finish();
-                                        }else {
+                                        } else {
 
                                             String userId = user.getUid();
                                             UserHandler userHandler = new UserHandler();
                                             userHandler.setName(user.getDisplayName());
-                                            UserHandler userhandler = new UserHandler(user.getDisplayName(),  userId, user.getEmail());
+                                            UserHandler userhandler = new UserHandler(user.getDisplayName(), userId, user.getEmail());
 
                                             mDatabase.child(userId).setValue(userhandler);
 
@@ -291,19 +296,16 @@ public class Register_Activity extends AppCompatActivity {
                                     }
 
 
-
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
-                                        Log.e("Here",""+databaseError);
+                                        Log.e("Here", "" + databaseError);
                                     }
                                 });
 
                             }
 
 
-
                         } else {
-                            // If sign in fails, display a message to the user.
                             Log.e(Register_Activity.class.getCanonicalName(), "signInWithCredential:failure", task.getException());
                         }
 
@@ -311,24 +313,18 @@ public class Register_Activity extends AppCompatActivity {
                 });
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }
 
-    // https://stackoverflow.com/a/19828165/3966666
+    /**
+     * Adapted From : https://stackoverflow.com/a/19828165/3966666
+     * @param view
+     */
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
-    }
-
-    // Validation code taken from:- https://stackoverflow.com/a/6119777/3966666
-    public static boolean isEmailValid(String email) {
-        String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
-        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-        Matcher matcher = pattern.matcher(email);
-        return matcher.matches();
     }
 }

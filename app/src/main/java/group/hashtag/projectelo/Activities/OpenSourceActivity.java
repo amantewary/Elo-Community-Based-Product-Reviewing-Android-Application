@@ -16,6 +16,7 @@ import group.hashtag.projectelo.R;
 
 public class OpenSourceActivity extends AppCompatActivity {
     TextView title;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +25,7 @@ public class OpenSourceActivity extends AppCompatActivity {
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
         setSupportActionBar(toolbar);

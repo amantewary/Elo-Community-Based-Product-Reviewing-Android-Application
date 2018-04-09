@@ -1,19 +1,17 @@
 package group.hashtag.projectelo.Activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -29,9 +27,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import group.hashtag.projectelo.Handlers.ReviewHandler;
 import group.hashtag.projectelo.Handlers.UserProfileFollowersHandlers;
 import group.hashtag.projectelo.R;
+
+/**
+ * This class shows list of followers.
+ */
 
 public class FollowerList extends AppCompatActivity {
 
@@ -64,7 +65,7 @@ public class FollowerList extends AppCompatActivity {
 
         followersListView = findViewById(R.id.flListView);
         userProfileFollowersHandlersList = new ArrayList<UserProfileFollowersHandlers>();
-        arrayAdapter = new CustomFollowersAdapter(this,userProfileFollowersHandlersList);
+        arrayAdapter = new CustomFollowersAdapter(this, userProfileFollowersHandlersList);
         followersListView.setAdapter(arrayAdapter);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -81,7 +82,7 @@ public class FollowerList extends AppCompatActivity {
         followRef.child(auth.getUid()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(final DataSnapshot followers : dataSnapshot.getChildren()){
+                for (final DataSnapshot followers : dataSnapshot.getChildren()) {
                     followerId = followers.getKey();
                     followerDate = followers.getValue().toString();
                     userRef = FirebaseDatabase.getInstance().getReference("users");
@@ -89,7 +90,6 @@ public class FollowerList extends AppCompatActivity {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             mapUser = (Map<String, Object>) dataSnapshot.getValue();
-                            Log.e("Here", "" + mapUser);
                             followerName = mapUser.get("name").toString();
                             final UserProfileFollowersHandlers userProfileFollowersHandlers = new UserProfileFollowersHandlers(followerName, followerDate);
                             userProfileFollowersHandlersList.add(userProfileFollowersHandlers);
@@ -98,13 +98,14 @@ public class FollowerList extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-                            Log.e("Here", ""+databaseError);
+                            Log.e("Here", "" + databaseError);
 
                         }
                     });
 
                 }
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
@@ -112,12 +113,13 @@ public class FollowerList extends AppCompatActivity {
         });
 
     }
-    public class CustomFollowersAdapter extends ArrayAdapter<UserProfileFollowersHandlers>{
+
+    public class CustomFollowersAdapter extends ArrayAdapter<UserProfileFollowersHandlers> {
 
         List<UserProfileFollowersHandlers> userFollowerList;
 
         public CustomFollowersAdapter(@NonNull Context context, List<UserProfileFollowersHandlers> userProfileFollowersHandlers) {
-            super(context, 0,userProfileFollowersHandlers);
+            super(context, 0, userProfileFollowersHandlers);
             this.userFollowerList = userProfileFollowersHandlers;
         }
 
@@ -134,11 +136,6 @@ public class FollowerList extends AppCompatActivity {
             followerName.setText(userProfileFollowersHandlers.followerNameUserProfile);
             followerDate.setText(userProfileFollowersHandlers.followerFollowedDate);
             return followersView;
-
-
-
-
-
         }
     }
 }

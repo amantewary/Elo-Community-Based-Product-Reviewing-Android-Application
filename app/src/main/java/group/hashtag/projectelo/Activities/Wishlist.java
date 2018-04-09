@@ -68,7 +68,7 @@ public class Wishlist extends AppCompatActivity {
         addDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent addItem = new Intent(Wishlist.this,WishlistAddItem.class);
+                Intent addItem = new Intent(Wishlist.this, WishlistAddItem.class);
                 startActivity(addItem);
             }
         });
@@ -81,11 +81,11 @@ public class Wishlist extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 wishlist.clear();
-                for(DataSnapshot wlSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot wlSnapshot : dataSnapshot.getChildren()) {
                     WishlistItem wlItem = wlSnapshot.getValue(WishlistItem.class);
                     wishlist.add(wlItem);
                 }
-                WishlistAdapter wlAdapter= new WishlistAdapter(Wishlist.this,wishlist);
+                WishlistAdapter wlAdapter = new WishlistAdapter(Wishlist.this, wishlist);
                 wlListView.setAdapter(wlAdapter);
             }
 

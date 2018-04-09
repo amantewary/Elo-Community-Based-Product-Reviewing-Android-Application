@@ -7,8 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -38,8 +36,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import group.hashtag.projectelo.Activities.OtherUserActivities.ViewUserProfile;
 import group.hashtag.projectelo.Handlers.CommentHandler;
 import group.hashtag.projectelo.Handlers.UserHandler;
-import group.hashtag.projectelo.Handlers.WishlistItem;
-
 import group.hashtag.projectelo.R;
 
 public class ProductReview extends AppCompatActivity {
@@ -88,6 +84,7 @@ public class ProductReview extends AppCompatActivity {
     DatabaseReference commentRef;
     DatabaseReference likeRef;
     FirebaseUser auth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,7 +96,7 @@ public class ProductReview extends AppCompatActivity {
         Typeface ReemKufi_Regular = Typeface.createFromAsset(getAssets(), "fonts/ReemKufi-Regular.ttf");
 
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         title.setTypeface(ReemKufi_Regular);
 
         setSupportActionBar(toolbar);
@@ -115,11 +112,14 @@ public class ProductReview extends AppCompatActivity {
         reviewImageView = findViewById(R.id.imageView2);
         commentListView = findViewById(R.id.commentList);
         commentHandlerList = new ArrayList<>();
+        /**
+         * Adapted From: "hdodenhof/CircleImageView", GitHub, 2018. [Online]. Available:  https://github.com/hdodenhof/CircleImageView. [Accessed: 31- Mar- 2018].
+         */
         userAuthorImage = findViewById(R.id.reviewAuthor);
         reviewtitle = findViewById(R.id.textView5);
         content = findViewById(R.id.textView4);
         reviewDevice = findViewById(R.id.reviewDeviceName);
-        commentText= findViewById(R.id.comment);
+        commentText = findViewById(R.id.comment);
         commentPost = findViewById(R.id.postComment);
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
@@ -143,7 +143,6 @@ public class ProductReview extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mapUser = (Map<String, Object>) dataSnapshot.getValue();
-                Log.e("Here", "" + mapUser);
                 userName = mapUser.get("name").toString();
                 userId = mapUser.get("UserId").toString();
                 userEmail = mapUser.get("email").toString();
@@ -162,19 +161,17 @@ public class ProductReview extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("Here", ""+databaseError);
-
+                Log.e("Here", "" + databaseError);
             }
         });
         userAuthorImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String Id = auth.getUid();
-                Log.e(stringReviewAuthor,Id);
-                if (stringReviewAuthor.equals(Id)){
+                if (stringReviewAuthor.equals(Id)) {
                     Intent userProfile = new Intent(ProductReview.this, UserProfile.class);
                     startActivity(userProfile);
-                }else {
+                } else {
                     Intent intent = new Intent(ProductReview.this, ViewUserProfile.class);
                     intent.putExtra("reviewUserId", userId);
                     intent.putExtra("reviewUser", userName);
@@ -198,46 +195,41 @@ public class ProductReview extends AppCompatActivity {
             }
         });
         likeRef = FirebaseDatabase.getInstance().getReference("likes");
-        likeRef.child(stringReviewId).addValueEventListener(new ValueEventListener() {
+        likeRef.child(stringReviewId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot likeSnapshot : dataSnapshot.getChildren()){
-                    String likeUid = likeSnapshot.getKey();
-                    Log.e("Here", "UID=>1 "+likeUid);
-                    if(likeUid.equals(auth.getUid())){
-                        Log.e("Here", "UID=>True "+likeUid);
-                        likeButton.setChecked(true);
-                        break;
-                    }else{
-                        Log.e("Here", "UID=>False "+likeUid);
-                        likeButton.setChecked(false);
-                    }
+                if (dataSnapshot.hasChild(auth.getUid())) {
+
+                    likeButton.setChecked(true);
+                } else {
+
+                    likeButton.setChecked(false);
                 }
             }
+
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 Log.e("HERE", "" + databaseError);
             }
+
         });
 
         likeButton.setEventListener(new SparkEventListener() {
             @Override
             public void onEvent(ImageView button, final boolean buttonState) {
-                    if(buttonState){
-                        String date = DateFormat.getDateTimeInstance().format(new Date());
-                        String since = "Liked on "+date;
-                        likeNumber = likeNumber + 1;
-                        UserHandler addLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString(),userPic);
-                        userLikeRef.child(userId).setValue(addLike);
-                        likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
-                        Log.e("Here", "ButtonState_if"+buttonState);
-                    }else{
-                        likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
-                        Log.e("Here", "ButtonState_else"+buttonState);
-                        likeNumber = likeNumber - 1;
-                        UserHandler subLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString(),userPic);
-                        userLikeRef.child(stringReviewAuthor).setValue(subLike);
+                if (buttonState) {
+                    String date = DateFormat.getDateTimeInstance().format(new Date());
+                    String since = "Liked on " + date;
+                    likeNumber = likeNumber + 1;
+                    UserHandler addLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString(), userPic);
+                    userLikeRef.child(userId).setValue(addLike);
+                    likeRef.child(stringReviewId).child(auth.getUid()).setValue(since);
+                } else {
+                    likeRef.child(stringReviewId).child(auth.getUid()).removeValue();
+                    likeNumber = likeNumber - 1;
+                    UserHandler subLike = new UserHandler(userName, userId, userCountry, userDobMonth, userDobYear, userWebLink, userEmail, userGender, userDobDate, likeNumber.toString(), userPic);
+                    userLikeRef.child(stringReviewAuthor).setValue(subLike);
                 }
             }
 
@@ -261,11 +253,11 @@ public class ProductReview extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 commentHandlerList.clear();
-                for(DataSnapshot commentSnapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot commentSnapshot : dataSnapshot.getChildren()) {
                     CommentHandler item = commentSnapshot.getValue(CommentHandler.class);
                     commentHandlerList.add(item);
                 }
-                CommentAdapter adapter= new CommentAdapter(ProductReview.this,commentHandlerList);
+                CommentAdapter adapter = new CommentAdapter(ProductReview.this, commentHandlerList);
                 commentListView.setAdapter(adapter);
             }
 
@@ -277,39 +269,32 @@ public class ProductReview extends AppCompatActivity {
     }
 
 
-    public void addComment(){
+    public void addComment() {
 
         commentContent = commentText.getText().toString().trim();
         commentAuthorId = auth.getUid();
 
-        if(!TextUtils.isEmpty(commentContent)){
+        if (!TextUtils.isEmpty(commentContent)) {
             userRef.child(commentAuthorId).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     mapCommentAuthor = (Map<String, Object>) dataSnapshot.getValue();
                     commentAuthorName = mapCommentAuthor.get("name").toString();
-                    Log.e("Here", "1" + commentAuthorName);
                     String id = commentRef.push().getKey();
                     CommentHandler newComment = new CommentHandler(id, commentContent, commentAuthorId, commentAuthorName);
                     commentRef.child(stringReviewId).child(id).setValue(newComment);
                     commentText.setText("");
                     commentLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
                 }
+
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
 
                 }
             });
-            //TODO: Simple method (not showing username of comment author)
-//            CommentHandler newComment = new CommentHandler(commentAuthorId, commentContent, commentAuthorId, commentAuthorName);
-//            commentRef.child(stringReviewId).child(commentAuthorId).setValue(newComment);
-//            commentText.setText("");
-//            commentLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-        }
-        else{
+
+        } else {
             commentText.setError("Comment cannot be empty");
         }
-
     }
-
 }
