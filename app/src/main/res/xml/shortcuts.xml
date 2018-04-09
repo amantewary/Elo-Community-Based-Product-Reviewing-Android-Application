@@ -1,13 +1,14 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
+        android:shortcutId="Search Devices"
         android:enabled="true"
         android:icon="@drawable/ic_search_black_24dp"
-        android:shortcutId="Search Devices"
-        android:shortcutShortLabel="@string/compose_shortcut_short_label1">
+        android:shortcutShortLabel="@string/compose_shortcut_short_label1"
+       >
         <intent
             android:action="android.intent.action.VIEW"
-            android:targetClass="group.hashtag.projectelo.Activities.HomeActivity"
-            android:targetPackage="group.hashtag.projectelo" />
+            android:targetPackage="group.hashtag.projectelo"
+            android:targetClass="group.hashtag.projectelo.Activities.HomeActivity" />
         <!-- If your shortcut is associated with multiple intents, include them
              here. The last intent in the list determines what the user sees when
              they launch this shortcut. -->

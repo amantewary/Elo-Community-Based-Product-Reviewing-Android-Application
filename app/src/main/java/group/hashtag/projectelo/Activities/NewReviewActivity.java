@@ -387,12 +387,18 @@ public class NewReviewActivity extends AppCompatActivity {
         String reviewTitle = newReviewTitle.getText().toString().trim();
         String reviewDescription = newReviewDescription.getText().toString().trim();
         String deviceCategory = category.getSelectedItem().toString();
-        String deviceName = device.getSelectedItem().toString();
+        String deviceName;
+        if(TextUtils.isEmpty(deviceCategory) || deviceCategory.equals("Select Category")) {
+            Toast.makeText(getApplicationContext(), "Please Select a Category", Toast.LENGTH_LONG).show();
+            return;
+        } else{
+            deviceName = device.getSelectedItem().toString();
+        }
         ReviewPic.setDrawingCacheEnabled(true);
         ReviewPic.buildDrawingCache();
         Bitmap bitmap = ReviewPic.getDrawingCache();
 
-        if (!TextUtils.isEmpty(reviewTitle) && !TextUtils.isEmpty(reviewDescription)) {
+        if (!TextUtils.isEmpty(reviewTitle) && !TextUtils.isEmpty(reviewDescription) && !TextUtils.isEmpty(deviceName)&& !TextUtils.isEmpty(deviceCategory)) {
             id = reviewDatabase.push().getKey();
             uploadImage(bitmap);
             UploadDelay uploadDelay = new UploadDelay();

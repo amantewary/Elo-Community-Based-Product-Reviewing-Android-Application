@@ -9,9 +9,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:orientation="vertical"
         android:background="@color/colorCardViewBackground"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -33,31 +33,31 @@
                 app:layout_constraintVertical_bias="0.00999999">
 
                 <LinearLayout
-                    android:id="@+id/linear_layout_featured"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
-                    android:background="@drawable/dji"
-                    android:orientation="vertical">
+                    android:id="@+id/linear_layout_featured"
+                    android:orientation="vertical"
+                    android:background="@drawable/dji">
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:orientation="horizontal"
+                        android:layout_height="wrap_content">
 
                         <TextView
                             android:id="@+id/featured_textView_title"
-                            style="@style/autoscroll"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/activity_horizontal_margin"
                             android:layout_marginBottom="@dimen/activity_horizontal_margin"
                             android:layout_marginLeft="8dp"
                             android:layout_marginRight="8dp"
-                            android:layout_marginTop="@dimen/activity_horizontal_margin"
                             android:maxLines="2"
-                            android:text="While they might seem like toys, a high-quality drone is a serious investment"
-                            android:textColor="@color/colorPrimary"
+                            android:typeface="sans"
                             android:textStyle="bold"
-                            android:typeface="sans" />
+                            style="@style/autoscroll"
+                            android:text="While they might seem like toys, a high-quality drone is a serious investment"
+                            android:textColor="@color/colorPrimary" />
 
 
                     </LinearLayout>
@@ -68,28 +68,27 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
             <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/refresh_reviews"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
                 tools:context="com.example.swiperefreshlayouttest.MainActivity"
-                tools:ignore="MergeRootFrame">
-
+                tools:ignore="MergeRootFrame" >
                 <ListView
-                    android:id="@+id/list_item"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:divider="@color/colorCardViewBackground"
+                    android:dividerHeight="5dp"
 
-                    android:dividerHeight="5dp" />
+                    android:id="@+id/list_item"/>
             </android.support.v4.widget.SwipeRefreshLayout>
 
         </LinearLayout>

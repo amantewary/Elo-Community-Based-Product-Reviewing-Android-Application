@@ -2,30 +2,26 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_height="match_parent"
     tools:context=".Activities.HomeActivity">
 
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
         <LinearLayout
-            android:id="@+id/featured_linear_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
+            android:id="@+id/featured_linear_layout"
+            android:orientation="vertical"
+            android:layout_height="match_parent">
             <android.support.v7.widget.CardView
                 android:id="@+id/cardView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/activity_horizontal_margin"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="@id/featured_linear_layout"
                 app:layout_constraintEnd_toEndOf="@id/featured_linear_layout"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -42,9 +38,9 @@
                         android:id="@+id/featured_view_imageview"
                         android:layout_width="match_parent"
                         android:layout_height="300dp"
+                        android:scaleType="center"
                         android:layout_alignParentStart="true"
                         android:layout_alignParentTop="true"
-                        android:scaleType="center"
                         android:src="@drawable/djitwo"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -52,28 +48,28 @@
 
                     <TextView
                         android:id="@+id/featured_view_content"
-                        style="@style/Base.TextAppearance.AppCompat.Body1"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_alignEnd="@+id/featured_view_imageview"
-                        android:layout_alignParentBottom="true"
-                        android:layout_below="@+id/featured_view_imageview"
+                        android:padding="@dimen/activity_vertical_margin"
                         android:layout_marginTop="@dimen/activity_horizontal_margin"
                         android:autoLink="all"
-                        android:padding="@dimen/activity_vertical_margin"
+                        android:layout_alignParentBottom="true"
                         android:scrollbars="vertical"
-                        android:text="@string/dummycontent" />
+                        android:layout_below="@+id/featured_view_imageview"
+                        android:text="@string/dummycontent"
+                        style="@style/Base.TextAppearance.AppCompat.Body1" />
 
                     <TextView
                         android:id="@+id/featured_view_title"
                         style="@style/Base.TextAppearance.AppCompat.Headline"
                         android:layout_width="fill_parent"
+                        android:padding="@dimen/activity_horizontal_margin"
                         android:layout_height="wrap_content"
                         android:layout_alignBottom="@+id/featured_view_imageview"
                         android:layout_alignParentStart="true"
                         android:ellipsize="marquee"
                         android:gravity="bottom"
-                        android:padding="@dimen/activity_horizontal_margin"
                         android:text="While they might seem like toys, a high-quality drone is a serious investment"
                         android:textColor="@color/colorPrimary" />
 
@@ -85,6 +81,11 @@
 
         </LinearLayout>
     </ScrollView>
+
+
+
+
+
 
 
 </LinearLayout>

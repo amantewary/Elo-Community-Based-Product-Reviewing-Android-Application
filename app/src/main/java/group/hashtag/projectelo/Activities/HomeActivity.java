@@ -156,7 +156,6 @@ public class HomeActivity extends AppCompatActivity
         mDatabase2 = database.getReference("Feature_article");
         fetchFeaturedData(featuredTitle, imageViewTitle, mDatabase2);
 
-/
 
         prefs = HomeActivity.this.getSharedPreferences("group.hashtag.projectelo.Activities.HomeActivity", 0);
         editor = prefs.edit();

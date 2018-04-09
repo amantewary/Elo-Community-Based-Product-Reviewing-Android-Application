@@ -6,9 +6,8 @@
     android:layout_height="match_parent"
     tools:context="group.hashtag.projectelo.Activities.EditUserProfile">
 
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
+    <include layout="@layout/toolbar"
+        android:id="@+id/toolbar"/>
 
     <android.support.v7.widget.CardView
         android:id="@+id/cardView3"
